@@ -52,7 +52,7 @@ pip install -r requirements.txt
 
 2. 첫 번째 예제 실행
 bash# 기본 예제 실행
-qube examples/basic/hello.qb
+qube examples/language/basic/hello.qb
 
 # 표준 라이브러리 테스트
 qube algorithms/test/stdlib_simple_test.qb
@@ -81,7 +81,6 @@ sequence = range(0, 10, 2);        // [0, 2, 4, 6, 8]
 
 ### 설치 및 실행
 ```bash
-qube my_program.qb           # 파일 실행
 qube --repl                  # 대화형 모드
 qube --api                   # 전체 API 확인
 ```
