@@ -29,6 +29,35 @@ apply H to q4;
 // Qube 범위 문법 (1줄)
 apply H to ~;  // 모든 큐빗에 H 적용
 ```
+```markdown
+##  빠른 시작
+
+### 1. 설치 방법
+```bash
+# 저장소 클론
+git clone https://github.com/zetavus/qube.git
+cd qube
+
+# 가상환경 생성 (권장)
+python -m venv qube_env
+
+# 가상환경 활성화
+# Linux/Mac:
+source qube_env/bin/activate
+# Windows:
+# qube_env\Scripts\activate
+
+# 의존성 설치
+pip install -r requirements.txt
+
+2. 첫 번째 예제 실행
+bash# 기본 예제 실행
+qube examples/basic/hello.qb
+
+# 표준 라이브러리 테스트
+qube algorithms/test/stdlib_simple_test.qb
+
+
 
 ###  **NEW! 완전한 표준 라이브러리**
 ```qube
