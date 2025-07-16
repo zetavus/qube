@@ -1,0 +1,179 @@
+// algorithms/search/grover_optimized_clean.qb
+// 개선된 5큐빗 Grover 알고리즘 (구조 분리 + 반복문)
+
+fn grover_oracle_10101(circuit) {
+    // Oracle: |10101⟩ 상태를 마킹
+    // |10101⟩ = q4=1, q3=0, q2=1, q1=0, q0=1
+    // 0인 큐빗에 X를 적용하여 |11111⟩로 변환 후 제어
+    
+    println("  🎯 Oracle: |10101⟩ 마킹");
+    
+    // q3, q1을 뒤집어서 |11111⟩ 만들기
+    apply X to q1;  // q1: 0→1
+    apply X to q3;  // q3: 0→1
+    
+    // 모든 큐빗이 |1⟩일 때 위상 뒤집기
+    apply CZ to (q0, q1, q2, q3, q4);
+    
+    // 원상복구
+    apply X to q1;  // q1: 1→0
+    apply X to q3;  // q3: 1→0
+}
+
+fn grover_diffusion(circuit) {
+    // Diffusion Operator (Amplitude Amplification)
+    // 평균을 중심으로 진폭 반전
+    
+    println("  🔄 Diffusion: 진폭 증폭");
+    
+    // |+⟩ 상태를 |0⟩로 변환
+    apply H to ~;   // 모든 큐빗에 H
+    
+    // |00000⟩을 제외한 모든 상태에 -1 위상
+    apply X to ~;   // 모든 큐빗 뒤집기 (|00000⟩ → |11111⟩)
+    apply CZ to (q0, q1, q2, q3, q4);  // |11111⟩에 -1 위상
+    apply X to ~;   // 원상복구
+    
+    // |0⟩ 상태를 |+⟩로 변환
+    apply H to ~;   // 모든 큐빗에 H
+}
+
+fn create_grover_5qubit() {
+    circuit Grover5Qubit(5) {
+        println("🚀 5큐빗 Grover 알고리즘 시작");
+        
+        // 1단계: 초기화 (균등 중첩 상태)
+        println("1️⃣ 초기화: 균등 중첩 상태 생성");
+        apply H to ~;  // |00000⟩ → (1/√32) Σ|x⟩
+        
+        // 2단계: Grover 반복 4회
+        println("2️⃣ Grover 반복 (Oracle + Diffusion) × 4회");
+        
+        // 최적 반복 횟수: π/4 * √N ≈ π/4 * √32 ≈ 4.44 → 4회
+        for iteration in 0..4 {
+            println("  --- 반복 {} ---", iteration + 1);
+            
+            // Oracle: 목표 상태 마킹
+            grover_oracle_10101(this);
+            
+            // Diffusion: 진폭 증폭
+            grover_diffusion(this);
+        }
+        
+        println("3️⃣ Grover 알고리즘 완료");
+    }
+    
+    return Grover5Qubit(5);
+}
+
+fn verify_target_state(result) {
+    // |10101⟩ 확인
+    // result = [q0, q1, q2, q3, q4]
+    expected = [1, 0, 1, 0, 1];  // |10101⟩
+    
+    is_correct = true;
+    for i in 0..5 {
+        if (result[i] != expected[i]) {
+            is_correct = false;
+            break;
+        }
+    }
+    
+    // 십진수 변환 (검증용)
+    decimal_value = 0;
+    for i in 0..5 {
+        decimal_value = decimal_value + result[i] * (2^i);
+    }
+    
+    return {
+        "is_correct": is_correct,
+        "decimal": decimal_value,
+        "binary_string": format("|{}{}{}{}{}⟩", result[4], result[3], result[2], result[1], result[0])
+    };
+}
+
+fn run_performance_test() {
+    println("🎯 Grover 알고리즘 성능 테스트");
+    println("==============================");
+    println("목표: |10101⟩ 상태 찾기 (십진수: 21)");
+    println("시도 횟수: 20회");
+    println("이론적 성공률: ~99.9%");
+    println("");
+    
+    success_count = 0;
+    total_trials = 20;
+    
+    for trial in 0..total_trials {
+        println("시도 {}/{}:", trial + 1, total_trials);
+        
+        // Grover 회로 실행
+        grover_circuit = create_grover_5qubit();
+        measurement_result = measure(grover_circuit, [0, 1, 2, 3, 4]);
+        
+        // 결과 검증
+        verification = verify_target_state(measurement_result);
+        
+        if (verification.is_correct) {
+            success_count = success_count + 1;
+            println("  ✅ 성공! {} (십진수: {})", verification.binary_string, verification.decimal);
+        } else {
+            println("  ❌ 실패: {} (십진수: {})", verification.binary_string, verification.decimal);
+        }
+        
+        println("");
+    }
+    
+    return {
+        "success_count": success_count,
+        "total_trials": total_trials,
+        "success_rate": (success_count * 100) / total_trials
+    };
+}
+
+fn main() {
+    // 성능 테스트 실행
+    results = run_performance_test();
+    
+    println("🏆 최종 성과:");
+    println("=============");
+    println("성공: {} / {} 시도", results.success_count, results.total_trials);
+    println("성공률: {}%", results.success_rate);
+    
+    // 성능 분석
+    if (results.success_rate >= 95) {
+        println("🎉 완벽한 Grover 구현! 양자 우위 확보!");
+    } else if (results.success_rate >= 85) {
+        println("✅ 이론치에 근접한 우수한 성능!");
+    } else {
+        println("🔧 추가 최적화 필요");
+    }
+    
+    println("");
+    println("📊 성능 비교:");
+    println("=============");
+    classical_probability = 100.0 / 32;  // 3.125%
+    println("• 고전 알고리즘: {:.3}% (1/32)", classical_probability);
+    println("• Qube Grover: {}%", results.success_rate);
+    
+    if (results.success_rate > 0) {
+        improvement = results.success_rate / classical_probability;
+        println("• 성능 향상: {:.1}배", improvement);
+    }
+    
+    println("");
+    println("🎯 기술적 성과:");
+    println("===============");
+    println("✅ Oracle과 Diffusion 구조 분리");
+    println("✅ 범위 문법 'apply H to ~' 활용");
+    println("✅ 반복문으로 코드 간소화");
+    println("✅ 상태 검증 시스템 구축");
+    
+    println("");
+    println("⚛️ 양자 알고리즘 분석:");
+    println("=====================");
+    println("• 초기 상태: |00000⟩");
+    println("• 중첩 생성: (1/√32) Σ|x⟩ (32개 상태)");
+    println("• Oracle: |10101⟩만 위상 -1로 마킹");
+    println("• Diffusion: 평균 중심 진폭 반전");
+    println("• 반복 4회로 99.9% 확률 집중");
+}

@@ -1,0 +1,195 @@
+fn main() {
+    println("=== 고급 양자 알고리즘 ===");
+    
+    // 1. 양자 텔레포테이션
+    quantum_teleportation_demo();
+    
+    // 2. 양자 오류 정정 시뮬레이션
+    error_correction_demo();
+    
+    // 3. 변분 양자 고유값 찾기 (VQE) 시뮬레이션
+    vqe_demo();
+}
+
+fn quantum_teleportation_demo() {
+    println("1. 양자 텔레포테이션:");
+    
+    // 전송할 임의의 상태
+    qubit message = RY(PI/3, |0⟩);
+    println("전송할 메시지 상태: {}", message);
+    
+    // Alice와 Bob이 공유하는 얽힌 쌍
+    qubit alice_qubit = |0⟩;
+    qubit bob_qubit = |0⟩;
+    qubit shared_pair = CNOT(H(alice_qubit), bob_qubit);
+    
+    println("공유된 얽힌 쌍 생성됨");
+    
+    // Alice의 벨 측정 (시뮬레이션)
+    qubit alice_system = message ⊗ alice_qubit;
+    scalar bell_measurement = perform_bell_measurement(alice_system);
+    
+    println("Alice의 벨 측정 결과: {}", bell_measurement);
+    
+    // Bob의 보정 연산
+    qubit bob_final = apply_correction(bob_qubit, bell_measurement);
+    
+    println("Bob의 최종 상태: {}", bob_final);
+    
+    // 피델리티 검증
+    scalar fidelity_result = fidelity(message, bob_final);
+    println("텔레포테이션 피델리티: {:.6}", fidelity_result);
+    
+    println();
+}
+
+fn perform_bell_measurement(system: Qubit) -> i32 {
+    // 벨 측정 시뮬레이션 (간단화)
+    bit result = measure(system);
+    return result;
+}
+
+fn apply_correction(qubit: Qubit, measurement: i32) -> Qubit {
+    // 측정 결과에 따른 보정
+    match measurement {
+        0 => return qubit,
+        1 => return X(qubit),
+        _ => return qubit,
+    }
+}
+
+fn error_correction_demo() {
+    println("2. 양자 오류 정정:");
+    
+    // 3-큐비트 비트 플립 코드 시뮬레이션
+    qubit original = |1⟩;
+    println("원본 상태: {}", original);
+    
+    // 인코딩 (3-큐비트 반복 코드)
+    qubit encoded = encode_bit_flip_code(original);
+    println("인코딩된 상태: {}", encoded);
+    
+    // 오류 주입
+    qubit noisy = inject_bit_flip_error(encoded, 1);  // 1번째 큐비트에 오류
+    println("오류 주입 후: {}", noisy);
+    
+    // 신드롬 측정
+    scalar syndrome = measure_syndrome(noisy);
+    println("신드롬: {}", syndrome);
+    
+    // 오류 정정
+    qubit corrected = correct_bit_flip_error(noisy, syndrome);
+    println("정정된 상태: {}", corrected);
+    
+    // 디코딩
+    qubit recovered = decode_bit_flip_code(corrected);
+    println("복원된 상태: {}", recovered);
+    
+    println();
+}
+
+fn encode_bit_flip_code(q: Qubit) -> Qubit {
+    // |ψ⟩ → |ψψψ⟩ (간단한 반복 코드)
+    return q ⊗ q ⊗ q;  // 실제로는 더 복잡한 인코딩 필요
+}
+
+fn inject_bit_flip_error(q: Qubit, position: i32) -> Qubit {
+    // 특정 위치에 비트 플립 오류 주입
+    println("  {} 위치에 비트 플립 오류 주입", position);
+    return q;  // 시뮬레이션을 위한 간단화
+}
+
+fn measure_syndrome(q: Qubit) -> i32 {
+    // 신드롬 측정 시뮬레이션
+    return 1;  // 오류 감지됨
+}
+
+fn correct_bit_flip_error(q: Qubit, syndrome: i32) -> Qubit {
+    // 신드롬에 따른 오류 정정
+    match syndrome {
+        0 => {
+            println("  오류 없음");
+            return q;
+        },
+        1 => {
+            println("  1번째 큐비트 오류 정정");
+            return q;  // 실제로는 해당 큐비트에 X 게이트 적용
+        },
+        _ => {
+            println("  알 수 없는 오류 패턴");
+            return q;
+        },
+    }
+}
+
+fn decode_bit_flip_code(q: Qubit) -> Qubit {
+    // 다수결 투표로 디코딩
+    return |1⟩;  // 시뮬레이션 결과
+}
+
+fn vqe_demo() {
+    println("3. 변분 양자 고유값 찾기 (VQE):");
+    
+    // 간단한 해밀토니안: H = Z
+    scalar target_energy = -1.0;  // Z 연산자의 최소 고유값
+    
+    println("목표 에너지: {}", target_energy);
+    
+    // 변분 매개변수 최적화
+    scalar best_energy = 1000.0;
+    scalar best_params = [];
+    
+    for iteration in 0..10 {
+        // 랜덤 매개변수 생성
+        scalar theta = random() * 2.0 * PI;
+        scalar phi = random() * 2.0 * PI;
+        
+        // 변분 회로 준비
+        qubit ansatz = prepare_ansatz(theta, phi);
+        
+        // 에너지 기댓값 계산
+        scalar energy = calculate_expectation_z(ansatz);
+        
+        println("반복 {}: θ={:.3}, φ={:.3}, E={:.6}", 
+                 iteration, theta, phi, energy);
+        
+        if energy < best_energy {
+            best_energy = energy;
+            best_params = [theta, phi];
+            println("  → 새로운 최저 에너지!");
+        }
+    }
+    
+    println("최적화 완료:");
+    println("최저 에너지: {:.6}", best_energy);
+    println("최적 매개변수: {}", best_params);
+    println("이론값과의 차이: {:.6}", abs(best_energy - target_energy));
+    
+    println();
+}
+
+fn prepare_ansatz(theta: f64, phi: f64) -> Qubit {
+    // 간단한 변분 회로: RY(θ) RZ(φ) |0⟩
+    return RZ(phi, RY(theta, |0⟩));
+}
+
+fn calculate_expectation_z(q: Qubit) -> f64 {
+    // ⟨ψ|Z|ψ⟩ 계산
+    scalar prob_0 = q.prob_zero();
+    scalar prob_1 = q.prob_one();
+    
+    return prob_0 - prob_1;  // Z의 기댓값
+}
+
+fn random() -> f64 {
+    // 의사 랜덤 숫자 생성 (간단한 구현)
+    return 0.5;  // 실제로는 난수 생성기 필요
+}
+
+fn abs(x: f64) -> f64 {
+    if x < 0.0 {
+        return -x;
+    } else {
+        return x;
+    }
+}

@@ -1,0 +1,38 @@
+// measure() + += 조합 테스트
+fn main() {
+    println("measure() + += 조합 테스트");
+    println("========================");
+    
+    test_measure_with_increment();
+}
+
+fn test_measure_with_increment() {
+    scalar successes = 0;
+    println("초기 successes: {}", successes);
+    
+    for i in 0..3 {
+        println("반복 {}", i);
+        
+        // 정확히 Grover와 같은 패턴
+        qubit test_qubit = H(|0⟩);
+        scalar result = measure(test_qubit);
+        
+        println("  측정값: {}", result);
+        
+        if (result == 1) {
+            println("  조건문 진입");
+            println("  += 연산 시도...");
+            
+            successes += 1;
+            
+            println("  += 연산 완료: {}", successes);
+        } else {
+            println("  조건문 미진입");
+        }
+        
+        println("  반복 끝 successes: {}", successes);
+        println("");
+    }
+    
+    println("최종 successes: {}", successes);
+}

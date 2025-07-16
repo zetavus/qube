@@ -1,0 +1,31 @@
+// 함수 순서 바꿔서 테스트
+fn main() {
+    println("함수 순서 변경 테스트");
+    
+    test_increment();  // ← 복잡한 것 먼저
+    test_hadamard();   // ← 양자 연산 나중에
+}
+
+fn test_increment() {
+    println("1. 변수 증감 먼저:");
+    
+    scalar count = 3;
+    scalar success = 0;
+    
+    for i in 0..count {
+        if (i == 1) {
+            success += 1;
+        }
+        println("증감 테스트 {}: {}", i, success);
+    }
+}
+
+fn test_hadamard() {
+    println("2. Hadamard 나중에:");
+    
+    for i in 0..2 {
+        qubit q = H(|0⟩);
+        scalar r = measure(q);
+        println("H 테스트 {}: {}", i, r);
+    }
+}

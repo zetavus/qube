@@ -1,0 +1,76 @@
+// test_advanced.qyt - 고급 회로 기능 테스트
+
+// 📊 테스트 1: 벨 상태 생성 및 측정
+circuit BellState(2) {
+    apply H to q0;
+    apply CNOT to (q0, q1);
+    
+    println("벨 상태 생성 완료");
+    
+    measure q0;
+    measure q1;
+}
+
+println("=== 벨 상태 측정 테스트 ===");
+bell = BellState();
+println("");
+
+// 📊 테스트 2: GHZ 상태 (3큐빗 얽힘)
+circuit GHZState(3) {
+    apply H to q0;
+    apply CNOT to (q0, q1);
+    apply CNOT to (q1, q2);
+    
+    println("GHZ 상태 생성 완료");
+    
+    measure q0;
+    measure q1; 
+    measure q2;
+}
+
+println("=== GHZ 상태 측정 테스트 ===");
+ghz = GHZState();
+println("");
+
+// 📊 테스트 3: 순차적 측정
+circuit SequentialMeasure(2) {
+    apply H to q0;
+    apply H to q1;
+    
+    println("첫 번째 큐빗 측정:");
+    measure q0;
+    
+    println("두 번째 큐빗 측정:");
+    measure q1;
+}
+
+println("=== 순차적 측정 테스트 ===");
+seq = SequentialMeasure();
+println("");
+
+// 📊 테스트 4: 복합 회로
+circuit ComplexCircuit(4) {
+    // 첫 번째 층
+    apply H to q0;
+    apply H to q1;
+    
+    // 얽힘 층
+    apply CNOT to (q0, q2);
+    apply CNOT to (q1, q3);
+    
+    // 회전 층
+    apply RZ(PI/2) to q0;
+    apply RX(PI/4) to q1;
+    
+    // 측정
+    measure q0;
+    measure q1;
+    measure q2;
+    measure q3;
+}
+
+println("=== 복합 회로 측정 테스트 ===");
+complex = ComplexCircuit();
+println("");
+
+println("🚀 모든 고급 테스트 완료!");

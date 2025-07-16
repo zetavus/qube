@@ -1,0 +1,222 @@
+// test_advanced_features.qb
+// 고급 기능들의 실제 구현 상태 테스트
+
+fn main() {
+    println("🔬 고급 기능 구현 상태 조사");
+    println("==========================");
+    
+    // 1. 양자 레지스터 문법 테스트
+    println("1. 양자 레지스터 문법 테스트");
+    test_quantum_registers();
+    
+    // 2. 고전 레지스터 문법 테스트
+    println("\n2. 고전 레지스터 문법 테스트");
+    test_classical_registers();
+    
+    // 3. 조건부 실행 테스트
+    println("\n3. 조건부 실행 테스트");
+    test_conditional_execution();
+    
+    // 4. 양자 서브루틴 테스트
+    println("\n4. 양자 서브루틴 테스트");
+    test_quantum_subroutines();
+    
+    // 5. 고급 측정 기능 테스트
+    println("\n5. 고급 측정 기능 테스트");
+    test_advanced_measurement();
+    
+    // 6. 기타 실험적 기능 테스트
+    println("\n6. 기타 실험적 기능 테스트");
+    test_experimental_features();
+}
+
+fn test_quantum_registers() {
+    // 테스트: qreg[8] data; 문법
+    try {
+        // 이런 문법이 지원되는지 확인
+        println("qreg[8] data; 문법 테스트 중...");
+        
+        // 대안 문법들도 테스트
+        println("Array<qubit> 문법 테스트 중...");
+        
+        // 현재 지원되는 방식 확인
+        circuit TestQReg(8) {
+            apply H to q0;
+            apply H to q1;
+            apply H to q2;
+            apply H to q3;
+            apply H to q4;
+            apply H to q5;
+            apply H to q6;
+            apply H to q7;
+        }
+        
+        qreg_test = TestQReg();
+        println("✅ 기본 8큐빗 레지스터 성공");
+        
+    } catch (error) {
+        println("❌ 양자 레지스터 테스트 실패: {}", error);
+    }
+}
+
+fn test_classical_registers() {
+    // 테스트: creg[8] result; 문법
+    try {
+        println("creg[8] result; 문법 테스트 중...");
+        
+        // 기본 배열 방식으로 테스트
+        result_array = [0, 0, 0, 0, 0, 0, 0, 0];
+        println("✅ 기본 배열 방식 성공: {}", result_array);
+        
+    } catch (error) {
+        println("❌ 고전 레지스터 테스트 실패: {}", error);
+    }
+}
+
+fn test_conditional_execution() {
+    // 테스트: if (measurement == 1) apply X to q0;
+    try {
+        println("조건부 게이트 적용 테스트 중...");
+        
+        circuit TestConditional(2) {
+            apply H to q0;
+            apply CNOT to (q0, q1);
+            
+            // 이런 문법이 지원되는지 확인
+            // if (measure q0 == 1) apply X to q1;
+        }
+        
+        conditional_test = TestConditional();
+        result = measure(conditional_test, [0, 1]);
+        
+        // 수동 조건부 실행 테스트
+        if result[0] == 1 {
+            println("✅ 수동 조건부 실행 가능");
+        }
+        
+    } catch (error) {
+        println("❌ 조건부 실행 테스트 실패: {}", error);
+    }
+}
+
+fn test_quantum_subroutines() {
+    // 테스트: call grover_oracle(target_state);
+    try {
+        println("양자 서브루틴 호출 테스트 중...");
+        
+        // 함수 호출 방식으로 테스트
+        oracle_result = test_oracle_function([1, 0, 1]);
+        println("✅ 함수 방식 서브루틴 성공: {}", oracle_result);
+        
+    } catch (error) {
+        println("❌ 양자 서브루틴 테스트 실패: {}", error);
+    }
+}
+
+fn test_oracle_function(target_state) {
+    // 간단한 Oracle 함수 예제
+    return target_state;
+}
+
+fn test_advanced_measurement() {
+    try {
+        println("고급 측정 기능 테스트 중...");
+        
+        circuit TestAdvMeasure(3) {
+            apply H to q0;
+            apply H to q1;
+            apply H to q2;
+            apply CZ to (q0, q1, q2);
+        }
+        
+        adv_circuit = TestAdvMeasure();
+        
+        // 다양한 측정 방식 테스트
+        
+        // 1. 전체 측정
+        full_result = measure(adv_circuit, [0, 1, 2]);
+        println("전체 측정: {}", full_result);
+        
+        // 2. 부분 측정
+        partial_result = measure(adv_circuit, [0, 2]);
+        println("부분 측정: {}", partial_result);
+        
+        // 3. 단일 측정
+        single_result = measure(adv_circuit, [1]);
+        println("단일 측정: {}", single_result);
+        
+        println("✅ 다양한 측정 방식 모두 성공");
+        
+    } catch (error) {
+        println("❌ 고급 측정 테스트 실패: {}", error);
+    }
+}
+
+fn test_experimental_features() {
+    try {
+        println("실험적 기능들 테스트 중...");
+        
+        // 1. 복합 게이트 테스트
+        circuit TestComplex(4) {
+            // 복잡한 게이트 조합
+            apply H to q0;
+            apply CNOT to (q0, q1);
+            apply CCZ to (q0, q1, q2);
+            apply CCCZ to (q0, q1, q2, q3);
+        }
+        
+        complex_test = TestComplex();
+        println("✅ 복합 게이트 성공");
+        
+        // 2. 고급 상수 테스트
+        pi_value = π;
+        e_value = e;
+        phi_value = φ;
+        
+        println("✅ 수학 상수들 사용 가능:");
+        println("  π = {}", pi_value);
+        println("  e = {}", e_value);
+        println("  φ = {}", phi_value);
+        
+        // 3. 복소수 테스트
+        complex_num = 1.0 + 2.0i;
+        println("✅ 복소수 지원: {}", complex_num);
+        
+    } catch (error) {
+        println("❌ 실험적 기능 테스트 실패: {}", error);
+    }
+}
+
+// 추가: 에러 경계 테스트
+fn test_error_boundaries() {
+    println("\n🚨 에러 경계 테스트");
+    println("==================");
+    
+    // 메모리 한계 테스트
+    try {
+        println("큰 회로 생성 테스트 (15큐빗)...");
+        circuit BigCircuit(15) {
+            apply H to q0;
+            apply H to q14;
+        }
+        big_test = BigCircuit();
+        println("✅ 15큐빗 회로 성공");
+        
+    } catch (error) {
+        println("❌ 15큐빗 회로 실패: {}", error);
+    }
+    
+    // 극한 테스트
+    try {
+        println("극한 테스트 (20큐빗)...");
+        circuit HugeCircuit(20) {
+            apply H to q0;
+            apply H to q19;
+        }
+        huge_test = HugeCircuit();
+        println("✅ 20큐빗 회로 성공");
+        
+    } catch (error) {
+        println("❌ 20큐빗 회로 실패: {}", error);
+    }
+}

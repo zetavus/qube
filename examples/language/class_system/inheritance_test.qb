@@ -1,0 +1,66 @@
+// inheritance_test.qyt - 상속 시스템 테스트
+
+class Animal {
+    name: str;
+    
+    fn new(name) {
+        return Animal { name: name };
+    }
+    
+    fn speak(self) {
+        println(self.name + " makes a sound");
+    }
+    
+    fn getName(self) {
+        return self.name;
+    }
+}
+
+class Dog extends Animal {
+    breed: str;
+    
+    fn new(name, breed) {
+        return Dog { name: name, breed: breed };
+    }
+    
+    fn speak(self) {
+        println(self.name + " barks!");
+    }
+    
+    fn wagTail(self) {
+        println(self.name + " wags tail!");
+    }
+}
+
+fn main() {
+    println("🧬 QyTum 상속 시스템 테스트!");
+    println("===============================");
+    
+    // 1. 부모 클래스 테스트
+    println("\n1. 부모 클래스 테스트:");
+    scalar animal = Animal.new("Generic Animal");
+    println("동물 생성:", animal);
+    animal.speak();
+    scalar animalName = animal.getName();
+    println("동물 이름:", animalName);
+    
+    // 2. 자식 클래스 테스트
+    println("\n2. 자식 클래스 테스트:");
+    scalar dog = Dog.new("Buddy", "Golden Retriever");
+    println("강아지 생성:", dog);
+    
+    // 3. 메서드 오버라이드 테스트
+    println("\n3. 메서드 오버라이드:");
+    dog.speak();  // 오버라이드된 메서드
+    
+    // 4. 상속된 메서드 테스트
+    println("\n4. 상속된 메서드:");
+    scalar dogName = dog.getName();  // 부모에서 상속된 메서드
+    println("강아지 이름:", dogName);
+    
+    // 5. 자식 클래스만의 메서드 테스트
+    println("\n5. 자식 클래스 고유 메서드:");
+    dog.wagTail();  // Dog만의 메서드
+    
+    println("\n✅ 상속 시스템 테스트 완료!");
+}

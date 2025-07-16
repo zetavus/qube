@@ -1,0 +1,132 @@
+// algorithms/search/oracle_verification.qb
+// Oracle 단독 검증: 정확히 |10101⟩만 phase flip하는지 확인
+
+fn test_oracle_on_target() {
+    println("🧪 Oracle 검증 1: 타겟 상태에서 Oracle 적용");
+    println("===============================================");
+    
+    circuit OracleOnTarget(5) {
+        // |10101⟩ 상태 직접 생성
+        apply X to q4;  // q4 = 1
+        apply X to q2;  // q2 = 1
+        apply X to q0;  // q0 = 1
+        // 현재: |10101⟩
+        
+        println("초기 상태: |10101⟩");
+        
+        // Oracle 적용 (phase flip만 일어나고 상태는 그대로)
+        apply X to q3; apply X to q1;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q1; apply X to q3;
+        
+        println("Oracle 적용 완료 (phase flip됨)");
+    }
+    
+    target_circuit = OracleOnTarget(5);
+    result = measure(target_circuit, [0, 1, 2, 3, 4]);
+    value = result[0] + result[1]*2 + result[2]*4 + result[3]*8 + result[4]*16;
+    
+    if (value == 21) {
+        println("✅ 통과: |10101⟩ 상태 유지됨");
+    } else {
+        println("❌ 실패: 상태가 {}로 변경됨", value);
+    }
+}
+
+fn test_oracle_on_non_target() {
+    println("");
+    println("🧪 Oracle 검증 2: 비타겟 상태에서 Oracle 적용");
+    println("==============================================");
+    
+    circuit OracleOnNonTarget(5) {
+        // |00000⟩ 상태에서 Oracle 적용
+        // phase flip이 일어나지 않아야 함
+        
+        println("초기 상태: |00000⟩");
+        
+        apply X to q3; apply X to q1;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q1; apply X to q3;
+        
+        println("Oracle 적용 완료 (phase flip 안됨)");
+    }
+    
+    non_target_circuit = OracleOnNonTarget(5);
+    result = measure(non_target_circuit, [0, 1, 2, 3, 4]);
+    value = result[0] + result[1]*2 + result[2]*4 + result[3]*8 + result[4]*16;
+    
+    if (value == 0) {
+        println("✅ 통과: |00000⟩ 상태 유지됨");
+    } else {
+        println("❌ 실패: 상태가 {}로 변경됨", value);
+    }
+}
+
+fn test_cz_gate_simple() {
+    println("");
+    println("🧪 CZ 게이트 검증: 2큐빗 기본 테스트");
+    println("===================================");
+    
+    circuit SimpleCZ(2) {
+        apply X to q0;  // |01⟩ 상태
+        apply CZ to (q1, q0);  // q1=0, q0=1이므로 phase flip 안됨
+    }
+    
+    simple_circuit = SimpleCZ(2);
+    result = measure(simple_circuit, [0, 1]);
+    value = result[0] + result[1]*2;
+    
+    if (value == 1) {  // |01⟩
+        println("✅ 2큐빗 CZ 정상");
+    } else {
+        println("❌ 2큐빗 CZ 오류: {}", value);
+    }
+}
+
+fn test_5qubit_cz() {
+    println("");
+    println("🧪 5큐빗 CZ 게이트 검증");
+    println("=======================");
+    
+    circuit FiveQubitCZ(5) {
+        // |11111⟩ 상태 생성
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        
+        println("초기 상태: |11111⟩");
+        
+        // 5큐빗 CZ 적용 (phase flip 발생)
+        apply CZ to (q4, q3, q2, q1, q0);
+        
+        println("5큐빗 CZ 적용 완료");
+    }
+    
+    five_qubit_circuit = FiveQubitCZ(5);
+    result = measure(five_qubit_circuit, [0, 1, 2, 3, 4]);
+    value = result[0] + result[1]*2 + result[2]*4 + result[3]*8 + result[4]*16;
+    
+    if (value == 31) {  // |11111⟩ = 31
+        println("✅ 5큐빗 CZ 정상: 상태 유지됨");
+    } else {
+        println("❌ 5큐빗 CZ 오류: {}", value);
+    }
+}
+
+fn main() {
+    println("🔬 Oracle과 CZ 게이트 정확성 검증");
+    println("=================================");
+    
+    // 단계별 검증
+    test_cz_gate_simple();     // 2큐빗 CZ 기본 테스트
+    test_5qubit_cz();          // 5큐빗 CZ 테스트
+    test_oracle_on_target();   // Oracle on |10101⟩
+    test_oracle_on_non_target(); // Oracle on |00000⟩
+    
+    println("");
+    println("🎯 결론:");
+    println("=======");
+    println("모든 테스트가 통과하면 Oracle은 정확함");
+    println("실패하는 테스트가 있다면 해당 부분 수정 필요");
+    
+    println("");
+    println("다음 단계: 수정된 Grover 알고리즘 실행");
+}

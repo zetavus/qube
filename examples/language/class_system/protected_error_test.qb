@@ -1,0 +1,21 @@
+// protected_error_test.qyt - Protected 접근 제어 에러 테스트
+
+class Base {
+    protected secret: str;
+    
+    public fn new(secret: str) {
+        self.secret = secret;
+    }
+    
+    protected fn protected_method() {
+        println("This is protected method");
+    }
+}
+
+fn main() {
+    obj = Base { secret: "test" };  // ❌ 이 줄에서 에러 발생해야 함
+    
+    // 아래 코드들도 모두 에러 발생해야 함:
+    // println("Secret: {}", obj.secret);
+    // obj.protected_method();
+}

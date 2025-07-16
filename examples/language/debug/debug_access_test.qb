@@ -1,0 +1,34 @@
+class BankAccount {
+    private balance: f64;
+    public name: str;
+    
+    public fn init(self, initial_balance) {
+        println("Init method called with: {}", initial_balance);
+        self.balance = initial_balance;
+        println("Balance set to: {}", self.balance);
+    }
+    
+    public fn deposit(self, amount) {
+        println("Deposit method called with: {}", amount);
+        self.balance = self.balance + amount;
+        println("New balance: {}", self.balance);
+    }
+}
+
+fn main() {
+    println("=== Debug 테스트 ===");
+    
+    println("1. Creating account...");
+    account = BankAccount { name: "John" };
+    
+    println("2. Account created, name: {}", account.name);
+    
+    println("3. Calling init...");
+    account.init(100.0);
+    
+    println("4. Calling deposit...");
+    account.deposit(50.0);
+    
+    println("5. Testing private access...");
+    println("Private balance: {}", account.balance);
+}

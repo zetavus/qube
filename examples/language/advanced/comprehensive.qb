@@ -1,0 +1,139 @@
+// comprehensive.qyt - 종합 접근 제어자 테스트
+
+class Shape {
+    protected x: f64;
+    protected y: f64;
+    private id: str;
+    public visible: bool;
+    
+    public fn init(self, x: f64, y: f64) {
+        self.x = x;
+        self.y = y;
+        self.id = "SHAPE-001";
+        self.visible = true;
+    }
+    
+    public fn move_to(self, new_x: f64, new_y: f64) {
+        if self.validate_position(new_x, new_y) {
+            self.x = new_x;
+            self.y = new_y;
+            println("도형 이동: ({}, {})", self.x, self.y);
+        }
+    }
+    
+    private fn validate_position(self, x: f64, y: f64) -> bool {
+        return x >= 0.0 && y >= 0.0;
+    }
+    
+    protected fn get_position(self) -> str {
+        return "(" + str(self.x) + ", " + str(self.y) + ")";
+    }
+    
+    public fn show(self) {
+        if self.visible {
+            println("도형 표시 중...");
+        }
+    }
+}
+
+class Circle extends Shape {
+    private radius: f64;
+    public color: str;
+    
+    public fn init(self, x: f64, y: f64, radius: f64, color: str) {
+        // 부모 초기화
+        self.x = x;
+        self.y = y;
+        self.visible = true;
+        
+        // 자식 필드 초기화
+        self.radius = radius;
+        self.color = color;
+    }
+    
+    public fn draw(self) {
+        // ✅ protected 메서드 사용 가능
+        println("원 그리기 - 위치: {}, 반지름: {}, 색상: {}", 
+                self.get_position(), self.radius, self.color);
+    }
+    
+    public fn resize(self, new_radius: f64) {
+        if new_radius > 0.0 {
+            self.radius = new_radius;
+            println("원 크기 변경: {}", self.radius);
+        }
+    }
+    
+    public fn get_area(self) -> f64 {
+        return 3.14159 * self.radius * self.radius;
+    }
+    
+    protected fn get_info(self) -> str {
+        return "Circle at " + self.get_position() + " with radius " + str(self.radius);
+    }
+}
+
+class Rectangle extends Shape {
+    private width: f64;
+    private height: f64;
+    public border_style: str;
+    
+    public fn init(self, x: f64, y: f64, width: f64, height: f64) {
+        self.x = x;
+        self.y = y;
+        self.visible = true;
+        self.width = width;
+        self.height = height;
+        self.border_style = "solid";
+    }
+    
+    public fn draw(self) {
+        println("사각형 그리기 - 위치: {}, 크기: {}x{}, 테두리: {}", 
+                self.get_position(), self.width, self.height, self.border_style);
+    }
+    
+    public fn get_area(self) -> f64 {
+        return self.width * self.height;
+    }
+}
+
+fn main() {
+    println("=== 종합 접근 제어자 테스트 ===");
+    
+    // 원 생성 및 테스트
+    mut circle = Circle {
+        color: "빨강",
+        visible: true
+    };
+    
+    circle.init(10.0, 20.0, 5.0, "빨강");
+    
+    println("\n--- 원 테스트 ---");
+    println("원 색상: {}", circle.color);
+    println("표시 여부: {}", circle.visible);
+    
+    circle.draw();
+    circle.resize(7.0);
+    println("원 넓이: {}", circle.get_area());
+    
+    circle.move_to(15.0, 25.0);
+    circle.show();
+    
+    // 사각형 생성 및 테스트
+    mut rect = Rectangle {
+        border_style: "점선",
+        visible: true
+    };
+    
+    rect.init(0.0, 0.0, 100.0, 50.0);
+    
+    println("\n--- 사각형 테스트 ---");
+    println("테두리 스타일: {}", rect.border_style);
+    
+    rect.draw();
+    println("사각형 넓이: {}", rect.get_area());
+    
+    rect.move_to(5.0, 5.0);
+    
+    println("\n=== 모든 테스트 완료! ===");
+}

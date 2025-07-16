@@ -1,0 +1,121 @@
+fn main() {
+    println("=== 고급 제어 구조 데모 ===");
+    
+    // 1. Match 표현식
+    match_demo();
+    
+    // 2. 무한 루프와 break/continue
+    loop_demo();
+    
+    // 3. 양자 조건부 실행
+    quantum_control_demo();
+    
+    // 4. 중첩 상태 분기
+    superpose_demo();
+    
+    // 5. 측정 기반 분기
+    measure_branch_demo();
+}
+
+fn match_demo() {
+    println("1. Match 표현식:");
+    
+    scalar values = [0, 1, 2, 5, 10];
+    
+    for value in values {
+        scalar description = match value {
+            0 => "영",
+            1 => "하나",
+            2 => "둘",
+            x if x > 5 => "큰 수",
+            _ => "다른 수",
+        };
+        
+        println("값 {} = {}", value, description);
+    }
+    println();
+}
+
+fn loop_demo() {
+    println("2. 루프 제어:");
+    
+    scalar count = 0;
+    
+    'outer: loop {
+        count += 1;
+        
+        if count > 10 {
+            println("10회 초과, 종료");
+            break 'outer;
+        }
+        
+        if count % 2 == 0 {
+            println("짝수 {} 건너뛰기", count);
+            continue 'outer;
+        }
+        
+        println("홀수: {}", count);
+        
+        if count >= 7 {
+            break;
+        }
+    }
+    println();
+}
+
+fn quantum_control_demo() {
+    println("3. 양자 조건부 실행:");
+    
+    qubit control = |+⟩;
+    qubit target = |0⟩;
+    
+    // 양자 측정 기반 제어
+    quantum if measure(control) == 1 {
+        target = X(target);
+        println("제어 큐비트가 1 → 타겟에 X 게이트 적용");
+    } else {
+        target = Z(target);
+        println("제어 큐비트가 0 → 타겟에 Z 게이트 적용");
+    }
+    
+    println("최종 타겟 상태:", target);
+    println();
+}
+
+fn superpose_demo() {
+    println("4. 중첩 상태 분기:");
+    
+    qubit q = |0⟩;
+    
+    superpose {
+        |0⟩: {
+            println("  |0⟩ 상태 처리");
+        },
+        |1⟩: {
+            println("  |1⟩ 상태 처리");
+        },
+    } on H(q);
+    
+    println();
+}
+
+fn measure_branch_demo() {
+    println("5. 측정 기반 분기:");
+    
+    for i in 0..5 {
+        qubit q = |+⟩;
+        
+        measure q -> {
+            0 => {
+                println("시도 {}: 0 측정됨", i + 1);
+            },
+            1 => {
+                println("시도 {}: 1 측정됨", i + 1);
+            },
+            _ => {
+                println("시도 {}: 예상치 못한 결과", i + 1);
+            },
+        }
+    }
+    println();
+}

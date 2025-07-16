@@ -1,0 +1,32 @@
+// 반복문 내 += 연산 정확한 테스트
+fn main() {
+    println("반복문 내 += 연산 테스트");
+    println("======================");
+    
+    test_increment_vs_assignment();
+}
+
+fn test_increment_vs_assignment() {
+    println("1. 직접 할당 테스트:");
+    scalar count1 = 0;
+    
+    for i in 0..2 {
+        println("반복 {}: count1 = {}", i, count1);
+        count1 = count1 + 1;
+        println("  할당 후: count1 = {}", count1);
+    }
+    println("최종 count1: {}", count1);
+    println("");
+    
+    println("2. += 연산 테스트:");
+    scalar count2 = 0;
+    
+    for i in 0..2 {
+        println("반복 {}: count2 = {}", i, count2);
+        
+        println("  += 연산 시도...");
+        count2 += 1;
+        println("  += 연산 완료: count2 = {}", count2);
+    }
+    println("최종 count2: {}", count2);
+}

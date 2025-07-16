@@ -1,0 +1,14 @@
+// algorithms/search/basic_syntax_test.qb
+// 가장 기본적인 문법 테스트
+
+fn main() {
+    println("기본 문법 테스트");
+    
+    // 간단한 변수
+    x = 42;
+    println("x = {}", x);
+    
+    // 배열
+    arr = [1, 2, 3];
+    println("배열: {}", arr);
+}

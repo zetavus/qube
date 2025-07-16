@@ -1,0 +1,190 @@
+// 3큐빗 Grover 검색 알고리즘
+// 목표: 8개 상태 중 |101⟩ (십진수 5) 찾기
+
+fn main() {
+    println("🔍 3큐빗 Grover 검색 알고리즘");
+    println("=============================");
+    println("목표: |101⟩ 상태 찾기 (8개 중 1개)");
+    println("이론적 성공률: ~85%");
+    println("");
+    
+    single_run();
+    performance_test();
+    algorithm_analysis();
+}
+
+fn single_run() {
+    println("🎯 단일 3큐빗 Grover 실행:");
+    
+    circuit Grover3Qubit(3) {
+        // 1. 초기화: 모든 큐빗을 중첩상태로
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+        
+        // 2. 첫 번째 Grover 반복
+        // Oracle: |101⟩ 상태만 위상 뒤집기
+        apply X to q1;        // |101⟩ → |111⟩ 변환
+        apply Z to q0;        // q0가 |1⟩일 때만
+        apply Z to q1;        // q1이 |1⟩일 때만  
+        apply Z to q2;        // q2가 |1⟩일 때만
+        apply CNOT to (q0, q1);  // 조건부 연산
+        apply CNOT to (q1, q2);  // 조건부 연산
+        apply Z to q2;        // 최종 위상 뒤집기
+        apply CNOT to (q1, q2);  // 복원
+        apply CNOT to (q0, q1);  // 복원
+        apply X to q1;        // |111⟩ → |101⟩ 복원
+        
+        // Diffusion 연산자
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+        apply X to q0;
+        apply X to q1;
+        apply X to q2;
+        apply CNOT to (q0, q2);
+        apply CNOT to (q1, q2);
+        apply Z to q2;
+        apply CNOT to (q1, q2);
+        apply CNOT to (q0, q2);
+        apply X to q0;
+        apply X to q1;
+        apply X to q2;
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+        
+        // 3. 두 번째 Grover 반복
+        // Oracle 다시
+        apply X to q1;
+        apply CNOT to (q0, q2);
+        apply CNOT to (q1, q2);
+        apply Z to q2;
+        apply CNOT to (q1, q2);
+        apply CNOT to (q0, q2);
+        apply X to q1;
+        
+        // Diffusion 다시
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+        apply X to q0;
+        apply X to q1;
+        apply X to q2;
+        apply CNOT to (q0, q2);
+        apply CNOT to (q1, q2);
+        apply Z to q2;
+        apply CNOT to (q1, q2);
+        apply CNOT to (q0, q2);
+        apply X to q0;
+        apply X to q1;
+        apply X to q2;
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+    }
+    
+    grover_circuit = Grover3Qubit(3);
+    results = measure(grover_circuit, [0, 1, 2]);
+    
+    scalar r0 = results[0];
+    scalar r1 = results[1];
+    scalar r2 = results[2];
+    
+    println("측정 결과: |{}{}{}⟩", r2, r1, r0);
+    
+    scalar state = r0 + r1 * 2 + r2 * 4;
+    println("십진수 값: {}", state);
+    
+    if (state == 5) {
+        println("✅ 성공! 목표 |101⟩ 발견!");
+    } else {
+        println("🔄 다른 상태 측정됨");
+    }
+    
+    println("");
+}
+
+fn performance_test() {
+    println("📊 3큐빗 성능 테스트 (15회 시도):");
+    println("================================");
+    
+    scalar trials = 15;
+    scalar successes = 0;
+    
+    for i in 0..trials {
+        println("시도 {}: ", i + 1);
+        
+        // 실제 3큐빗 Grover 회로 실행
+        test_circuit = Grover3Qubit(3);
+        test_results = measure(test_circuit, [0, 1, 2]);
+
+        scalar r0 = test_results[0];
+        scalar r1 = test_results[1];
+        scalar r2 = test_results[2];
+        
+        scalar result = r0 + r1 * 2 + r2 * 4;
+        
+        println("  → |{}{}{}⟩ (값: {})", r2, r1, r0, result);
+        
+        if (result == 5) {
+            println("     ✅ 성공!");
+            successes = successes + 1;
+        } else {
+            println("     🔄 계속");
+        }
+    }
+    
+    println("");
+    println("📈 3큐빗 결과 분석:");
+    println("총 시도: {}", trials);
+    println("성공 횟수: {}", successes);
+    
+    scalar success_rate = successes / trials;
+    println("성공률: {:.1f}%", success_rate * 100);
+    
+    if (success_rate > 0.8) {
+        println("✅ 우수한 성능! (이론값 85%에 근접)");
+    } else {
+        if (success_rate > 0.6) {
+            println("🟡 보통 성능 (양자 확률적 특성)");
+        } else {
+            println("🔄 재조정 필요");
+        }
+    }
+    
+    println("");
+}
+
+fn algorithm_analysis() {
+    println("🎓 3큐빗 Grover 분석:");
+    println("====================");
+    
+    println("🔢 상태 공간:");
+    println("• 총 8개 상태: |000⟩ ~ |111⟩");
+    println("• 목표: |101⟩ (십진수 5)");
+    println("• 검색 공간: 2³ = 8");
+    
+    println("");
+    println("⚡ 알고리즘 단계:");
+    println("1️⃣ 초기화: H ⊗ H ⊗ H");
+    println("2️⃣ Oracle: |101⟩ 위상 뒤집기");
+    println("3️⃣ Diffusion: 평균 중심 반사");
+    println("4️⃣ 반복: 2회 (최적값)");
+    
+    println("");
+    println("📊 성능 비교:");
+    println("=============");
+    println("방법           복잡도    성공률");
+    println("─────────────────────────────");
+    println("고전 무작위    O(8)      12.5%");
+    println("고전 순차      O(8)      100%");
+    println("3큐빗 Grover   O(√8)     ~85%");
+    
+    println("");
+    println("🚀 확장 가능성:");
+    println("• 4큐빗: 16개 상태 검색");
+    println("• N큐빗: 2ᴺ개 상태 검색");
+    println("• 복합 Oracle 설계");
+    println("• 다중 타겟 검색");
+}

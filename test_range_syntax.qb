@@ -1,0 +1,162 @@
+// test_range_syntax.qb
+// 범위 문법 실제 구현 상태 테스트
+
+fn main() {
+    println("🔍 범위 문법 테스트 시작");
+    println("========================");
+    
+    // 테스트 1: 기본 범위 문법
+    println("테스트 1: apply CZ to (~, q4)");
+    test_basic_range();
+    
+    // 테스트 2: 다양한 큐빗 수
+    println("\n테스트 2: 다양한 큐빗 수");
+    test_various_sizes();
+    
+    // 테스트 3: 에러 케이스
+    println("\n테스트 3: 에러 케이스");
+    test_error_cases();
+}
+
+fn test_basic_range() {
+    try {
+        circuit TestRange5(5) {
+            apply H to q0;
+            apply H to q1;
+            apply H to q2;
+            apply H to q3;
+            apply H to q4;
+            
+            // 핵심 테스트: 범위 문법
+            apply CZ to (~, q4);
+        }
+        
+        range_circuit = TestRange5();
+        println("✅ 5큐빗 범위 문법 성공");
+        
+        result = measure(range_circuit, [0, 1, 2, 3, 4]);
+        println("측정 결과: {}", result);
+        
+    } catch (error) {
+        println("❌ 5큐빗 범위 문법 실패: {}", error);
+    }
+}
+
+fn test_various_sizes() {
+    // 3큐빗 테스트
+    try {
+        circuit TestRange3(3) {
+            apply H to q0;
+            apply H to q1;
+            apply H to q2;
+            apply CZ to (~, q2);
+        }
+        
+        test3 = TestRange3();
+        println("✅ 3큐빗 범위 문법 성공");
+        
+    } catch (error) {
+        println("❌ 3큐빗 범위 문법 실패: {}", error);
+    }
+    
+    // 6큐빗 테스트
+    try {
+        circuit TestRange6(6) {
+            apply H to q0;
+            apply H to q1;
+            apply H to q2;
+            apply H to q3;
+            apply H to q4;
+            apply H to q5;
+            apply CZ to (~, q5);
+        }
+        
+        test6 = TestRange6();
+        println("✅ 6큐빗 범위 문법 성공");
+        
+    } catch (error) {
+        println("❌ 6큐빗 범위 문법 실패: {}", error);
+    }
+    
+    // 10큐빗 테스트 (큰 회로)
+    try {
+        circuit TestRange10(10) {
+            // 모든 큐빗 초기화
+            apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+            apply H to q5; apply H to q6; apply H to q7; apply H to q8; apply H to q9;
+            
+            // 범위 문법 테스트
+            apply CZ to (~, q9);
+        }
+        
+        test10 = TestRange10();
+        println("✅ 10큐빗 범위 문법 성공");
+        
+    } catch (error) {
+        println("❌ 10큐빗 범위 문법 실패: {}", error);
+    }
+}
+
+fn test_error_cases() {
+    // 에러 케이스 1: 존재하지 않는 큐빗
+    try {
+        circuit TestError1(3) {
+            apply CZ to (~, q5);  // q5는 존재하지 않음
+        }
+        
+        error1 = TestError1();
+        println("⚠️ 예상치 못한 성공: 존재하지 않는 큐빗");
+        
+    } catch (error) {
+        println("✅ 예상된 에러: {}", error);
+    }
+    
+    // 에러 케이스 2: 잘못된 문법
+    try {
+        circuit TestError2(3) {
+            apply CZ to (~~, q2);  // 잘못된 범위 문법
+        }
+        
+        error2 = TestError2();
+        println("⚠️ 예상치 못한 성공: 잘못된 문법");
+        
+    } catch (error) {
+        println("✅ 예상된 에러: {}", error);
+    }
+}
+
+// 추가 테스트: 범위 문법의 실제 동작 확인
+fn test_range_behavior() {
+    println("\n🧪 범위 문법 동작 분석");
+    println("====================");
+    
+    try {
+        circuit AnalyzeRange(4) {
+            // 특정 상태 설정: |1111⟩
+            apply X to q0;
+            apply X to q1;
+            apply X to q2;
+            apply X to q3;
+            
+            // 범위 CZ 적용
+            apply CZ to (~, q3);
+        }
+        
+        analyze = AnalyzeRange();
+        result = measure(analyze, [0, 1, 2, 3]);
+        
+        println("초기 상태: |1111⟩");
+        println("범위 CZ 적용 후 측정: {}", result);
+        
+        // |1111⟩ 상태에서 CZ 적용시 위상이 뒤집혀야 함
+        decimal = result[0] + result[1]*2 + result[2]*4 + result[3]*8;
+        if decimal == 15 {  // |1111⟩ = 15
+            println("✅ 범위 CZ 정상 동작 (위상 뒤집기 확인)");
+        } else {
+            println("📊 다른 결과: {} (확률적 측정)", decimal);
+        }
+        
+    } catch (error) {
+        println("❌ 범위 동작 분석 실패: {}", error);
+    }
+}

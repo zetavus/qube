@@ -1,0 +1,12 @@
+// algorithms/search/circuit_definition_test.qb
+// 회로 정의만 테스트
+
+circuit SimpleCircuit(2) {
+    apply H to q0;
+    apply X to q1;
+}
+
+fn main() {
+    println("회로 정의 테스트");
+    println("회로가 정의되었습니다");
+}

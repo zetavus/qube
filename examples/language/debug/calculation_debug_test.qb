@@ -1,0 +1,29 @@
+class BankAccount {
+    private balance: f64;
+    public name: str;
+    
+    public fn init(self, initial_balance) {
+        println("Setting balance to: {}", initial_balance);
+        self.balance = initial_balance;
+        println("Balance after setting: {}", self.balance);
+    }
+    
+    public fn deposit(self, amount) {
+        println("Current balance before deposit: {}", self.balance);
+        println("Amount to deposit: {}", amount);
+        
+        new_balance = self.balance + amount;
+        println("Calculated new balance: {}", new_balance);
+        
+        self.balance = new_balance;
+        println("Balance after assignment: {}", self.balance);
+    }
+}
+
+fn main() {
+    println("=== 계산 디버깅 테스트 ===");
+    
+    account = BankAccount { name: "Test" };
+    account.init(1000.0);
+    account.deposit(500.0);
+}

@@ -1,0 +1,59 @@
+// protected_access_test.qyt
+
+class Vehicle {
+    protected engine: str;    
+    private vin: str;         
+    public brand: str;        
+    
+    public fn new(brand: str, engine: str, vin: str) {
+        self.brand = brand;
+        self.engine = engine;
+        self.vin = vin;
+    }
+    
+    protected fn start_engine() {
+        println("Engine {} started", self.engine);
+    }
+    
+    private fn get_vin() -> str {
+        return self.vin;
+    }
+    
+    public fn display_info() {
+        println("Brand: {}, Engine: {}", self.brand, self.engine);
+    }
+}
+
+class Car extends Vehicle {
+    public doors: i32;
+    
+    public fn new(brand: str, engine: str, vin: str, doors: i32) {
+        self.brand = brand;
+        self.engine = engine;  // ✅ protected 필드 접근 가능 (상속)
+        // self.vin = vin;     // ❌ private 필드 접근 불가
+        self.doors = doors;
+    }
+    
+    public fn start() {
+        self.start_engine();   // ✅ protected 메서드 호출 가능 (상속)
+        println("Car with {} doors is ready", self.doors);
+    }
+}
+
+fn main() {
+    // ✅ 기존 방식으로 객체 생성
+    println("=== Creating Car Instance ===");
+    car = Vehicle();  // 부모 클래스로 생성
+    car.new("Toyota", "V6", "VIN123");
+    
+    // ✅ public 멤버 접근 가능
+    println("Brand: {}", car.brand);
+    car.display_info();
+    car.start();
+    
+    println("=== Protected Access Tests ===");
+    
+    // ❌ protected 멤버 직접 접근 불가 (외부에서)
+    // println("Engine: {}", car.engine);     // 에러 발생해야 함
+    // car.start_engine();                    // 에러 발생해야 함
+}

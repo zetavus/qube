@@ -1,0 +1,81 @@
+// Qube 표준 라이브러리 테스트
+// 실행: qube algorithms/test/stdlib_test.qb
+
+println("=== Qube 표준 라이브러리 테스트 ===");
+
+// 1. 타입 변환 테스트
+println("1. 타입 변환 테스트");
+println("str(42) = " + str(42));
+println("str(3.14) = " + str(3.14));
+println("str(true) = " + str(true));
+println("str(false) = " + str(false));
+println("toString(123) = " + toString(123));
+println("");
+
+// 2. 수학 함수 테스트
+println("2. 수학 함수 테스트");
+println("abs(-5) = " + str(abs(-5)));
+println("abs(5) = " + str(abs(5)));
+println("sqrt(16) = " + str(sqrt(16)));
+println("sqrt(25) = " + str(sqrt(25)));
+println("sin(0) = " + str(sin(0)));
+println("cos(0) = " + str(cos(0)));
+println("pow(2, 3) = " + str(pow(2, 3)));
+println("pow(5, 2) = " + str(pow(5, 2)));
+println("");
+
+// 3. 컬렉션 함수 테스트
+println("3. 컬렉션 함수 테스트");
+numbers = [1, 2, 3, 4, 5];
+println("numbers = " + str(numbers));
+println("len(numbers) = " + str(len(numbers)));
+println("max(numbers) = " + str(max(numbers)));
+println("min(numbers) = " + str(min(numbers)));
+println("sum(numbers) = " + str(sum(numbers)));
+println("max(10, 20, 30) = " + str(max(10, 20, 30)));
+println("min(10, 20, 30) = " + str(min(10, 20, 30)));
+println("");
+
+// 4. 범위 함수 테스트
+println("4. 범위 함수 테스트");
+println("range(5) = " + str(range(5)));
+println("range(2, 6) = " + str(range(2, 6)));
+println("range(0, 10, 2) = " + str(range(0, 10, 2)));
+println("");
+
+// 5. 문자열 길이 테스트
+println("5. 문자열 길이 테스트");
+text = "Hello Qube";
+println("text = " + text);
+println("len(text) = " + str(len(text)));
+println("");
+
+// 6. 랜덤 함수 테스트
+println("6. 랜덤 함수 테스트");
+println("random() = " + str(random()));
+println("random() = " + str(random()));
+println("randomInt(1, 10) = " + str(randomInt(1, 10)));
+println("randomInt(1, 10) = " + str(randomInt(1, 10)));
+println("randomInt(1, 10) = " + str(randomInt(1, 10)));
+println("");
+
+// 7. 복합 계산 테스트
+println("7. 복합 계산 테스트");
+data = [10, 20, 30, 40, 50];
+average = sum(data) / len(data);
+println("data = " + str(data));
+println("평균 = " + str(average));
+println("최댓값 = " + str(max(data)));
+println("최솟값 = " + str(min(data)));
+println("표준편차 계산을 위한 제곱근 = " + str(sqrt(100)));
+println("");
+
+// 8. 삼각함수 테스트 (π 사용)
+println("8. 삼각함수 테스트");
+pi_val = 3.14159;
+println("sin(π/2) ≈ " + str(sin(pi_val/2)));
+println("cos(π) ≈ " + str(cos(pi_val)));
+println("tan(π/4) ≈ " + str(tan(pi_val/4)));
+println("");
+
+println("=== 모든 테스트 완료! ===");

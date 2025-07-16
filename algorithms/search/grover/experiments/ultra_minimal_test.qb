@@ -1,0 +1,21 @@
+// algorithms/search/ultra_minimal_test.qb
+// 가장 간단한 함수 호출 테스트
+
+fn test_func() {
+    println("함수가 호출됨!");
+    apply H to q0;
+}
+
+fn main() {
+    println("초간단 테스트");
+    
+    circuit Test(2) {
+        println("회로 시작");
+        test_func();
+        println("회로 끝");
+    }
+    
+    circuit = Test();
+    result = measure(circuit, [0, 1]);
+    println("결과: {}", result);
+}

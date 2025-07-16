@@ -1,0 +1,69 @@
+// algorithms/search/manual_loop_test.qb
+// 수동 반복으로 for 문법 우회
+
+fn apply_oracle() {
+    println("🎯 Oracle 함수 실행");
+    apply X to q1;
+    apply X to q3;
+    apply CZ to (q0, q1, q2, q3, q4);
+    apply X to q1;
+    apply X to q3;
+}
+
+fn apply_diffusion() {
+    println("🔄 Diffusion 함수 실행");
+    apply H to ~;
+    apply X to ~;
+    apply CZ to (q0, q1, q2, q3, q4);
+    apply X to ~;
+    apply H to ~;
+}
+
+fn main() {
+    println("🧪 수동 반복 테스트");
+    println("==================");
+    
+    circuit ManualLoopTest(5) {
+        println("회로 시작");
+        
+        // 초기화
+        apply H to ~;
+        
+        // 수동으로 4회 반복 (for 문법 우회)
+        println("=== 반복 1 ===");
+        apply_oracle();
+        apply_diffusion();
+        
+        println("=== 반복 2 ===");
+        apply_oracle();
+        apply_diffusion();
+        
+        println("=== 반복 3 ===");
+        apply_oracle();
+        apply_diffusion();
+        
+        println("=== 반복 4 ===");
+        apply_oracle();
+        apply_diffusion();
+        
+        println("회로 완료");
+    }
+    
+    println("회로 생성 중...");
+    circuit = ManualLoopTest();
+    
+    println("측정 중...");
+    result = measure(circuit, [0, 1, 2, 3, 4]);
+    
+    decimal = result[0] + result[1]*2 + result[2]*4 + result[3]*8 + result[4]*16;
+    
+    println("결과: {}", result);
+    println("십진수: {}", decimal);
+    
+    if (decimal == 21) {
+        println("✅ 성공! |10101⟩ 발견!");
+        println("🎉 회로 내부 함수 호출 성공!");
+    } else {
+        println("다른 상태: {}", decimal);
+    }
+}

@@ -1,0 +1,38 @@
+// match_test.qyt - Match 표현식 기능 테스트
+
+fn main() {
+    println("🎯 Match 표현식 테스트");
+    println("===================");
+    
+    // 1. 기본 리터럴 매칭
+    scalar numbers = [0, 1, 2, 5, 10];
+    
+    for num in numbers {
+        scalar description = match num {
+            0 => "영",
+            1 => "하나",
+            2 => "둘",
+            _ => "기타",
+        };
+        
+        println("숫자", num, "=", description);
+    }
+    
+    println();
+    
+    // 2. 가드가 있는 매칭
+    println("가드 조건 테스트:");
+    for i in 0..8 {
+        scalar category = match i {
+            0 => "시작",
+            x if x < 3 => "작은 수",
+            x if x < 6 => "중간 수", 
+            _ => "큰 수",
+        };
+        
+        println(i, ":", category);
+    }
+    
+    println();
+    println("✅ Match 테스트 완료!");
+}

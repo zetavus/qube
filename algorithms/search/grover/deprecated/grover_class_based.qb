@@ -1,0 +1,178 @@
+// algorithms/search/grover_class_based.qb
+// 클래스 기반 Grover 알고리즘 구조화
+
+class GroverAlgorithm {
+    constructor(n_qubits, target_state) {
+        this.n_qubits = n_qubits;
+        this.target_state = target_state;
+        this.iterations = 0;
+    }
+    
+    // Oracle 정의 (|10101⟩ 찾기)
+    fn define_oracle_circuit() {
+        circuit Oracle(5) {
+            // |10101⟩ = q4=1, q3=0, q2=1, q1=0, q0=1
+            apply X to q1; // 0→1 변환
+            apply X to q3; // 0→1 변환
+            apply CZ to (q0, q1, q2, q3, q4); // 모두 1일 때 위상 뒤집기
+            apply X to q1; // 복원
+            apply X to q3; // 복원
+        }
+        return Oracle();
+    }
+    
+    // Diffusion 정의
+    fn define_diffusion_circuit() {
+        circuit Diffusion(5) {
+            apply H to ~;  // |+⟩ → |0⟩
+            apply X to ~;  // |00000⟩ → |11111⟩
+            apply CZ to (q0, q1, q2, q3, q4); // |11111⟩에 -1 위상
+            apply X to ~;  // 복원
+            apply H to ~;  // |0⟩ → |+⟩
+        }
+        return Diffusion();
+    }
+    
+    // 1회 Grover 반복
+    fn create_single_iteration() {
+        circuit SingleIteration(5) {
+            // Oracle
+            apply X to q1; apply X to q3;
+            apply CZ to (q0, q1, q2, q3, q4);
+            apply X to q1; apply X to q3;
+            
+            // Diffusion
+            apply H to ~; apply X to ~;
+            apply CZ to (q0, q1, q2, q3, q4);
+            apply X to ~; apply H to ~;
+        }
+        return SingleIteration();
+    }
+    
+    // 완전한 Grover 알고리즘 (지정된 반복 횟수)
+    fn create_full_algorithm(iterations) {
+        this.iterations = iterations;
+        
+        if (iterations == 1) {
+            circuit Grover1(5) {
+                apply H to ~; // 초기화
+                // 1회 반복
+                apply X to q1; apply X to q3;
+                apply CZ to (q0, q1, q2, q3, q4);
+                apply X to q1; apply X to q3;
+                apply H to ~; apply X to ~;
+                apply CZ to (q0, q1, q2, q3, q4);
+                apply X to ~; apply H to ~;
+            }
+            return Grover1();
+        }
+        
+        if (iterations == 4) {
+            circuit Grover4(5) {
+                apply H to ~; // 초기화
+                
+                // 1회차
+                apply X to q1; apply X to q3;
+                apply CZ to (q0, q1, q2, q3, q4);
+                apply X to q1; apply X to q3;
+                apply H to ~; apply X to ~;
+                apply CZ to (q0, q1, q2, q3, q4);
+                apply X to ~; apply H to ~;
+                
+                // 2회차
+                apply X to q1; apply X to q3;
+                apply CZ to (q0, q1, q2, q3, q4);
+                apply X to q1; apply X to q3;
+                apply H to ~; apply X to ~;
+                apply CZ to (q0, q1, q2, q3, q4);
+                apply X to ~; apply H to ~;
+                
+                // 3회차
+                apply X to q1; apply X to q3;
+                apply CZ to (q0, q1, q2, q3, q4);
+                apply X to q1; apply X to q3;
+                apply H to ~; apply X to ~;
+                apply CZ to (q0, q1, q2, q3, q4);
+                apply X to ~; apply H to ~;
+                
+                // 4회차
+                apply X to q1; apply X to q3;
+                apply CZ to (q0, q1, q2, q3, q4);
+                apply X to q1; apply X to q3;
+                apply H to ~; apply X to ~;
+                apply CZ to (q0, q1, q2, q3, q4);
+                apply X to ~; apply H to ~;
+            }
+            return Grover4();
+        }
+        
+        // 기본값: 1회 반복
+        return this.create_full_algorithm(1);
+    }
+    
+    fn run_test(iterations, trials) {
+        println("🎯 클래스 기반 Grover 테스트");
+        println("반복: {}회, 시도: {}회", iterations, trials);
+        println("");
+        
+        success_count = 0;
+        
+        trial = 1;
+        while (trial <= trials) {
+            grover_circuit = this.create_full_algorithm(iterations);
+            result = measure(grover_circuit, [0, 1, 2, 3, 4]);
+            decimal = result[0] + result[1]*2 + result[2]*4 + result[3]*8 + result[4]*16;
+            
+            if (decimal == 21) {
+                success_count = success_count + 1;
+                println("시도 {}: ✅ 성공", trial);
+            } else {
+                println("시도 {}: ❌ 실패 ({})", trial, decimal);
+            }
+            
+            trial = trial + 1;
+        }
+        
+        success_rate = (success_count * 100) / trials;
+        println("");
+        println("성공률: {}% ({}/{})", success_rate, success_count, trials);
+        
+        return success_rate;
+    }
+}
+
+fn main() {
+    println("🌟 클래스 기반 Grover 알고리즘");
+    println("==============================");
+    println("");
+    
+    // Grover 알고리즘 인스턴스 생성
+    grover = GroverAlgorithm(5, 21); // 5큐빗, 목표값 21
+    
+    // 1회 반복 테스트
+    println("📊 1회 반복 테스트:");
+    rate_1 = grover.run_test(1, 5);
+    
+    println("");
+    println("📊 4회 반복 테스트:");
+    rate_4 = grover.run_test(4, 5);
+    
+    println("");
+    println("🏆 최종 비교:");
+    println("=============");
+    println("• 1회 반복: {}%", rate_1);
+    println("• 4회 반복: {}%", rate_4);
+    
+    if (rate_4 > rate_1) {
+        improvement = rate_4 - rate_1;
+        println("• 개선효과: {}%p", improvement);
+    }
+    
+    println("");
+    println("🎯 구조적 장점:");
+    println("===============");
+    println("✅ Oracle과 Diffusion 개념적 분리");
+    println("✅ 반복 횟수별 알고리즘 캡슐화");
+    println("✅ 재사용 가능한 컴포넌트 설계");
+    println("✅ 객체지향적 양자 프로그래밍");
+}

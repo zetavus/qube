@@ -1,0 +1,27 @@
+// algorithms/test/debug_range_step3.qb
+// apply 문에서 ~ 토큰 직접 테스트
+
+fn test_apply_tilde() {
+    println("🔧 apply 문에서 ~ 토큰 테스트");
+    println("============================");
+    
+    circuit ApplyTilde(3) {
+        println("1️⃣ 기본 apply:");
+        apply H to q0;
+        
+        println("2️⃣ ~ 토큰 apply 시도:");
+        // 이 부분에서 파싱 오류가 발생할 것임
+        apply H to ~;
+    }
+    return ApplyTilde(3);
+}
+
+fn main() {
+    println("🎯 apply ~ 파싱 테스트");
+    println("======================");
+    
+    test_circuit = test_apply_tilde();
+    result = measure(test_circuit, [0, 1, 2]);
+    
+    println("✅ apply ~ 테스트 완료: {}", result);
+}

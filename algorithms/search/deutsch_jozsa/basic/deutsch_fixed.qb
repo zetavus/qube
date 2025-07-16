@@ -1,0 +1,149 @@
+// 수정된 Deutsch-Jozsa 알고리즘
+
+fn oracle_constant_0() {
+    println("    Oracle: f(x) = 0 (상수함수)");
+    // 아무것도 하지 않음
+}
+
+fn oracle_constant_1() {
+    println("    Oracle: f(x) = 1 (상수함수)");
+    apply X to q1;
+}
+
+fn oracle_balanced_identity() {
+    println("    Oracle: f(x) = x (균형함수)");
+    apply CNOT to (q0, q1);
+}
+
+fn oracle_balanced_not() {
+    println("    Oracle: f(x) = NOT x (균형함수)");
+    apply X to q0;
+    apply CNOT to (q0, q1);
+    apply X to q0;
+}
+
+fn deutsch_jozsa_circuit(oracle_name) {
+    println("  🔧 Deutsch-Jozsa 회로 실행");
+    
+    circuit DeutschJozsa(2) {
+        // 1. 초기화: |01⟩ 상태
+        apply X to q1;
+        
+        // 2. 하다마드 변환
+        apply H to ~;
+        
+        // 3. Oracle 적용 (동적으로 선택)
+        if (oracle_name == "constant_0") {
+            oracle_constant_0();
+        }
+        if (oracle_name == "constant_1") {
+            oracle_constant_1();
+        }
+        if (oracle_name == "balanced_id") {
+            oracle_balanced_identity();
+        }
+        if (oracle_name == "balanced_not") {
+            oracle_balanced_not();
+        }
+        
+        // 4. 마지막 하다마드
+        apply H to q0;
+    }
+    
+    circuit = DeutschJozsa(2);
+    result = measure(circuit, [0]);
+    
+    return result;
+}
+
+fn analyze_deutsch_result(result, expected_type) {
+    if (result[0] == 0) {
+        println("  📊 결과: 상수함수");
+        if (expected_type == "constant") {
+            println("  ✅ 정확한 판별!");
+            return true;
+        } else {
+            println("  ❌ 잘못된 판별");
+            return false;
+        }
+    } else {
+        println("  📊 결과: 균형함수");
+        if (expected_type == "balanced") {
+            println("  ✅ 정확한 판별!");
+            return true;
+        } else {
+            println("  ❌ 잘못된 판별");
+            return false;
+        }
+    }
+}
+
+fn test_all_functions() {
+    println("🧪 전체 함수 테스트");
+    println("==================");
+    
+    success_count = 0;
+    total_tests = 4;
+    
+    // 테스트 1: 상수함수 f(x) = 0
+    println("테스트 1: f(x) = 0");
+    result1 = deutsch_jozsa_circuit("constant_0");
+    if (analyze_deutsch_result(result1, "constant")) {
+        success_count = success_count + 1;
+    }
+    println("");
+    
+    // 테스트 2: 상수함수 f(x) = 1
+    println("테스트 2: f(x) = 1");
+    result2 = deutsch_jozsa_circuit("constant_1");
+    if (analyze_deutsch_result(result2, "constant")) {
+        success_count = success_count + 1;
+    }
+    println("");
+    
+    // 테스트 3: 균형함수 f(x) = x
+    println("테스트 3: f(x) = x");
+    result3 = deutsch_jozsa_circuit("balanced_id");
+    if (analyze_deutsch_result(result3, "balanced")) {
+        success_count = success_count + 1;
+    }
+    println("");
+    
+    // 테스트 4: 균형함수 f(x) = NOT x
+    println("테스트 4: f(x) = NOT x");
+    result4 = deutsch_jozsa_circuit("balanced_not");
+    if (analyze_deutsch_result(result4, "balanced")) {
+        success_count = success_count + 1;
+    }
+    println("");
+    
+    success_rate = (success_count * 100) / total_tests;
+    
+    println("🏆 최종 결과:");
+    println("============");
+    println("성공: {} / {} 테스트", success_count, total_tests);
+    println("성공률: {}%", success_rate);
+    
+    return success_rate;
+}
+
+fn main() {
+    println("🌟 Deutsch-Jozsa 알고리즘");
+    println("========================");
+    println("목적: 함수가 상수인지 균형인지 1번 호출로 판별");
+    println("");
+    
+    success_rate = test_all_functions();
+    
+    println("");
+    println("🚀 성능 분석:");
+    println("=============");
+    println("고전 알고리즘: 최악 3번 함수 호출");
+    println("양자 알고리즘: 1번 함수 호출");
+    
+    if (success_rate == 100) {
+        println("🎉 완벽한 Deutsch-Jozsa 구현!");
+    } else {
+        println("🔧 추가 디버깅 필요");
+    }
+}

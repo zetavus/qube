@@ -1,0 +1,31 @@
+# 문자열 템플릿 테스트
+println("=== 문자열 템플릿 테스트 ===");
+
+# 기본 변수들
+name = "Qube";
+version = 1;
+pi_val = 3.14;
+
+# 기존 방식 (비교용)
+println("기존 방식:");
+println(name);
+println(version);
+
+# 새로운 템플릿 방식 (목표)
+println("템플릿 방식:");
+println("언어: ${name}");
+println("버전: ${version}");
+println("파이: ${pi_val}");
+
+# 복합 템플릿
+println("${name} 언어 v${version} 테스트 중...");
+
+# 함수와 함께
+fn get_status() {
+    return "완료";
+}
+
+status = get_status();
+println("상태: ${status}");
+
+println("=== 테스트 완료 ===");

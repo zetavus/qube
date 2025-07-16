@@ -1,0 +1,37 @@
+// measure() 함수 반환값 확인 테스트
+fn main() {
+    println("measure() 함수 디버깅");
+    println("===================");
+    
+    test_measure_values();
+}
+
+fn test_measure_values() {
+    println("다양한 측정값 확인:");
+    
+    for i in 0..5 {
+        qubit q = H(|0⟩);
+        scalar result = measure(q);
+        
+        println("시도 {}: 측정값 = {}", i + 1, result);
+        
+        // 각 값별로 체크
+        if (result == 0) {
+            println("  → 0과 같음");
+        }
+        
+        if (result == 1) {
+            println("  → 1과 같음");
+        }
+        
+        if (result == 0.0) {
+            println("  → 0.0과 같음");
+        }
+        
+        if (result == 1.0) {
+            println("  → 1.0과 같음");
+        }
+        
+        println("");
+    }
+}

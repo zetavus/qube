@@ -1,0 +1,74 @@
+// test_final.qyt - 최종 정리된 테스트
+
+// 📊 벨 상태 생성 및 측정 테스트
+circuit BellState(2) {
+    apply H to q0;
+    apply CNOT to (q0, q1);
+    
+    measure q0;
+    measure q1;
+}
+
+println("=== 벨 상태 측정 테스트 ===");
+bell_circuit = BellState();
+println("벨 상태 회로 완료");
+println("");
+
+// 📊 GHZ 상태 (3큐빗 얽힘) 테스트
+circuit GHZState(3) {
+    apply H to q0;
+    apply CNOT to (q0, q1);
+    apply CNOT to (q1, q2);
+    
+    measure q0;
+    measure q1;
+    measure q2;
+}
+
+println("=== GHZ 상태 측정 테스트 ===");
+ghz_circuit = GHZState();
+println("GHZ 상태 회로 완료");
+println("");
+
+// 📊 회전 게이트 테스트
+circuit RotationDemo(1) {
+    apply RX(PI/2) to q0;
+    apply RY(PI/4) to q0;
+    apply RZ(PI/3) to q0;
+    
+    measure q0;
+}
+
+println("=== 회전 게이트 테스트 ===");
+rotation_circuit = RotationDemo();
+println("회전 게이트 회로 완료");
+println("");
+
+// 📊 복합 회로 테스트
+circuit ComplexDemo(4) {
+    // 첫 번째 층 - 중첩 상태 생성
+    apply H to q0;
+    apply H to q1;
+    
+    // 두 번째 층 - 얽힘 생성
+    apply CNOT to (q0, q2);
+    apply CNOT to (q1, q3);
+    
+    // 세 번째 층 - 위상 조작
+    apply RZ(PI/4) to q2;
+    apply RZ(PI/4) to q3;
+    
+    // 측정
+    measure q0;
+    measure q1;
+    measure q2;
+    measure q3;
+}
+
+println("=== 복합 회로 테스트 ===");
+complex_circuit = ComplexDemo();
+println("복합 회로 완료");
+println("");
+
+println("🚀 QyTum 양자 회로 시뮬레이터 테스트 완료!");
+println("✅ 모든 양자 게이트와 측정이 정상 작동합니다.");

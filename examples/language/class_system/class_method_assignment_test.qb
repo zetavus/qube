@@ -1,0 +1,29 @@
+class Test {
+    public value: f64;
+    
+    public fn test_local_assignment(self) {
+        println("Method - before local assignment");
+        local_var = 200;
+        println("Method - after local assignment: {}", local_var);
+    }
+    
+    public fn test_member_assignment(self) {
+        println("Method - before member assignment");
+        self.value = 300.0;
+        println("Method - after member assignment");
+    }
+}
+
+fn main() {
+    println("=== Class Method Assignment Test ===");
+    
+    obj = Test { value: 0.0 };
+    
+    println("1. Testing local assignment in method...");
+    obj.test_local_assignment();
+    
+    println("2. Testing member assignment in method...");
+    obj.test_member_assignment();
+    
+    println("All tests completed");
+}

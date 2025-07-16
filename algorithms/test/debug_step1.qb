@@ -1,0 +1,33 @@
+// 라인별 디버깅 - 점진적으로 기능 추가
+fn main() {
+    println("디버깅 테스트 - 단계적 확장");
+    
+    test_step1();
+    test_step2(); 
+    test_step3();
+}
+
+fn test_step1() {
+    println("Step 1: 기본 큐빗 생성");
+    qubit q0 = |0⟩;
+    println("✅ 큐빗 생성 성공");
+}
+
+fn test_step2() {
+    println("Step 2: 측정 추가");
+    qubit q1 = |0⟩;
+    scalar result = measure(q1);
+    println("✅ 측정 성공: {}", result);
+}
+
+fn test_step3() {
+    println("Step 3: 조건문 추가");
+    qubit q2 = |1⟩;
+    scalar result2 = measure(q2);
+    
+    if (result2 == 1) {
+        println("✅ 조건문 성공: 1 측정됨");
+    } else {
+        println("❌ 예상과 다름: {}", result2);
+    }
+}

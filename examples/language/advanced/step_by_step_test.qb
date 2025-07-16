@@ -1,0 +1,24 @@
+class BankAccount {
+    private balance: f64;
+    public name: str;
+    
+    public fn init(self, initial_balance) {
+        println("Init called with: {}", initial_balance);
+        self.balance = initial_balance;
+        println("Init completed");
+    }
+}
+
+fn main() {
+    println("=== Step by step 테스트 ===");
+    
+    println("Step 1: Creating account...");
+    account = BankAccount { name: "John Doe" };
+    
+    println("Step 2: Account created for: {}", account.name);
+    
+    println("Step 3: Calling init...");
+    account.init(1000.0);
+    
+    println("Step 4: Init completed!");
+}

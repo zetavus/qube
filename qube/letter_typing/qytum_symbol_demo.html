@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QyTum 실시간 기호 변환 데모</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .input-section, .reference-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+        }
+
+        .section-title {
+            color: #495057;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: "⚡";
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+
+        .reference-section .section-title::before {
+            content: "📖";
+        }
+
+        #editor {
+            width: 100%;
+            height: 300px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 1.6;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+            background: #fff;
+        }
+
+        #editor:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .symbol-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .symbol-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #e9ecef;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .symbol-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .symbol-demo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .input-combo {
+            background: #f1f3f4;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-family: monospace;
+            color: #495057;
+        }
+
+        .arrow {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .output-symbol {
+            font-size: 1.5rem;
+            color: #495057;
+        }
+
+        .symbol-description {
+            font-size: 0.9rem;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .status-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            color: #495057;
+        }
+
+        .conversion-highlight {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 2px 4px;
+            border-radius: 3px;
+            animation: flash 0.5s ease-in-out;
+        }
+
+        @keyframes flash {
+            0% { background: rgba(102, 126, 234, 0.3); }
+            100% { background: rgba(102, 126, 234, 0.1); }
+        }
+
+        .example-code {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+            border-radius: 0 10px 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>QyTum 실시간 기호 변환</h1>
+            <p>타이핑하면서 ASCII 조합이 양자 컴퓨팅 기호로 자동 변환됩니다!</p>
+        </div>
+
+        <div class="demo-grid">
+            <div class="input-section">
+                <h3 class="section-title">실시간 에디터</h3>
+                <textarea id="editor" placeholder="여기에 QyTum 코드를 입력해보세요!
+
+예제를 따라해보세요:
+- +@ 입력하면 ⊗ 로 변환
+- ~= 입력하면 ≈ 로 변환  
+- |> 입력하면 |⟩ 로 변환
+- <| 입력하면 ⟨| 로 변환
+
+// 예제 코드
+qubit psi = alpha * |0> +@ beta * |1>;
+if (measure(psi) ~= 0.5) {
+    println(&quot;중첩상태 감지!&quot;);
+}">qubit psi = alpha * |0> +@ beta * |1>;
+if (measure(psi) ~= 0.5) {
+    println("중첩상태 감지!");
+}</textarea>
+                
+                <div class="status-bar">
+                    <span id="status">타이핑을 시작하면 실시간으로 변환됩니다</span>
+                </div>
+            </div>
+
+            <div class="reference-section">
+                <h3 class="section-title">변환 규칙</h3>
+                <div class="symbol-grid">
+                    <div class="symbol-card">
+                        <div class="symbol-demo">
+                            <span class="input-combo">+@</span>
+                            <span class="arrow">→</span>
+                            <span class="output-symbol">⊗</span>
+                        </div>
+                        <div class="symbol-description">텐서곱 (Tensor Product)</div>
+                    </div>
+
+                    <div class="symbol-card">
+                        <div class="symbol-demo">
+                            <span class="input-combo">=@</span>
+                            <span class="arrow">→</span>
+                            <span class="output-symbol">≈</span>
+                        </div>
+                        <div class="symbol-description">근사 같음 (= 물결로 변환)</div>
+                    </div>
+
+                    <div class="symbol-card">
+                        <div class="symbol-demo">
+                            <span class="input-combo">|>@</span>
+                            <span class="arrow">→</span>
+                            <span class="output-symbol">|⟩</span>
+                        </div>
+                        <div class="symbol-description">켓 (|> 돌려서)</div>
+                    </div>
+
+                    <div class="symbol-card">
+                        <div class="symbol-demo">
+                            <span class="input-combo"><|@</span>
+                            <span class="arrow">→</span>
+                            <span class="output-symbol">⟨|</span>
+                        </div>
+                        <div class="symbol-description">브라 (<| 돌려서)</div>
+                    </div>
+
+                    <div class="symbol-card">
+                        <div class="symbol-demo">
+                            <span class="input-combo">%@</span>
+                            <span class="arrow">→</span>
+                            <span class="output-symbol">∞</span>
+                        </div>
+                        <div class="symbol-description">무한대 (% 돌려서)</div>
+                    </div>
+
+                    <div class="symbol-card">
+                        <div class="symbol-demo">
+                            <span class="input-combo">*@</span>
+                            <span class="arrow">→</span>
+                            <span class="output-symbol">†</span>
+                        </div>
+                        <div class="symbol-description">켤레전치 (* 돌려서)</div>
+                    </div>
+
+                    <div class="symbol-card">
+                        <div class="symbol-demo">
+                            <span class="input-combo">alpha@</span>
+                            <span class="arrow">→</span>
+                            <span class="output-symbol">α</span>
+                        </div>
+                        <div class="symbol-description">알파 (단어@ 패턴)</div>
+                    </div>
+
+                    <div class="symbol-card">
+                        <div class="symbol-demo">
+                            <span class="input-combo">theta@</span>
+                            <span class="arrow">→</span>
+                            <span class="output-symbol">θ</span>
+                        </div>
+                        <div class="symbol-description">세타 (회전각)</div>
+                    </div>
+
+                    <div class="symbol-card">
+                        <div class="symbol-demo">
+                            <span class="input-combo">s@</span>
+                            <span class="arrow">→</span>
+                            <span class="output-symbol">√</span>
+                        </div>
+                        <div class="symbol-description">제곱근 (sqrt)</div>
+                    </div>
+
+                    <div class="symbol-card">
+                        <div class="symbol-demo">
+                            <span class="input-combo">d@</span>
+                            <span class="arrow">→</span>
+                            <span class="output-symbol">∂</span>
+                        </div>
+                        <div class="symbol-description">편미분 (differential)</div>
+                    </div>
+
+                    <div class="symbol-card">
+                        <div class="symbol-demo">
+                            <span class="input-combo">S@</span>
+                            <span class="arrow">→</span>
+                            <span class="output-symbol">∑</span>
+                        </div>
+                        <div class="symbol-description">합계 (Sum)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="example-code">
+            <strong>💡 새로운 @ 변환 시스템:</strong> @ = "돌려서 변환"의 통일된 개념!<br>
+            <code>psi@ = alpha@ * |0> +@ beta@ * |1>; // ψ = α * |0⟩ ⊗ β * |1⟩</code><br>
+            <code>if (measure(psi@) =@ 0.5) %@; // 무한 루프</code><br>
+            <strong>📧 이메일 구분:</strong> <code>contact@qube.com</code> (변환 안됨) vs <code>psi@</code> (변환됨)
+        </div>
+    </div>
+
+    <script>
+        class QyTumSymbolConverter {
+            constructor() {
+                this.symbolMap = {
+                    // @ = "Transform/Rotate" 통일된 변환 시스템
+                    '+@': '⊗',    // 플러스를 돌려서 → 텐서곱
+                    '=@': '≈',    // 이퀄을 물결로 → 근사 같음  
+                    '%@': '∞',    // 퍼센트를 돌려서 → 무한대
+                    '*@': '†',    // 별을 돌려서 → 켤레전치
+                    
+                    // 수학 연산자들
+                    's@': '√',    // sqrt → 제곱근
+                    'd@': '∂',    // differential → 편미분  
+                    'g@': '∇',    // gradient → 그래디언트
+                    'i@': '∫',    // integral → 적분
+                    'S@': '∑',    // Sum → 합계
+                    'in@': '∈',   // in → 원소
+                    'ni@': '∉',   // not in → 원소 아님
+                    'sub@': '⊂',  // subset → 부분집합
+                    'sup@': '⊃',  // superset → 상위집합
+                    'x@': '⊕',    // xor → 배타적 논리합
+                    '!@': '≠',    // not equal → 같지 않음
+                    '<@': '≤',    // less equal → 작거나 같음  
+                    '>@': '≥',    // greater equal → 크거나 같음
+                    '|>@': '|⟩',  // 파이프-그레이터를 돌려서 → 켓
+                    '<|@': '⟨|',  // 레스-파이프를 돌려서 → 브라
+                    
+                    // 그리스 문자들 (단어@ 패턴)
+                    'alpha@': 'α',
+                    'beta@': 'β', 
+                    'gamma@': 'γ',
+                    'delta@': 'δ',
+                    'epsilon@': 'ε',
+                    'theta@': 'θ',
+                    'lambda@': 'λ',
+                    'mu@': 'μ',
+                    'pi@': 'π',
+                    'rho@': 'ρ',
+                    'sigma@': 'σ',
+                    'tau@': 'τ',
+                    'phi@': 'φ',
+                    'psi@': 'ψ',
+                    'omega@': 'ω',
+                    
+                    // 특수 물리 상수들  
+                    'hbar@': 'ℏ',    // reduced Planck constant
+                    'planck@': 'ℏ',  // 대안 표기
+                    
+                    // 대문자 그리스 문자 (단어@ 패턴)
+                    'Alpha@': 'Α',
+                    'Beta@': 'Β',
+                    'Gamma@': 'Γ',
+                    'Delta@': 'Δ',
+                    'Theta@': 'Θ',
+                    'Lambda@': 'Λ',
+                    'Pi@': 'Π',
+                    'Sigma@': 'Σ',
+                    'Phi@': 'Φ',
+                    'Psi@': 'Ψ',
+                    'Omega@': 'Ω'
+                };
+                
+                this.editor = document.getElementById('editor');
+                this.status = document.getElementById('status');
+                this.conversionCount = 0;
+                
+                this.setupEventListeners();
+            }
+            
+            setupEventListeners() {
+                this.editor.addEventListener('input', (e) => {
+                    this.handleInput(e);
+                });
+                
+                this.editor.addEventListener('focus', () => {
+                    this.status.textContent = '실시간 변환 활성화 - 타이핑해보세요!';
+                });
+            }
+            
+            handleInput(event) {
+                const cursorStart = this.editor.selectionStart;
+                const cursorEnd = this.editor.selectionEnd;
+                let text = this.editor.value;
+                let newText = text;
+                let converted = false;
+                let convertedSymbol = '';
+                
+                // 이메일 vs 변환 구분 함수
+                const isEmailContext = (text, atPos) => {
+                    const afterAt = text.substring(atPos + 1);
+                    // @ 뒤에 도메인 패턴이 있으면 이메일로 판단
+                    return /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(afterAt);
+                };
+                
+                // 각 심볼 매핑을 확인 (길이 순으로 정렬 - 긴 패턴 우선)
+                const sortedMappings = Object.entries(this.symbolMap)
+                    .sort(([a], [b]) => b.length - a.length);
+                
+                for (const [ascii, unicode] of sortedMappings) {
+                    const lastIndex = text.lastIndexOf(ascii);
+                    
+                    if (lastIndex !== -1 && lastIndex + ascii.length === cursorStart) {
+                        // @ 포함 패턴의 경우 이메일 컨텍스트 확인
+                        if (ascii.includes('@')) {
+                            const atPosition = lastIndex + ascii.indexOf('@');
+                            if (isEmailContext(text, atPosition)) {
+                                continue; // 이메일이면 변환하지 않음
+                            }
+                        }
+                        
+                        // 현재 커서 위치에서 방금 입력된 패턴 발견
+                        newText = text.substring(0, lastIndex) + unicode + text.substring(lastIndex + ascii.length);
+                        converted = true;
+                        convertedSymbol = `${ascii} → ${unicode}`;
+                        break;
+                    }
+                }
+                
+                if (converted) {
+                    // 변환된 텍스트 적용
+                    this.editor.value = newText;
+                    
+                    // 커서 위치 조정
+                    const newCursorPos = cursorStart - (text.length - newText.length);
+                    this.editor.setSelectionRange(newCursorPos, newCursorPos);
+                    
+                    // 상태 업데이트
+                    this.conversionCount++;
+                    this.status.innerHTML = `✨ 변환됨: <span class="conversion-highlight">${convertedSymbol}</span> (총 ${this.conversionCount}회)`;
+                    
+                    // 시각적 피드백
+                    this.showConversionFeedback();
+                }
+            }
+            
+            showConversionFeedback() {
+                this.editor.style.borderColor = '#28a745';
+                setTimeout(() => {
+                    this.editor.style.borderColor = '#667eea';
+                }, 200);
+            }
+        }
+        
+        // 페이지 로드시 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            new QyTumSymbolConverter();
+            
+            // 환영 메시지
+            setTimeout(() => {
+                const status = document.getElementById('status');
+                status.textContent = '준비 완료! 위의 변환 규칙을 참고해서 타이핑해보세요 🚀';
+            }, 1000);
+        });
+        
+        // 키보드 단축키 힌트
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === '/') {
+                alert(`🎯 QyTum @ 변환 시스템:
+
+@ = "돌려서 변환" 통일 개념
+
+기하학적 변환:
++@ → ⊗ (플러스 돌려서 텐서곱)
+=@ → ≈ (이퀄 물결로)  
+%@ → ∞ (퍼센트 돌려서 무한대)
+*@ → † (별 돌려서 켤레전치)
+
+양자 표기법:
+|>@ → |⟩ (켓, |> 돌려서)
+<|@ → ⟨| (브라, <| 돌려서)
+
+수학 연산자들:
+s@ → √ (제곱근), d@ → ∂ (편미분), S@ → ∑ (합계)
+i@ → ∫ (적분), x@ → ⊕ (XOR), !@ → ≠ (같지않음)
+
+물리 상수:
+hbar@ → ℏ (reduced Planck constant)
+
+💡 이메일과 구분: john@gmail.com (도메인 있음) vs psi@ (변환)
+
+Ctrl+/ : 이 도움말 표시`);
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

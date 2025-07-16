@@ -1,0 +1,53 @@
+// object_test.qyt - 객체 생성 테스트
+
+class Person {
+    name: str;
+    age: i32;
+    
+    fn new(name, age) {
+        return Person { name: name, age: age };
+    }
+    
+    fn greet(self) {
+        println("Hello, I'm " + self.name);
+    }
+    
+    fn getAge(self) {
+        return self.age;
+    }
+}
+
+fn main() {
+    println("🏗️ QyTum 객체 생성 테스트!");
+    println("============================");
+    
+    // 1. 객체 생성 테스트
+    println("\n1. 객체 생성:");
+    try {
+        scalar person = Person.new("Alice", 25);
+        println("객체 생성 성공:", person);
+    } catch (e) {
+        println("오류:", e.type, e.message);
+    }
+    
+    // 2. 인스턴스 메서드 호출 테스트
+    println("\n2. 인스턴스 메서드 호출:");
+    try {
+        scalar person = Person.new("Bob", 30);
+        person.greet();
+    } catch (e) {
+        println("오류:", e.type, e.message);
+    }
+    
+    // 3. 필드 접근 테스트
+    println("\n3. 필드 접근:");
+    try {
+        scalar person = Person.new("Charlie", 35);
+        scalar age = person.getAge();
+        println("나이:", age);
+    } catch (e) {
+        println("오류:", e.type, e.message);
+    }
+    
+    println("\n✅ 객체 생성 테스트 완료!");
+}

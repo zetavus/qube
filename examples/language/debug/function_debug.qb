@@ -1,0 +1,12 @@
+fn main() {
+    println("=== 함수 호출 진단 ===");
+    
+    // 1. 가장 기본적인 함수 호출
+    test_simple();
+    
+    println("진단 완료");
+}
+
+fn test_simple() {
+    println("간단한 함수가 호출되었습니다!");
+}

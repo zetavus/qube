@@ -1,0 +1,64 @@
+// inheritance_protected_test.qyt
+// 상속 관계에서 Protected 접근이 허용되는지 테스트
+
+class Vehicle {
+    protected engine: str;
+    private vin: str;
+    public brand: str;
+    
+    public fn init(self, brand: str, engine: str, vin: str) {
+        self.brand = brand;
+        self.engine = engine;
+        self.vin = vin;
+    }
+    
+    protected fn start_engine(self) {
+        println("🚗 Engine {} started", self.engine);
+    }
+    
+    public fn display_info(self) {
+        println("Brand: {}, Engine: {}", self.brand, self.engine);
+    }
+}
+
+class Car extends Vehicle {
+    public doors: i32;
+    
+    public fn init_car(self, brand: str, engine: str, vin: str, doors: i32) {
+        self.brand = brand;
+        self.engine = engine;    // ✅ Protected 필드 접근 (상속)
+        // self.vin = vin;       // ❌ Private 필드 접근 불가
+        self.doors = doors;
+    }
+    
+    public fn start(self) {
+        self.start_engine();     // ✅ Protected 메서드 호출 (상속)
+        println("🚙 Car with {} doors is ready to go!", self.doors);
+    }
+    
+    public fn show_engine(self) {
+        println("🔧 This car has a {} engine", self.engine); // ✅ Protected 접근
+    }
+}
+
+fn main() {
+    println("🚗 Protected 상속 테스트");
+    println("=======================");
+    
+    // 차량 생성
+    car = Car { brand: "Toyota", doors: 4 };
+    car.init_car("Toyota", "V6 Turbo", "VIN12345", 4);
+    
+    // ✅ Public 메서드 호출
+    println("Car info:");
+    car.display_info();
+    car.start();
+    car.show_engine();
+    
+    println("=======================");
+    println("🔒 외부 접근 테스트");
+    
+    // ❌ Protected 필드 외부 접근 (에러 발생해야 함)
+    println("Trying to access protected engine from outside...");
+    println("Engine: {}", car.engine);
+}

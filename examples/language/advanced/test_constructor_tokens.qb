@@ -1,0 +1,29 @@
+// test_constructor_tokens.qyt
+// 생성자/소멸자 파싱 테스트용 파일
+
+class TestClass {
+    private name: str;
+    
+    constructor() {
+        self.name = "Default";
+        println("Default constructor called");
+    }
+    
+    constructor(name: str) {
+        self.name = name;
+        println("Constructor with name: {}", name);
+    }
+    
+    destructor() {
+        println("Destructor called for: {}", self.name);
+    }
+    
+    public fn get_name(self) -> str {
+        return self.name;
+    }
+}
+
+fn main() {
+    println("🧪 Constructor/Destructor parsing test");
+    println("If this prints, parsing succeeded!");
+}

@@ -1,0 +1,25 @@
+// debug_gates.qyt - 게이트 적용 디버깅
+
+println("=== 게이트 적용 디버깅 ===");
+
+circuit DebugGates(2) {
+    println("게이트 적용 전 상태");
+    
+    apply H to q0;
+    println("H 게이트 적용 후");
+    
+    apply CNOT to (q0, q1);
+    println("CNOT 게이트 적용 후");
+    
+    apply X to q1;
+    println("X 게이트 적용 후");
+    
+    measure q0;
+    println("q0 측정 완료");
+    
+    measure q1;
+    println("q1 측정 완료");
+}
+
+debug_circuit = DebugGates();
+println("디버깅 완료");

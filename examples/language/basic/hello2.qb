@@ -1,0 +1,67 @@
+// hello.qyt - QyTum Hello World 프로그램
+// QyTum 언어의 기본 기능들을 소개하는 간단한 예제
+
+fn main() {
+    println("🌟 Welcome to QyTum! 🌟");
+    println("=======================");
+    
+    // 1. 기본 변수 선언
+    scalar name = "QyTum";
+    scalar version = 1.0;
+    scalar year = 2024;
+    
+    println("Language:", name);
+    println("Version:", version);
+    println("Year:", year);
+    println();
+    
+    // 2. 기본 연산
+    scalar a = 10;
+    scalar b = 5;
+    println("Basic Math:");
+    println("a =", a, ", b =", b);
+    println("a + b =", a + b);
+    println("a * b =", a * b);
+    println("a / b =", a / b);
+    println();
+    
+    // 3. 간단한 양자 프로그래밍
+    println("🔬 Quantum Computing Basics:");
+    
+    // 기본 큐비트 생성
+    qubit q0 = |0⟩;
+    println("Initial qubit q0:", q0);
+    
+    qubit q1 = |1⟩;
+    println("Initial qubit q1:", q1);
+    
+    // Hadamard 게이트 적용 (중첩 상태 생성)
+    qubit superposed = H(q0);
+    println("After Hadamard gate H(q0):", superposed);
+    
+    // 측정
+    scalar result = measure(superposed);
+    println("Measurement result:", result);
+    println();
+    
+    // 4. 조건문
+    if result == 0 {
+        println("💡 Measured |0⟩ - Classical state");
+    } else {
+        println("💡 Measured |1⟩ - Excited state");
+    }
+    
+    // 5. 반복문
+    println();
+    println("🔄 Quantum Measurements (5 trials):");
+    for i in 0..5 {
+        qubit test_qubit = H(|0⟩);
+        scalar outcome = measure(test_qubit);
+        println("Trial", i + 1, ":", outcome);
+    }
+    
+    // 6. 마무리
+    println();
+    println("🎉 QyTum Hello World Complete!");
+    println("Ready for quantum programming adventures!");
+}

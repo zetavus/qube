@@ -1,0 +1,15 @@
+# 간단한 템플릿 문자열 테스트
+println("=== 간단한 템플릿 테스트 ===");
+
+# 기본 변수
+name = "Qube";
+
+# 1단계: 기존 방식 (확인용)
+println("기존 방식:");
+println(name);
+
+# 2단계: 템플릿 방식 (새로운 기능)
+println("템플릿 방식:");
+println("Hello ${name}");
+
+println("테스트 완료");

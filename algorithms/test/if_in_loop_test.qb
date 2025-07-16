@@ -1,0 +1,20 @@
+// 반복문 내 if문 정확한 테스트
+fn main() {
+    println("반복문 내 if문 테스트");
+    
+    test_problematic_pattern();
+}
+
+fn test_problematic_pattern() {
+    println("문제가 되는 패턴 테스트:");
+    
+    for i in 0..2 {
+        println("반복 시작 {}", i);
+        
+        if (i == 1) {
+            println("조건 만족");
+        }
+        
+        println("반복 끝 {}", i);
+    }
+}

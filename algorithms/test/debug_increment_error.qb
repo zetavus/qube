@@ -1,0 +1,40 @@
+// += 에러 정확한 진단
+fn main() {
+    println("+= 에러 진단");
+    println("============");
+    
+    test_increment_in_if();
+}
+
+fn test_increment_in_if() {
+    println("조건문 내 += 테스트:");
+    
+    scalar successes = 0;
+    println("초기 successes: {}", successes);
+    
+    for i in 0..3 {
+        println("반복 {}", i);
+        
+        qubit test_qubit = H(|0⟩);
+        scalar result = measure(test_qubit);
+        println("  측정값: {}", result);
+        
+        if (result == 1) {
+            println("  조건문 진입");
+            println("  증가 전: {}", successes);
+            
+            // 여기서 에러가 발생하는지 확인
+            successes += 1;
+            
+            println("  증가 후: {}", successes);
+            println("  조건문 완료");
+        } else {
+            println("  조건문 미진입");
+        }
+        
+        println("  반복 끝: {}", successes);
+        println("");
+    }
+    
+    println("최종: {}", successes);
+}

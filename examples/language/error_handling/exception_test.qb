@@ -1,0 +1,49 @@
+// exception_test.qyt - 예외 처리 테스트 (단순화 버전)
+
+fn risky_division(a, b) {
+    return a / b;
+}
+
+fn main() {
+    println("🛡️ QyTum 예외 처리 테스트!");
+    println("================================");
+    
+    // 1. 기본 try-catch 테스트
+    println("\n1. 기본 try-catch 테스트:");
+    try {
+        scalar result = risky_division(10, 2);
+        println("10 / 2 =", result);
+    } catch (e) {
+        println("예외 발생:", e);
+    }
+    
+    // 2. 0으로 나누기 예외 처리
+    println("\n2. 0으로 나누기 예외 처리:");
+    try {
+        scalar result = risky_division(10, 0);
+        println("10 / 0 =", result);
+    } catch (e) {
+        println("예외 발생!", e);  // .type, .message 제거
+    }
+    
+    // 3. throw 문 테스트
+    println("\n3. throw 문 테스트:");
+    try {
+        throw "사용자 정의 오류!";
+    } catch (e) {
+        println("잡힌 예외:", e);
+    }
+    
+    // 4. finally 블록 테스트
+    println("\n4. finally 블록 테스트:");
+    try {
+        println("try 블록 실행");
+        throw "오류 발생!";
+    } catch (e) {
+        println("catch 블록 실행:", e);
+    } finally {
+        println("finally 블록 실행 (항상 실행됨)");
+    }
+    
+    println("\n✅ 예외 처리 테스트 완료!");
+}

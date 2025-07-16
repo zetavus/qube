@@ -1,0 +1,17 @@
+class TestClass {
+    private secret: str;
+    public name: str;
+}
+
+fn main() {
+    println("=== 간단한 접근 제어 테스트 ===");
+    
+    obj = TestClass { name: "public value" };
+    
+    println("Public field: {}", obj.name);
+    
+    println("Trying private field access...");
+    println("Private field: {}", obj.secret);
+    
+    println("Test complete");
+}

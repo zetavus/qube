@@ -1,0 +1,168 @@
+// 완전한 3큐빗 Grover 검색 알고리즘
+// 목표: |101⟩ 상태를 85% 확률로 찾기
+
+// Oracle: |101⟩ 상태에만 위상 뒤집기 (-1 곱하기)
+fn create_oracle_101() {
+    circuit Oracle101(3) {
+        // |101⟩ = q2=1, q1=0, q0=1 상태 감지
+        // 제어 Z 게이트들로 구현
+        apply X to q1;    // q1=0을 일시적으로 1로 변환
+        apply CCZ to (q2, q1, q0);  // 세 큐빗이 모두 1일 때 위상 뒤집기
+        apply X to q1;    // q1을 원상복구
+    }
+    return Oracle101(3);
+}
+
+// Diffusion 연산자: 평균 중심 반사
+fn create_diffusion() {
+    circuit Diffusion(3) {
+        // 1. 모든 큐빗에 H 적용 (기저 변환)
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+        
+        // 2. 모든 큐빗 뒤집기 (|000⟩을 제외한 모든 상태를 -1로)
+        apply X to q0;
+        apply X to q1;
+        apply X to q2;
+        
+        // 3. |000⟩ 상태에 위상 뒤집기
+        apply CCZ to (q2, q1, q0);
+        
+        // 4. 뒤집기 원상복구
+        apply X to q0;
+        apply X to q1;
+        apply X to q2;
+        
+        // 5. H 기저 복원
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+    }
+    return Diffusion(3);
+}
+
+// 초기화: 균등 중첩 상태
+fn create_initialization() {
+    circuit Initialization(3) {
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+    }
+    return Initialization(3);
+}
+
+// 완전한 Grover 알고리즘 (2회 반복)
+fn create_complete_grover() {
+    circuit CompleteGrover(3) {
+        // 1. 초기화: 균등 중첩
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+        
+        // 2. Grover 반복 1회차
+        // Oracle
+        apply X to q1;
+        apply CCZ to (q2, q1, q0);
+        apply X to q1;
+        
+        // Diffusion
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+        apply X to q0;
+        apply X to q1;
+        apply X to q2;
+        apply CCZ to (q2, q1, q0);
+        apply X to q0;
+        apply X to q1;
+        apply X to q2;
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+        
+        // 3. Grover 반복 2회차
+        // Oracle
+        apply X to q1;
+        apply CCZ to (q2, q1, q0);
+        apply X to q1;
+        
+        // Diffusion
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+        apply X to q0;
+        apply X to q1;
+        apply X to q2;
+        apply CCZ to (q2, q1, q0);
+        apply X to q0;
+        apply X to q1;
+        apply X to q2;
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+    }
+    return CompleteGrover(3);
+}
+
+fn main() {
+    println("🎯 완전한 3큐빗 Grover 검색 알고리즘");
+    println("=====================================");
+    println("목표: |101⟩ 상태 찾기");
+    println("이론적 성공률: ~85%");
+    println("최적 반복 횟수: 2회");
+    println("");
+    
+    // 완전한 Grover 알고리즘 실행
+    println("🚀 완전한 Grover 알고리즘 실행:");
+    println("------------------------------");
+    
+    grover_circuit = create_complete_grover();
+    result = measure(grover_circuit, [0, 1, 2]);
+    
+    // 결과 분석
+    decimal_value = result[0] + result[1]*2 + result[2]*4;
+    
+    if (decimal_value == 5) {  // |101⟩ = 5
+        println("✅ 성공! |101⟩ 상태 발견");
+        println("Grover 알고리즘이 목표 상태를 찾았습니다!");
+    } else {
+        println("🔄 다른 상태 측정됨");
+        println("재시도하면 85% 확률로 성공할 것입니다.");
+    }
+    
+    println("");
+    println("📊 성능 테스트 (10회 시도):");
+    println("==========================");
+    
+    success_count = 0;
+    total_trials = 10;
+    
+    i = 0;
+    while (i < total_trials) {
+        trial_circuit = create_complete_grover();
+        trial_result = measure(trial_circuit, [0, 1, 2]);
+        trial_value = trial_result[0] + trial_result[1]*2 + trial_result[2]*4;
+        
+        if (trial_value == 5) {
+            success_count = success_count + 1;
+            println("시도 " + (i+1) + ": ✅ 성공 |101⟩");
+        } else {
+            println("시도 " + (i+1) + ": 🔄 실패");
+        }
+        
+        i = i + 1;
+    }
+    
+    println("");
+    println("📈 최종 결과:");
+    println("성공 횟수: " + success_count + "/" + total_trials);
+    println("실제 성공률: ~" + (success_count * 10) + "%");
+    println("이론적 성공률: ~85%");
+    
+    if (success_count >= 7) {  // 70% 이상
+        println("🎉 Grover 알고리즘 성공적으로 구현됨!");
+    } else {
+        println("🔧 추가 조정이 필요할 수 있습니다.");
+    }
+}

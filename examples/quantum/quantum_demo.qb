@@ -1,0 +1,49 @@
+// quantum_demo.qyt - QyTum 양자 기능 데모
+
+fn main() {
+    println("🔬 QyTum Quantum Computing Demo");
+    println("================================");
+    
+    // 1. 기본 큐비트
+    qubit q0 = |0⟩;
+    qubit q1 = |1⟩;
+    println("Initial states:");
+    println("q0 =", q0);
+    println("q1 =", q1);
+    println();
+    
+    // 2. Hadamard 변환 (중첩 상태)
+    println("Applying Hadamard gates:");
+    qubit h0 = H(q0);
+    qubit h1 = H(q1);
+    println("H(q0) =", h0);
+    println("H(q1) =", h1);
+    println();
+    
+    // 3. 측정 실험
+    println("Measurement experiments:");
+    for i in 0..3 {
+        qubit test = H(|0⟩);
+        scalar result = measure(test);
+        println("Experiment", i + 1, ":", result);
+    }
+    println();
+    
+    // 4. 조건부 양자 연산
+    println("Conditional quantum operations:");
+    qubit control = H(|0⟩);
+    scalar control_result = measure(control);
+    
+    if control_result == 0 {
+        println("Control measured 0 - applying X gate");
+        qubit target = X(|0⟩);
+        println("Result:", target);
+    } else {
+        println("Control measured 1 - applying Z gate");
+        qubit target = Z(|0⟩);
+        println("Result:", target);
+    }
+    
+    println();
+    println("🎉 Quantum demo complete!");
+}

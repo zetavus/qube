@@ -1,0 +1,48 @@
+// loop_debug.qyt - 루프 문제 정확히 진단하기
+
+fn main() {
+    println("🔍 루프 진단 테스트");
+    println("=================");
+    
+    // 1. 기본 배열 루프 테스트
+    println("1. 기본 배열 루프:");
+    scalar values = [0, 1, 2, 5, 10];
+    
+    for value in values {
+        println("Processing value:", value);
+    }
+    
+    println();
+    
+    // 2. Range 루프 테스트  
+    println("2. Range 루프:");
+    for i in 0..5 {
+        println("Range value:", i);
+    }
+    
+    println();
+    
+    // 3. Match 없는 루프 테스트
+    println("3. Match 없는 루프:");
+    for num in [1, 2, 3] {
+        if num == 1 {
+            println("Found one");
+        } else {
+            println("Found other:", num);
+        }
+    }
+    
+    println();
+    
+    // 4. 단순 Match 테스트 (루프 밖에서)
+    println("4. 단순 Match 테스트:");
+    scalar test_val = 2;
+    scalar result = match test_val {
+        1 => "one",
+        2 => "two", 
+        _ => "other",
+    };
+    println("Match result:", result);
+    
+    println("✅ 진단 완료");
+}

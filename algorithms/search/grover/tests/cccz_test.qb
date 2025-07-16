@@ -1,0 +1,31 @@
+// CCCZ 게이트 테스트
+fn create_cccz_test() {
+    circuit CCCZTest(4) {
+        // |1111⟩ 상태 생성
+        apply X to q0;
+        apply X to q1;
+        apply X to q2;
+        apply X to q3;
+        
+        // CCCZ 게이트 적용 (위상 뒤집기)
+        apply CCCZ to (q3, q2, q1, q0);
+    }
+    return CCCZTest(4);
+}
+
+fn main() {
+    println("🧪 CCCZ 게이트 테스트");
+    println("===================");
+    println("예상: |1111⟩ 상태에 위상 뒤집기");
+    println("");
+    
+    cccz_circuit = create_cccz_test();
+    result = measure(cccz_circuit, [0, 1, 2, 3]);
+    
+    if (result[0] == 1 && result[1] == 1 && result[2] == 1 && result[3] == 1) {
+        println("✅ CCCZ 게이트 정상 동작!");
+        println("상태: |1111⟩ 측정됨");
+    } else {
+        println("❌ CCCZ 게이트 문제 발생");
+    }
+}

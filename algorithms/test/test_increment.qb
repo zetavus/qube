@@ -1,0 +1,38 @@
+// += 연산자 테스트
+fn main() {
+    println("+= 연산자 테스트");
+    println("===============");
+    
+    test_simple_increment();
+    test_loop_increment();
+}
+
+fn test_simple_increment() {
+    println("1. 단순 증가:");
+    
+    scalar count = 0;
+    println("초기값: {}", count);
+    
+    count += 1;
+    println("1 증가 후: {}", count);
+    
+    count += 5;
+    println("5 증가 후: {}", count);
+    
+    println("");
+}
+
+fn test_loop_increment() {
+    println("2. 반복문 내 증가:");
+    
+    scalar total = 0;
+    println("초기 total: {}", total);
+    
+    for i in 0..3 {
+        println("반복 {}: total = {}", i, total);
+        total += 1;
+        println("  증가 후: total = {}", total);
+    }
+    
+    println("최종 total: {}", total);
+}

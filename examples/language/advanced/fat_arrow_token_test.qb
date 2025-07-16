@@ -1,0 +1,19 @@
+fn main() {
+    println("=== FAT_ARROW 토큰 테스트 ===");
+    
+    // 기본 화살표 토큰들이 제대로 인식되는지 확인
+    scalar arrow_str = "->";
+    scalar fat_arrow_str = "=>";
+    
+    println("ARROW 토큰: {}", arrow_str);
+    println("FAT_ARROW 토큰: {}", fat_arrow_str);
+    
+    // 다른 비슷한 토큰들과 구분되는지 확인
+    scalar assign = "=";
+    scalar equal = "==";
+    
+    println("ASSIGN: {}", assign);
+    println("EQUAL: {}", equal);
+    
+    println("=== 토큰 테스트 성공! ===");
+}

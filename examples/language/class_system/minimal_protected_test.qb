@@ -1,0 +1,12 @@
+// minimal_protected_test.qyt
+// 최소한의 테스트로 protected 키워드 확인
+
+class TestClass {
+    public name: str;
+    private secret: str;
+    protected info: str;  // 이 줄에서 파싱 에러가 발생하는지 확인
+}
+
+fn main() {
+    println("Protected keyword test");
+}

@@ -1,0 +1,45 @@
+// 초단순 Deutsch-Jozsa 테스트
+
+fn oracle_constant() {
+    println("Oracle: 상수함수");
+}
+
+fn oracle_balanced() {
+    println("Oracle: 균형함수");
+    apply CNOT to (q0, q1);
+}
+
+fn main() {
+    println("🌟 초단순 Deutsch-Jozsa 테스트");
+    println("=============================");
+    
+    println("테스트 1: 상수함수");
+    circuit TestConstant(2) {
+        apply X to q1;
+        apply H to ~;
+        oracle_constant();
+        apply H to q0;
+    }
+    
+    test1 = TestConstant(2);
+    result1 = measure(test1, [0]);
+    println("상수함수 결과: {}", result1);
+    println("예상: [0]");
+    println("");
+    
+    println("테스트 2: 균형함수");
+    circuit TestBalanced(2) {
+        apply X to q1;
+        apply H to ~;
+        oracle_balanced();
+        apply H to q0;
+    }
+    
+    test2 = TestBalanced(2);
+    result2 = measure(test2, [0]);
+    println("균형함수 결과: {}", result2);
+    println("예상: [1]");
+    println("");
+    
+    println("테스트 완료!");
+}

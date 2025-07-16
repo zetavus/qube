@@ -1,0 +1,160 @@
+fn main() {
+    println("=== 고급 함수 기능 데모 ===");
+    
+    // 1. 고차 함수
+    higher_order_demo();
+    
+    // 2. 클로저
+    closure_demo();
+    
+    // 3. 양자 특화 함수
+    quantum_functions_demo();
+    
+    // 4. 재귀 함수
+    recursion_demo();
+}
+
+fn higher_order_demo() {
+    println("1. 고차 함수:");
+    
+    scalar numbers = [1, 2, 3, 4, 5];
+    
+    // Map: 각 원소에 함수 적용
+    scalar squared = map(square, numbers);
+    println("제곱: {}", squared);
+    
+    // Filter: 조건에 맞는 원소만 필터링
+    scalar evens = filter(is_even, numbers);
+    println("짝수들: {}", evens);
+    
+    // Reduce: 원소들을 하나로 축약
+    scalar sum = reduce(add, numbers, 0);
+    println("합계: {}", sum);
+    
+    println();
+}
+
+fn square(x: i32) -> i32 {
+    return x * x;
+}
+
+fn is_even(x: i32) -> bool {
+    return x % 2 == 0;
+}
+
+fn add(a: i32, b: i32) -> i32 {
+    return a + b;
+}
+
+fn closure_demo() {
+    println("2. 클로저 (간단한 예시):");
+    
+    scalar multiplier = 3;
+    
+    // 클로저 개념 시뮬레이션
+    scalar numbers = [1, 2, 3, 4, 5];
+    scalar results = [];
+    
+    for num in numbers {
+        scalar result = num * multiplier;  // 외부 변수 캡처
+        results.push(result);
+    }
+    
+    println("3배수들: {}", results);
+    println();
+}
+
+fn quantum_functions_demo() {
+    println("3. 양자 특화 함수:");
+    
+    // Oracle 함수 시뮬레이션
+    scalar target = 5;
+    scalar search_result = grover_search(target, 8);
+    println("Grover 검색 결과: {}", search_result);
+    
+    // 가역 함수 예시
+    scalar input = 42;
+    scalar encoded = reversible_encode(input);
+    scalar decoded = reversible_decode(encoded);
+    println("가역 인코딩: {} → {} → {}", input, encoded, decoded);
+    
+    // 유니터리 함수 시뮬레이션
+    qubit q = |0⟩;
+    qubit transformed = custom_unitary(q);
+    println("사용자 정의 유니터리 변환: {}", transformed);
+    
+    println();
+}
+
+oracle fn simple_oracle(x: usize, target: usize) -> bool {
+    return x == target;
+}
+
+fn grover_search(target: usize, space_size: usize) -> usize {
+    println("  Grover 검색: 타겟 {}, 공간 크기 {}", target, space_size);
+    
+    // 간단한 Grover 알고리즘 시뮬레이션
+    scalar iterations = (PI / 4.0 * sqrt(space_size)) as usize;
+    println("  최적 반복 횟수: {}", iterations);
+    
+    // 시뮬레이션된 성공 (실제로는 더 복잡)
+    if simple_oracle(target, target) {
+        return target;
+    } else {
+        return 0;
+    }
+}
+
+reversible fn reversible_encode(x: i32) -> i32 {
+    return x ^ 0xAAAA;  // XOR 인코딩 (자기 역함수)
+}
+
+reversible fn reversible_decode(x: i32) -> i32 {
+    return x ^ 0xAAAA;  // 같은 연산으로 디코딩
+}
+
+unitary fn custom_unitary(q: Qubit) -> Qubit {
+    // 사용자 정의 유니터리 변환
+    return RZ(PI/3, RY(PI/4, q));
+}
+
+fn recursion_demo() {
+    println("4. 재귀 함수:");
+    
+    scalar n = 10;
+    scalar fib_result = fibonacci(n);
+    println("fibonacci({}) = {}", n, fib_result);
+    
+    scalar fact_result = factorial(5);
+    println("factorial(5) = {}", fact_result);
+    
+    // 꼬리 재귀 예시
+    scalar tail_fib = fibonacci_tail(n, 0, 1);
+    println("꼬리 재귀 fibonacci({}) = {}", n, tail_fib);
+    
+    println();
+}
+
+fn fibonacci(n: i32) -> i32 {
+    if n <= 1 {
+        return n;
+    } else {
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+}
+
+fn factorial(n: i32) -> i32 {
+    if n <= 1 {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+fn fibonacci_tail(n: i32, a: i32, b: i32) -> i32 {
+    if n == 0 {
+        return a;
+    } else {
+        return fibonacci_tail(n - 1, b, a + b);
+    }
+}

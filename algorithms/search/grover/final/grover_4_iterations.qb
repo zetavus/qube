@@ -1,0 +1,94 @@
+// algorithms/search/grover_4_iterations.qb
+// 4회 반복 Grover 알고리즘 (99.9% 목표)
+
+fn main() {
+    println("🎯 4회 반복 Grover 알고리즘");
+    println("==========================");
+    println("목표: |10101⟩ 상태 찾기");
+    println("반복: 4회 (이론적 최적)");
+    println("");
+    
+    circuit GroverOptimal(5) {
+        println("🚀 초기화: 균등 중첩 상태");
+        apply H to ~;
+        
+        println("🔄 Grover 반복 1/4");
+        // Oracle: |10101⟩ 마킹
+        apply X to q1;
+        apply X to q3;
+        apply CZ to (q0, q1, q2, q3, q4);
+        apply X to q1;
+        apply X to q3;
+        // Diffusion
+        apply H to ~;
+        apply X to ~;
+        apply CZ to (q0, q1, q2, q3, q4);
+        apply X to ~;
+        apply H to ~;
+        
+        println("🔄 Grover 반복 2/4");
+        // Oracle
+        apply X to q1;
+        apply X to q3;
+        apply CZ to (q0, q1, q2, q3, q4);
+        apply X to q1;
+        apply X to q3;
+        // Diffusion
+        apply H to ~;
+        apply X to ~;
+        apply CZ to (q0, q1, q2, q3, q4);
+        apply X to ~;
+        apply H to ~;
+        
+        println("🔄 Grover 반복 3/4");
+        // Oracle
+        apply X to q1;
+        apply X to q3;
+        apply CZ to (q0, q1, q2, q3, q4);
+        apply X to q1;
+        apply X to q3;
+        // Diffusion
+        apply H to ~;
+        apply X to ~;
+        apply CZ to (q0, q1, q2, q3, q4);
+        apply X to ~;
+        apply H to ~;
+        
+        println("🔄 Grover 반복 4/4");
+        // Oracle
+        apply X to q1;
+        apply X to q3;
+        apply CZ to (q0, q1, q2, q3, q4);
+        apply X to q1;
+        apply X to q3;
+        // Diffusion
+        apply H to ~;
+        apply X to ~;
+        apply CZ to (q0, q1, q2, q3, q4);
+        apply X to ~;
+        apply H to ~;
+    }
+    
+    println("회로 실행 중...");
+    grover = GroverOptimal();
+    
+    println("측정 중...");
+    result = measure(grover, [0, 1, 2, 3, 4]);
+    
+    println("결과: {}", result);
+    
+    // 십진수 변환
+    decimal = result[0] + result[1]*2 + result[2]*4 + result[3]*8 + result[4]*16;
+    println("십진수: {}", decimal);
+    
+    // 이진 문자열 표시
+    binary_str = "|{}{}{}{}{}⟩";
+    println("상태: {}", binary_str);
+    
+    if (decimal == 21) {
+        println("✅ 성공! |10101⟩ 발견!");
+        println("🎉 Grover 알고리즘 성공!");
+    } else {
+        println("❌ 실패: 다른 상태 측정됨");
+    }
+}

@@ -1,0 +1,44 @@
+// 타입 진단 테스트
+fn main() {
+    println("타입 진단 테스트");
+    println("===============");
+    
+    test_type_compatibility();
+}
+
+fn test_type_compatibility() {
+    scalar successes = 0;
+    println("초기 successes: {}", successes);
+    
+    // 1. 일반 scalar와 += 테스트
+    scalar normal_var = 1;
+    println("normal_var: {}", normal_var);
+    
+    if (normal_var == 1) {
+        println("일반 scalar 조건문 진입");
+        successes += 1;
+        println("일반 scalar += 성공: {}", successes);
+    }
+    
+    println("");
+    
+    // 2. measure() 결과와 += 테스트  
+    qubit q = H(|0⟩);
+    scalar measure_result = measure(q);
+    
+    println("measure_result: {}", measure_result);
+    
+    if (measure_result == 1) {
+        println("measure 결과 조건문 진입");
+        
+        // 직접 할당으로 먼저 테스트
+        successes = successes + 1;
+        println("직접 할당 성공: {}", successes);
+        
+        // 그 다음 += 시도
+        successes += 1;
+        println("+= 연산 성공: {}", successes);
+    }
+    
+    println("최종 successes: {}", successes);
+}

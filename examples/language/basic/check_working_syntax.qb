@@ -1,0 +1,28 @@
+// check_working_syntax.qyt
+// 기존에 작동했던 정확한 문법 확인
+
+class BankAccount {
+    private balance: f64;
+    public name: str;
+    
+    public fn init() {
+        self.balance = 1000.0;
+        self.name = "John";
+    }
+    
+    public fn display() {
+        println("Name: {}, Balance: {}", self.name, self.balance);
+    }
+}
+
+fn main() {
+    println("=== Testing Working Syntax ===");
+    
+    // 방법 1: new 키워드 사용 (있다면)
+    // account = new BankAccount();
+    
+    // 방법 2: 기존 private/public 테스트에서 사용한 방식
+    account = BankAccount();
+    
+    println("Account created");
+}

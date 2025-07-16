@@ -1,0 +1,37 @@
+// algorithms/test/range_syntax_advanced_v2.qb
+// 고급 범위 문법 테스트 (괄호 없는 버전)
+
+fn test_range_patterns() {
+    println("🧪 고급 범위 패턴 테스트");
+    println("=======================");
+    
+    circuit RangePatterns(5) {
+        println("1️⃣ 모든 큐빗 초기화:");
+        apply H to ~;
+        
+        println("2️⃣ 명시적 CZ:");
+        apply CZ to (q0, q1);
+        
+        println("3️⃣ 3큐빗 CZ:");
+        apply CZ to (q2, q3, q4);
+    }
+    return RangePatterns(5);
+}
+
+fn main() {
+    println("🎯 고급 범위 문법 테스트");
+    println("=======================");
+    
+    test_circuit = test_range_patterns();
+    result = measure(test_circuit, [0, 1, 2, 3, 4]);
+    
+    println("✅ 고급 테스트 완료: {}", result);
+    
+    println("");
+    println("🎉 범위 문법 구현 현황:");
+    println("======================");
+    println("✅ apply H to ~;          - 모든 큐빗");
+    println("✅ apply CZ to (q0, q1);  - 명시적 리스트");
+    println("🔧 apply CZ to (~, q4);   - 구현 예정");
+    println("🔧 apply X to (q0:q4);    - 구현 예정");
+}

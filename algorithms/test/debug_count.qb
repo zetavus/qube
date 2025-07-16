@@ -1,0 +1,41 @@
+// 카운팅 디버그 테스트
+fn main() {
+    println("카운팅 디버그 테스트");
+    
+    test_simple_count();
+    test_conditional_count();
+}
+
+fn test_simple_count() {
+    println("1. 단순 카운팅:");
+    
+    scalar count = 0;
+    println("초기값: {}", count);
+    
+    count = count + 1;
+    println("1 증가 후: {}", count);
+    
+    count = count + 1;
+    println("또 1 증가 후: {}", count);
+    
+    println("");
+}
+
+fn test_conditional_count() {
+    println("2. 조건부 카운팅:");
+    
+    scalar successes = 0;
+    println("초기 성공수: {}", successes);
+    
+    for i in 0..3 {
+        println("반복 {}", i);
+        
+        // 간단한 조건
+        if (i == 1) {
+            successes = successes + 1;
+            println("  성공수 증가: {}", successes);
+        }
+    }
+    
+    println("최종 성공수: {}", successes);
+}

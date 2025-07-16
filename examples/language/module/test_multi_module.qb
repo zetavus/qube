@@ -1,0 +1,18 @@
+// test_multi_module.qyt - 여러 모듈 import 테스트
+import { add, multiply } from "module/math_utils";
+import { reverse_string, concat_with_separator } from "module/string_utils";
+
+fn main() {
+    println("=== 다중 모듈 Import 테스트 ===");
+    
+    // 수학 함수 테스트
+    const result = add(multiply(3, 4), 5);
+    println("add(multiply(3, 4), 5) = {}", result);
+    
+    // 문자열 함수 테스트
+    const reversed = reverse_string("Hello");
+    println("reverse_string(Hello) = {}", reversed);
+    
+    const joined = concat_with_separator("Hello", "World", " ");
+    println("concat_with_separator(Hello, World, space) = {}", joined);
+}

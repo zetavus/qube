@@ -1,0 +1,42 @@
+// correct_protected_test.qyt
+// 기존에 작동했던 객체 리터럴 방식 사용
+
+class BankAccount {
+    protected balance: f64;
+    public name: str;
+    
+    public fn deposit(amount: f64) {
+        self.balance = self.balance + amount;
+        println("Deposited {}. New balance: {}", amount, self.balance);
+    }
+    
+    public fn get_balance() -> f64 {
+        return self.balance;
+    }
+    
+    protected fn validate_balance() -> bool {
+        return self.balance >= 0;
+    }
+}
+
+fn main() {
+    println("=== Protected Access Test ===");
+    
+    // ✅ 기존 방식으로 객체 생성 (객체 리터럴)
+    account = BankAccount {
+        name: "John Doe",
+        balance: 1000.0
+    };
+    
+    // ✅ public 멤버 접근 가능
+    println("Name: {}", account.name);
+    println("Balance: {}", account.get_balance());
+    
+    account.deposit(500.0);
+    
+    println("=== Testing Protected Access ===");
+    
+    // ❌ protected 멤버 직접 접근 불가 (외부에서)
+    println("Trying to access protected field...");
+    println("Balance: {}", account.balance);  // 에러 발생해야 함
+}

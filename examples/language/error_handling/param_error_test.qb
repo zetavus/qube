@@ -1,0 +1,13 @@
+// param_error_test.qyt - 매개변수 에러 테스트
+
+println("=== 매개변수 에러 테스트 ===");
+
+// 테스트: 회전 게이트 매개변수 누락
+circuit BadParams(1) {
+    apply H to q0;
+    apply RX to q0;  // 각도 매개변수 누락
+    measure q0;
+}
+
+bad_params = BadParams();
+println("매개변수 테스트 완료");

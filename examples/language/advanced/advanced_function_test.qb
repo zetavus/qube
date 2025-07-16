@@ -1,0 +1,181 @@
+fn main() {
+    println("=== 고급 함수 기능 테스트 ===");
+    
+    // 1. 복소수 타입 테스트
+    test_complex_functions();
+    
+    // 2. 배열 처리 함수 테스트
+    test_array_functions();
+    
+    // 3. 다중 반환값 시뮬레이션 테스트
+    test_multiple_returns();
+    
+    // 4. 중첩 함수 호출 테스트
+    test_nested_calls();
+    
+    // 5. 조건부 반환 테스트
+    test_conditional_returns();
+    
+    // 6. 양자 함수 (기본 게이트만)
+    test_quantum_basic();
+    
+    println("=== 고급 테스트 완료 ===");
+}
+
+// 1. 복소수 함수 테스트
+fn test_complex_functions() {
+    println("1. 복소수 함수 테스트");
+    
+    scalar z1 = 1 + 2i;
+    scalar z2 = 3 + 4i;
+    
+    scalar sum = complex_add(z1, z2);
+    println("(1+2i) + (3+4i) = {}", sum);
+    
+    scalar product = complex_multiply(z1, z2);
+    println("(1+2i) * (3+4i) = {}", product);
+    
+    println();
+}
+
+fn complex_add(a: complex, b: complex) -> complex {
+    return a + b;
+}
+
+fn complex_multiply(a: complex, b: complex) -> complex {
+    return a * b;
+}
+
+// 2. 배열 처리 함수
+fn test_array_functions() {
+    println("2. 배열 처리 함수 테스트");
+    
+    scalar arr = [1, 2, 3, 4, 5];
+    scalar sum = array_sum(arr);
+    println("array_sum([1,2,3,4,5]) = {}", sum);
+    
+    scalar max_val = array_max(arr);
+    println("array_max([1,2,3,4,5]) = {}", max_val);
+    
+    scalar reversed = array_reverse(arr);
+    println("array_reverse([1,2,3,4,5]) = {}", reversed);
+    
+    println();
+}
+
+fn array_sum(arr: scalar) -> i32 {
+    scalar sum = 0;
+    scalar arr_len = len(arr);
+    for i in range(arr_len) {
+        sum = sum + arr[i];
+    }
+    return sum;
+}
+
+fn array_max(arr: scalar) -> i32 {
+    scalar max_val = arr[0];
+    scalar arr_len = len(arr);
+    for i in range(1, arr_len) {
+        if (arr[i] > max_val) {
+            max_val = arr[i];
+        }
+    }
+    return max_val;
+}
+
+fn array_reverse(arr: scalar) -> scalar {
+    // 배열 역순 기능은 아직 구현이 복잡하므로 원본 반환
+    println("array_reverse: 아직 구현되지 않음");
+    return arr;
+}
+
+// 3. 다중 반환값 시뮬레이션 (배열 사용)
+fn test_multiple_returns() {
+    println("3. 다중 반환값 시뮬레이션");
+    
+    scalar result = divide_with_remainder(17, 3);
+    println("17 ÷ 3 = quotient: {}, remainder: {}", result[0], result[1]);
+    
+    println();
+}
+
+fn divide_with_remainder(a: i32, b: i32) -> scalar {
+    scalar quotient = a / b;
+    scalar remainder = a % b;
+    return [quotient, remainder];
+}
+
+// 4. 중첩 함수 호출
+fn test_nested_calls() {
+    println("4. 중첩 함수 호출 테스트");
+    
+    scalar result = nested_calculation(5);
+    println("nested_calculation(5) = {}", result);
+    
+    println();
+}
+
+fn nested_calculation(x: i32) -> i32 {
+    return square(double(add_one(x)));
+}
+
+fn add_one(x: i32) -> i32 {
+    return x + 1;
+}
+
+fn double(x: i32) -> i32 {
+    return x * 2;
+}
+
+fn square(x: i32) -> i32 {
+    return x * x;
+}
+
+// 5. 조건부 반환
+fn test_conditional_returns() {
+    println("5. 조건부 반환 테스트");
+    
+    scalar sign1 = get_sign(5);
+    println("get_sign(5) = {}", sign1);
+    
+    scalar sign2 = get_sign(-3);
+    println("get_sign(-3) = {}", sign2);
+    
+    scalar sign3 = get_sign(0);
+    println("get_sign(0) = {}", sign3);
+    
+    println();
+}
+
+fn get_sign(x: i32) -> string {
+    if (x > 0) {
+        return "positive";
+    } else {
+        if (x < 0) {
+            return "negative";
+        } else {
+            return "zero";
+        }
+    }
+}
+
+// 6. 기본 양자 게이트 테스트 (|0⟩, |1⟩ 리터럴 사용)
+fn test_quantum_basic() {
+    println("6. 기본 양자 게이트 테스트");
+    
+    // 양자 상태 리터럴이 지원되는지 확인
+    scalar q0 = |0⟩;
+    println("초기 상태 |0⟩ 생성됨");
+    
+    scalar q1 = |1⟩;
+    println("초기 상태 |1⟩ 생성됨");
+    
+    // 기본 게이트 적용
+    scalar h_q0 = H(q0);
+    println("H|0⟩ 적용됨");
+    
+    scalar x_q0 = X(q0);
+    println("X|0⟩ 적용됨");
+    
+    println();
+}

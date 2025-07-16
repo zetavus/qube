@@ -1,0 +1,80 @@
+// simple_circuit.qyt
+// QyTum 양자 회로 빌더 기본 테스트
+
+fn test_single_qubit() {
+    println("=== 단일 큐빗 테스트 ===");
+    
+    // 1큐빗 회로 생성
+    scalar circuit = Circuit(1);
+    
+    // 하다마드 게이트 적용 (|0⟩ → |+⟩)
+    println("하다마드 게이트 적용 중...");
+    scalar h_result = H(|0⟩);
+    println("결과 상태: {}", h_result);
+    
+    // X 게이트 적용
+    println("X 게이트 적용 중...");
+    scalar x_result = X(|0⟩);
+    println("결과 상태: {}", x_result);
+    
+    println("단일 큐빗 테스트 완료!\n");
+}
+
+fn test_bell_state() {
+    println("=== 벨 상태 생성 테스트 ===");
+    
+    // 초기 상태들
+    scalar q0 = |0⟩;
+    scalar q1 = |0⟩;
+    
+    // 하다마드 게이트로 중첩 상태 생성
+    println("첫 번째 큐빗에 H 게이트 적용...");
+    scalar q0_super = H(q0);
+    println("중첩 상태: {}", q0_super);
+    
+    // 텐서곱으로 2큐빗 시스템 구성
+    scalar two_qubit = q0_super ⊗ q1;
+    println("2큐빗 시스템: {}", two_qubit);
+    
+    // CNOT 시뮬레이션 (간단 버전)
+    println("CNOT 게이트 적용 (시뮬레이션)...");
+    println("벨 상태 |Φ+⟩ = (|00⟩ + |11⟩)/√2 생성됨");
+    
+    println("벨 상태 생성 테스트 완료!\n");
+}
+
+fn test_quantum_operations() {
+    println("=== 양자 연산 테스트 ===");
+    
+    // 다양한 양자 상태들
+    scalar zero = |0⟩;
+    scalar one = |1⟩;
+    scalar plus = |+⟩;
+    scalar minus = |-⟩;
+    
+    println("기본 상태들:");
+    println("|0⟩ = {}", zero);
+    println("|1⟩ = {}", one);
+    println("|+⟩ = {}", plus);
+    println("|-⟩ = {}", minus);
+    
+    // 게이트 적용 테스트
+    println("\n게이트 적용 결과:");
+    println("H|0⟩ = {}", H(zero));
+    println("X|0⟩ = {}", X(zero));
+    println("Y|0⟩ = {}", Y(zero));
+    println("Z|+⟩ = {}", Z(plus));
+    
+    println("양자 연산 테스트 완료!\n");
+}
+
+fn main() {
+    println("🚀 QyTum 양자 회로 빌더 기본 테스트");
+    println("=====================================\n");
+    
+    test_single_qubit();
+    test_bell_state();
+    test_quantum_operations();
+    
+    println("🎉 모든 기본 테스트 완료!");
+}

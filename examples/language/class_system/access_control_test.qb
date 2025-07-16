@@ -1,0 +1,62 @@
+class BankAccount {
+    private balance: f64;
+    public name: str;
+    
+    public fn init(self, initial_balance) {
+        self.balance = initial_balance;
+        println("Account initialized with balance: {}", self.balance);
+    }
+    
+    public fn deposit(self, amount) {
+        self.balance = self.balance + amount;
+        println("Deposited {}. New balance: {}", amount, self.balance);
+    }
+    
+    private fn validate(self) {
+        return self.balance >= 0;
+    }
+    
+    public fn get_balance(self) {
+        if (self.validate()) {  // ✅ 내부에서 private 메서드 호출 가능
+            return self.balance;
+        }
+        return 0;
+    }
+    
+    public fn withdraw(self, amount) {
+        if (self.balance >= amount) {
+            self.balance = self.balance - amount;
+            println("Withdrew {}. New balance: {}", amount, self.balance);
+        } else {
+            println("Insufficient funds! Current balance: {}", self.balance);
+        }
+    }
+}
+
+fn main() {
+    println("=== QyTum 접근 제어자 테스트 ===");
+    
+    // ✅ 정상 동작: public 필드만 초기화
+    account = BankAccount { name: "John Doe" };
+    println("Account created for: {}", account.name);
+    
+    // ✅ private 필드 초기화
+    account.init(1000.0);
+    
+    // ✅ 정상 동작: public 메서드 호출
+    account.deposit(500.0);
+    
+    // ✅ 정상 동작: public 메서드로 private 필드 접근
+    balance = account.get_balance();
+    println("Current balance via public method: {}", balance);
+    
+    // ✅ 정상 동작: 출금 테스트
+    account.withdraw(200.0);
+    account.withdraw(2000.0);  // 잔액 부족 테스트
+    
+    println("=== 에러 테스트 ===");
+    
+    // ❌ 에러 발생: private 필드 직접 접근
+    println("Trying to access private field...");
+    println("Balance: {}", account.balance);
+}

@@ -1,0 +1,33 @@
+// test_existing_class.qyt
+// 기존에 작동했던 방식으로 테스트
+
+class BankAccount {
+    protected balance: f64;    // Protected 필드 테스트
+    public name: str;
+    
+    public fn init(name: str, balance: f64) {
+        self.name = name;
+        self.balance = balance;
+    }
+    
+    public fn get_balance() -> f64 {
+        return self.balance;
+    }
+}
+
+fn main() {
+    println("=== Testing Basic Class Creation ===");
+    
+    // 기존 방식 시도
+    account = BankAccount {
+        name: "John",
+        balance: 1000.0
+    };
+    
+    println("Account name: {}", account.name);
+    println("Account balance: {}", account.get_balance());
+    
+    println("=== Testing Protected Access ===");
+    // Protected 필드 직접 접근 시도
+    println("Direct balance access: {}", account.balance);
+}

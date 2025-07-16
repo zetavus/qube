@@ -1,0 +1,35 @@
+// algorithms/search/simple_function_test.qb
+// 단계별 테스트: 회로 내부 함수 호출
+
+fn test_function() {
+    println("🔧 함수가 회로 내부에서 호출됨!");
+    apply H to q0;
+    apply X to q1;
+}
+
+fn main() {
+    println("🧪 간단한 함수 호출 테스트");
+    println("========================");
+    
+    circuit SimpleTest(2) {
+        println("회로 시작");
+        
+        // 기본 게이트 (작동 확인용)
+        apply H to q0;
+        
+        // 함수 호출 테스트
+        println("함수 호출 시도...");
+        test_function();
+        
+        println("회로 완료");
+    }
+    
+    println("회로 생성 중...");
+    circuit = SimpleTest();
+    
+    println("측정 중...");
+    result = measure(circuit, [0, 1]);
+    
+    println("결과: {}", result);
+    println("✅ 테스트 완료!");
+}

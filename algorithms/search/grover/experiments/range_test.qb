@@ -1,0 +1,16 @@
+// algorithms/search/range_test.qb
+// range 문법 테스트
+
+fn main() {
+    println("range 문법 테스트");
+    
+    // range 생성 테스트
+    numbers = range(0, 4);
+    println("range(0, 4): {}", numbers);
+    
+    // for 반복문 테스트 (회로 외부에서)
+    println("for 반복문 테스트:");
+    for i in numbers {
+        println("  i = {}", i);
+    }
+}

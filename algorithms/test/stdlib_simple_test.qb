@@ -1,0 +1,37 @@
+// Qube 표준 라이브러리 간단 테스트
+// 실행: qube algorithms/test/stdlib_simple_test.qb
+
+println("=== Qube stdlib 간단 테스트 ===");
+
+// 1. 수학 함수 테스트 (str 제외)
+println("1. 수학 함수 테스트");
+println("abs(-5) = " + toString(abs(-5)));
+println("sqrt(16) = " + toString(sqrt(16)));
+println("pow(2, 3) = " + toString(pow(2, 3)));
+println("");
+
+// 2. 컬렉션 함수 테스트
+println("2. 컬렉션 함수 테스트");
+numbers = [1, 2, 3, 4, 5];
+println("numbers = [1, 2, 3, 4, 5]");
+println("len(numbers) = " + toString(len(numbers)));
+println("max(numbers) = " + toString(max(numbers)));
+println("min(numbers) = " + toString(min(numbers)));
+println("sum(numbers) = " + toString(sum(numbers)));
+println("");
+
+// 3. 범위 함수 테스트
+println("3. 범위 함수 테스트");
+range_result = range(5);
+println("range(5) = " + toString(range_result));
+println("");
+
+// 4. toString 함수 테스트
+println("4. toString 함수 테스트");
+println("toString(42) = " + toString(42));
+println("toString(3.14) = " + toString(3.14));
+println("toString(true) = " + toString(true));
+println("toString(false) = " + toString(false));
+println("");
+
+println("=== 간단 테스트 완료! ===");

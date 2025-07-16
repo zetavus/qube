@@ -1,0 +1,45 @@
+// algorithms/search/grover_simple_test.qb
+// 기본 문법 확인용 간단한 Grover
+
+fn main() {
+    println("🎯 간단한 Grover 테스트");
+    println("=====================");
+    
+    // 기본 회로 테스트
+    circuit SimpleGrover(5) {
+        println("초기화: 범위 문법 테스트");
+        apply H to ~;  // 범위 문법 테스트
+        
+        println("Oracle 테스트");
+        apply X to q1;
+        apply X to q3;
+        apply CZ to (q0, q1, q2, q3, q4);
+        apply X to q1;
+        apply X to q3;
+        
+        println("Diffusion 테스트");
+        apply H to ~;
+        apply X to ~;
+        apply CZ to (q0, q1, q2, q3, q4);
+        apply X to ~;
+        apply H to ~;
+    }
+    
+    println("회로 생성 중...");
+    grover = SimpleGrover();
+    
+    println("측정 중...");
+    result = measure(grover, [0, 1, 2, 3, 4]);
+    
+    println("결과: [{}] ", result);
+    
+    // 간단한 십진수 변환
+    decimal = result[0] + result[1]*2 + result[2]*4 + result[3]*8 + result[4]*16;
+    println("십진수: {}", decimal);
+    
+    if (decimal == 21) {
+        println("✅ 성공! |10101⟩ 발견");
+    } else {
+        println("❌ 다른 상태: {}", decimal);
+    }
+}

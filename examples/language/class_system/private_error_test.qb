@@ -1,0 +1,18 @@
+class BankAccount {
+    private balance: f64;
+    public name: str;
+    
+    private fn validate(self) {
+        return self.balance >= 0;
+    }
+}
+
+fn main() {
+    println("=== PRIVATE 접근 에러 테스트 ===");
+    
+    account = BankAccount { name: "Test" };
+    
+    // ❌ 이것은 에러가 발생해야 함
+    println("Trying to access private field...");
+    println("Balance: {}", account.balance);
+}

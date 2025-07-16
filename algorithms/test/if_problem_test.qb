@@ -1,0 +1,25 @@
+// if문 문제 테스트
+fn main() {
+    println("if문 문제 테스트");
+    
+    test_simple_if();
+    test_if_in_loop();
+}
+
+fn test_simple_if() {
+    println("1. 단순 if문:");
+    
+    scalar x = 1;
+    if (x == 1) {
+        println("단순 if 성공");
+    }
+}
+
+fn test_if_in_loop() {
+    println("2. 반복문 내 if문:");
+    
+    for i in 0..2 {
+        println("반복 {}", i);
+        // if문 제거한 상태로 먼저 테스트
+    }
+}

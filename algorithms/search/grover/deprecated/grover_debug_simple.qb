@@ -1,0 +1,70 @@
+// algorithms/search/grover_debug_simple.qb
+// 간단한 Grover 디버깅 버전
+
+fn create_simple_grover() {
+    circuit SimpleGrover(5) {
+        println("🔧 간단한 Grover 디버깅");
+        println("=======================");
+        
+        // 초기화: 모든 큐빗에 H
+        apply H to ~;
+        println("1️⃣ 초기화 완료");
+        
+        // Oracle 단계별 테스트
+        println("2️⃣ Oracle 테스트:");
+        apply X to q1;
+        println("  - X to q1 완료");
+        
+        apply X to q3;
+        println("  - X to q3 완료");
+        
+        apply CZ to (q0, q1, q2, q3, q4);
+        println("  - 5큐빗 CZ 완료");
+        
+        apply X to q1;
+        apply X to q3;
+        println("  - Oracle 복원 완료");
+        
+        // Diffusion 단계별 테스트
+        println("3️⃣ Diffusion 테스트:");
+        apply H to ~;
+        println("  - H to ~ 완료");
+        
+        apply X to ~;
+        println("  - X to ~ 완료");
+        
+        apply CZ to (q0, q1, q2, q3, q4);
+        println("  - CZ 완료");
+        
+        apply X to ~;
+        println("  - X 복원 완료");
+        
+        apply H to ~;
+        println("  - H 복원 완료");
+        
+        println("4️⃣ 1회 Grover 반복 완료");
+    }
+    return SimpleGrover(5);
+}
+
+fn main() {
+    println("🎯 간단한 Grover 디버깅");
+    println("=======================");
+    
+    grover_circuit = create_simple_grover();
+    result = measure(grover_circuit, [0, 1, 2, 3, 4]);
+    decimal_value = result[0] + result[1]*2 + result[2]*4 + result[3]*8 + result[4]*16;
+    
+    println("");
+    println("📊 결과:");
+    if (decimal_value == 21) {  // |10101⟩
+        println("✅ 성공! |10101⟩ 상태 발견");
+    } else {
+        println("🔄 다른 상태: {}", decimal_value);
+    }
+    
+    println("");
+    println("🔍 분석:");
+    println("• 모든 단계가 실행되었는지 확인");
+    println("• 에러가 발생한 단계 확인");
+}

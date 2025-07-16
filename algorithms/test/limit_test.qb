@@ -1,0 +1,20 @@
+// 정확히 4개 함수 테스트
+fn main() {
+    println("4개 함수 테스트");
+    
+    func1();
+    func2();
+    func3();
+}
+
+fn func1() {
+    println("함수 1");
+}
+
+fn func2() {
+    println("함수 2");
+}
+
+fn func3() {
+    println("함수 3");
+}

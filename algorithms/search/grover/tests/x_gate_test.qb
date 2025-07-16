@@ -1,0 +1,32 @@
+// X 게이트 단독 테스트
+fn create_x_test_circuit() {
+    circuit XTest(3) {
+        // 초기 상태: |000⟩
+        apply X to q0;  // |000⟩ → |001⟩ 
+    }
+    return XTest(3);
+}
+
+fn main() {
+    println("🧪 X 게이트 단독 테스트");
+    println("===================");
+    println("예상: |000⟩ → |001⟩");
+    println("확률: |001⟩ = 100%, 나머지 = 0%");
+    println("");
+    
+    // X 게이트 단독 테스트
+    x_circuit = create_x_test_circuit();
+    result = measure(x_circuit, [0, 1, 2]);
+    println("🎯 X 게이트 테스트 결과:");
+    println("큐빗 상태: [" + result[0] + ", " + result[1] + ", " + result[2] + "]");
+    
+    decimal_value = result[0] + result[1]*2 + result[2]*4;
+    println("십진수 값:");
+    println(decimal_value);
+    
+    if (decimal_value == 1) {
+        println("✅ X 게이트 정상 동작!");
+    } else {
+        println("❌ X 게이트 문제 발생");
+    }
+}

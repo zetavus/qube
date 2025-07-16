@@ -1,0 +1,39 @@
+// simple_protected_test.qyt
+
+class Vehicle {
+    protected engine: str;    
+    private vin: str;         
+    public brand: str;        
+    
+    public fn init() {
+        self.brand = "Generic";
+        self.engine = "V4";
+        self.vin = "SECRET123";
+    }
+    
+    protected fn start_engine() {
+        println("Engine {} started", self.engine);
+    }
+    
+    public fn display_info() {
+        println("Brand: {}, Engine: {}", self.brand, self.engine);
+    }
+}
+
+fn main() {
+    println("=== Protected Access Test ===");
+    
+    // 기존 방식으로 객체 생성
+    vehicle = Vehicle();
+    vehicle.init();
+    
+    // ✅ public 멤버 접근 가능
+    println("Brand: {}", vehicle.brand);
+    vehicle.display_info();
+    
+    println("=== Testing Protected Access ===");
+    
+    // ❌ protected 멤버 직접 접근 불가 (외부에서)
+    println("Trying to access protected field...");
+    println("Engine: {}", vehicle.engine);     // 에러 발생해야 함
+}

@@ -1,0 +1,135 @@
+// Phase Kickback 직접 테스트
+
+fn test_basic_phase_kickback() {
+    println("🔍 Phase Kickback 기본 테스트");
+    println("=============================");
+    
+    println("=== 테스트 1: 기본 중첩 상태 ===");
+    circuit BasicSuperposition(2) {
+        apply H to q0;
+        apply X to q1;
+        apply H to q1;
+    }
+    
+    basic = BasicSuperposition(2);
+    result1 = measure(basic, [0, 1]);
+    println("기본 상태: {}", result1);
+    println("예상: 랜덤한 분포");
+    println("");
+    
+    println("=== 테스트 2: CNOT 없이 ===");
+    circuit WithoutCNOT(2) {
+        apply H to q0;
+        apply X to q1;
+        apply H to q1;
+        apply H to q0;
+    }
+    
+    no_cnot = WithoutCNOT(2);
+    result2 = measure(no_cnot, [0]);
+    println("CNOT 없이: {}", result2);
+    println("예상: [0] (원래 상태로 복귀)");
+    println("");
+    
+    println("=== 테스트 3: CNOT 포함 ===");
+    circuit WithCNOT(2) {
+        apply H to q0;
+        apply X to q1;
+        apply H to q1;
+        apply CNOT to (q0, q1);
+        apply H to q0;
+    }
+    
+    with_cnot = WithCNOT(2);
+    result3 = measure(with_cnot, [0]);
+    println("CNOT 포함: {}", result3);
+    println("예상: [1] (Phase Kickback 효과)");
+    println("");
+}
+
+fn test_explicit_phase() {
+    println("🧪 명시적 위상 테스트");
+    println("===================");
+    
+    println("=== 직접 위상 조작 테스트 ===");
+    circuit PhaseTest(1) {
+        apply H to q0;
+        apply Z to q0;
+        apply H to q0;
+    }
+    
+    phase_test = PhaseTest(1);
+    result_phase = measure(phase_test, [0]);
+    println("위상 조작 결과: {}", result_phase);
+    println("예상: [1] (Z 게이트 효과)");
+    println("");
+}
+
+fn compare_oracle_effects() {
+    println("⚖️  Oracle 효과 비교");
+    println("===================");
+    
+    println("=== Oracle A: 아무것도 안 함 ===");
+    circuit OracleA(2) {
+        apply H to q0;
+        apply X to q1;
+        apply H to q1;
+        // 아무것도 안 함
+        apply H to q0;
+    }
+    
+    oracle_a = OracleA(2);
+    result_a = measure(oracle_a, [0]);
+    println("Oracle A: {}", result_a);
+    println("");
+    
+    println("=== Oracle B: X 게이트만 ===");
+    circuit OracleB(2) {
+        apply H to q0;
+        apply X to q1;
+        apply H to q1;
+        apply X to q1;  // 출력 큐빗만 뒤집기
+        apply H to q0;
+    }
+    
+    oracle_b = OracleB(2);
+    result_b = measure(oracle_b, [0]);
+    println("Oracle B: {}", result_b);
+    println("");
+    
+    println("=== Oracle C: CNOT ===");
+    circuit OracleC(2) {
+        apply H to q0;
+        apply X to q1;
+        apply H to q1;
+        apply CNOT to (q0, q1);  // 조건부 뒤집기
+        apply H to q0;
+    }
+    
+    oracle_c = OracleC(2);
+    result_c = measure(oracle_c, [0]);
+    println("Oracle C: {}", result_c);
+    println("");
+    
+    println("분석:");
+    println("- Oracle A, B: 상수함수 (입력 무관)");
+    println("- Oracle C: 균형함수 (입력 의존)");
+    println("- 이론상 A,B → [0], C → [1]이어야 함");
+}
+
+fn main() {
+    println("🔬 Qube Phase Kickback 진단");
+    println("===========================");
+    println("목적: Phase Kickback이 올바르게 작동하는지 확인");
+    println("");
+    
+    test_basic_phase_kickback();
+    test_explicit_phase();
+    compare_oracle_effects();
+    
+    println("🎯 핵심 질문:");
+    println("=============");
+    println("1. CNOT이 Phase Kickback을 일으키는가?");
+    println("2. Z 게이트가 올바르게 위상을 변경하는가?");
+    println("3. Deutsch-Jozsa가 이론대로 작동하는가?");
+}

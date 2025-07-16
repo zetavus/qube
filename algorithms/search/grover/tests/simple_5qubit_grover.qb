@@ -1,0 +1,139 @@
+// 간단한 5큐빗 Grover 테스트
+// 측정 문제 해결 버전
+
+// 5큐빗 Grover 알고리즘 (4회 반복)
+fn create_5qubit_grover() {
+    circuit Grover5Q(5) {
+        // 1. 초기화: 균등 중첩
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+        apply H to q3;
+        apply H to q4;
+        
+        // 2. Grover 반복 4회
+        // 목표: |10101⟩ (q4=1, q3=0, q2=1, q1=0, q0=1)
+        
+        // === 1번째 반복 ===
+        // Oracle: |10101⟩에 위상 뒤집기
+        apply X to q3;  // 0 → 1
+        apply X to q1;  // 0 → 1
+        apply CZ to (q4, q3, q2, q1, q0);  // 5큐빗 제어 Z
+        apply X to q3;  // 1 → 0 복원
+        apply X to q1;  // 1 → 0 복원
+        
+        // Diffusion: 평균 중심 반사
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        
+        // === 2번째 반복 ===
+        apply X to q3; apply X to q1;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q3; apply X to q1;
+        
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        
+        // === 3번째 반복 ===
+        apply X to q3; apply X to q1;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q3; apply X to q1;
+        
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        
+        // === 4번째 반복 ===
+        apply X to q3; apply X to q1;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q3; apply X to q1;
+        
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+    }
+    
+    return Grover5Q(5);
+}
+
+fn main() {
+    println("🚀 5큐빗 Grover 검색 알고리즘 (간단 버전)");
+    println("=========================================");
+    println("목표: |10101⟩ 상태 찾기 (십진수: 21)");
+    println("검색 공간: 32개 상태");
+    println("고전적 확률: 3.125%");
+    println("목표 성공률: ~85%");
+    println("");
+    
+    println("🧪 첫 번째 실행:");
+    println("----------------");
+    grover = create_5qubit_grover();
+    result1 = grover.measure();
+    
+    // 결과 분석
+    decimal1 = result1[0] + result1[1]*2 + result1[2]*4 + result1[3]*8 + result1[4]*16;
+    
+    println("측정 결과 1:");
+    if (result1[4] == 1 && result1[3] == 0 && result1[2] == 1 && result1[1] == 0 && result1[0] == 1) {
+        println("✅ 성공! |10101⟩ 상태 발견");
+    } else {
+        println("🔄 다른 상태 측정됨");
+    }
+    
+    println("");
+    println("🧪 두 번째 실행:");
+    println("----------------");
+    grover2 = create_5qubit_grover();
+    result2 = grover2.measure();
+    
+    decimal2 = result2[0] + result2[1]*2 + result2[2]*4 + result2[3]*8 + result2[4]*16;
+    
+    println("측정 결과 2:");
+    if (result2[4] == 1 && result2[3] == 0 && result2[2] == 1 && result2[1] == 0 && result2[0] == 1) {
+        println("✅ 성공! |10101⟩ 상태 발견");
+    } else {
+        println("🔄 다른 상태 측정됨");
+    }
+    
+    println("");
+    println("🧪 세 번째 실행:");
+    println("----------------");
+    grover3 = create_5qubit_grover();
+    result3 = grover3.measure();
+    
+    decimal3 = result3[0] + result3[1]*2 + result3[2]*4 + result3[3]*8 + result3[4]*16;
+    
+    println("측정 결과 3:");
+    if (result3[4] == 1 && result3[3] == 0 && result3[2] == 1 && result3[1] == 0 && result3[0] == 1) {
+        println("✅ 성공! |10101⟩ 상태 발견");
+    } else {
+        println("🔄 다른 상태 측정됨");
+    }
+    
+    println("");
+    println("🎯 핵심 확인사항:");
+    println("- 스마트 CZ 게이트 작동 여부");
+    println("- 5큐빗 제어 Z 게이트 정상 동작");
+    println("- Grover 알고리즘 확률 증폭 효과");
+    
+    if (decimal1 == 21 || decimal2 == 21 || decimal3 == 21) {
+        println("");
+        println("🎉 5큐빗 Grover 알고리즘 작동 확인!");
+        println("💪 스마트 CZ 게이트 성공적으로 구현됨!");
+        println("🚀 이제 6큐빗, 7큐빗, 8큐빗으로 확장 가능!");
+    } else {
+        println("");
+        println("🔧 알고리즘 디버깅 필요");
+        println("확률이 높아졌는지 추가 테스트 필요");
+    }
+}

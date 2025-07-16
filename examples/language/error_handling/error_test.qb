@@ -1,0 +1,10 @@
+// 에러 처리 개선 테스트
+
+circuit TestCircuit(2) {
+    apply H to q0;
+    apply X to q5;  // 범위 초과 에러 테스트
+    apply CNOT to (q0, q1);
+}
+
+println("회로 생성 테스트:");
+test_circuit = TestCircuit(2);

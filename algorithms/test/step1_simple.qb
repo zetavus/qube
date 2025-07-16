@@ -1,0 +1,21 @@
+// 초간단 측정 테스트 - 기존 예제와 동일한 패턴
+fn main() {
+    println("🧪 초간단 측정 테스트");
+    println("===================");
+    
+    simple_measurement_test();
+}
+
+fn simple_measurement_test() {
+    println("기본 측정 테스트:");
+    
+    // 기존 quantum_algorithms.qb와 동일한 방식
+    qubit coin = |0⟩;
+    println("초기 상태:", coin);
+    
+    // 측정 시도
+    scalar result = measure(coin);
+    println("측정 결과:", result);
+    
+    println("✅ 기본 테스트 완료");
+}

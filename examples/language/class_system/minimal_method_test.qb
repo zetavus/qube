@@ -1,0 +1,19 @@
+class Test {
+    public name: str;
+    
+    public fn hello(self) {
+        println("Hello from method!");
+    }
+}
+
+fn main() {
+    println("Before object creation");
+    
+    obj = Test { name: "test" };
+    
+    println("After object creation");
+    
+    obj.hello();
+    
+    println("After method call");
+}

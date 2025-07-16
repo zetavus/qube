@@ -1,0 +1,28 @@
+// algorithms/test/debug_range_step1.qb
+// 범위 문법 단계별 디버깅 - 1단계
+
+fn test_step1() {
+    println("🔧 범위 문법 디버깅 1단계");
+    println("==========================");
+    
+    circuit DebugStep1(3) {
+        println("1️⃣ 기본 문법 확인:");
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+        
+        println("2️⃣ 괄호 문법 확인:");
+        apply CZ to (q0, q1);
+    }
+    return DebugStep1(3);
+}
+
+fn main() {
+    println("🎯 1단계 디버깅");
+    println("===============");
+    
+    test_circuit = test_step1();
+    result = measure(test_circuit, [0, 1, 2]);
+    
+    println("✅ 1단계 완료: {}", result);
+}

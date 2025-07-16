@@ -1,0 +1,160 @@
+fn main() {
+    println("=== 호환 가능한 고급 함수 데모 ===");
+    
+    // 1. 고차 함수
+    higher_order_demo();
+    
+    // 2. 유사 클로저 (스코프 활용)
+    closure_like_demo();
+    
+    // 3. 양자 기본 함수
+    quantum_basic_demo();
+    
+    // 4. 재귀 함수
+    recursion_demo();
+}
+
+fn higher_order_demo() {
+    println("1. 고차 함수:");
+    
+    scalar numbers = [1, 2, 3, 4, 5];
+    
+    // Map: 각 원소에 함수 적용
+    scalar squared = map(square, numbers);
+    println("제곱: {}", squared);
+    
+    // Filter: 조건에 맞는 원소만 필터링
+    scalar evens = filter(is_even, numbers);
+    println("짝수들: {}", evens);
+    
+    // Reduce: 원소들을 하나로 축약
+    scalar sum = reduce(add, numbers, 0);
+    println("합계: {}", sum);
+    
+    println();
+}
+
+fn square(x: i32) -> i32 {
+    return x * x;
+}
+
+fn is_even(x: i32) -> bool {
+    return x % 2 == 0;
+}
+
+fn add(a: i32, b: i32) -> i32 {
+    return a + b;
+}
+
+fn closure_like_demo() {
+    println("2. 클로저 유사 동작 (스코프 활용):");
+    
+    scalar multiplier = 3;
+    scalar numbers = [1, 2, 3, 4, 5];
+    
+    // 클로저 대신 매개변수로 전달
+    scalar results = multiply_all(numbers, multiplier);
+    
+    println("3배수들: {}", results);
+    println();
+}
+
+fn multiply_all(numbers: scalar, multiplier: i32) -> scalar {
+    scalar results = [];
+    scalar length = len(numbers);
+    
+    for i in range(length) {
+        scalar result = numbers[i] * multiplier;
+        // push 대신 인덱스 할당 (만약 지원된다면)
+        // 또는 새 배열 생성
+    }
+    
+    // 임시로 원본 반환 (실제 구현은 더 복잡)
+    return numbers;
+}
+
+fn quantum_basic_demo() {
+    println("3. 기본 양자 함수:");
+    
+    // 간단한 오라클 시뮬레이션
+    scalar target = 5;
+    scalar found = simple_search(target);
+    println("검색 결과: {}", found);
+    
+    // 기본 양자 게이트 조합
+    scalar q = |0⟩;
+    scalar transformed = apply_gates(q);
+    println("게이트 적용 완료");
+    
+    // 가역 연산 시뮬레이션
+    scalar input = 42;
+    scalar encoded = xor_encode(input);
+    scalar decoded = xor_encode(encoded);  // XOR은 자기 역함수
+    println("가역 연산: {} → {} → {}", input, encoded, decoded);
+    
+    println();
+}
+
+fn simple_search(target: i32) -> bool {
+    // 간단한 검색 함수
+    scalar space = [1, 2, 3, 4, 5, 6, 7, 8];
+    
+    for i in range(len(space)) {
+        if (space[i] == target) {
+            return true;
+        }
+    }
+    return false;
+}
+
+fn apply_gates(q: scalar) -> scalar {
+    // 기본 양자 게이트들의 조합
+    scalar h_q = H(q);
+    scalar rz_q = RZ(1.047, h_q);  // PI/3 대신 직접 값 사용
+    return rz_q;
+}
+
+fn xor_encode(x: i32) -> i32 {
+    return x ^ 43690;  // 0xAAAA 대신 10진수 사용
+}
+
+fn recursion_demo() {
+    println("4. 재귀 함수:");
+    
+    scalar n = 10;
+    scalar fib_result = fibonacci(n);
+    println("fibonacci({}) = {}", n, fib_result);
+    
+    scalar fact_result = factorial(5);
+    println("factorial(5) = {}", fact_result);
+    
+    // 꼬리 재귀 예시
+    scalar tail_fib = fibonacci_tail(n, 0, 1);
+    println("꼬리 재귀 fibonacci({}) = {}", n, tail_fib);
+    
+    println();
+}
+
+fn fibonacci(n: i32) -> i32 {
+    if (n <= 1) {
+        return n;
+    } else {
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+}
+
+fn factorial(n: i32) -> i32 {
+    if (n <= 1) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+fn fibonacci_tail(n: i32, a: i32, b: i32) -> i32 {
+    if (n == 0) {
+        return a;
+    } else {
+        return fibonacci_tail(n - 1, b, a + b);
+    }
+}

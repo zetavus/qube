@@ -1,0 +1,66 @@
+# 타입 시스템 및 내장 함수 확인 테스트
+println("=== Qube 타입 시스템 테스트 ===");
+
+# 1. 기본 타입들
+num = 42;
+text = "Hello";
+flag = true;
+
+println("숫자만 출력:");
+println(num);
+println("문자열만 출력:");
+println(text);
+println("불린만 출력:");
+println(flag);
+
+# 2. 문자열 연결 테스트
+println("=== 문자열 연결 테스트 ===");
+
+# 문자열끼리 연결 (이건 되는지?)
+result1 = "Hello" + " " + "World";
+println(result1);
+
+# 3. 내장 함수 확인
+println("=== 내장 함수 확인 ===");
+
+# 가능한 내장 함수들 테스트
+# println("typeof 테스트:");
+# println(typeof(num));
+
+# println("toString 테스트:");  
+# println(toString(num));
+
+# println("String 테스트:");
+# println(String(num));
+
+# 4. 숫자 연산
+println("=== 숫자 연산 ===");
+a = 10;
+b = 20;
+sum = a + b;
+println(sum);
+
+# 5. 배열 확인
+println("=== 배열 테스트 ===");
+numbers = [1, 2, 3];
+println("배열 자체 출력:");
+println(numbers);
+
+# 6. 함수 반환값 확인
+fn get_number() {
+    return 999;
+}
+
+fn get_string() {
+    return "함수에서 반환된 문자열";
+}
+
+num_result = get_number();
+str_result = get_string();
+
+println("함수 반환 숫자:");
+println(num_result);
+println("함수 반환 문자열:");
+println(str_result);
+
+println("=== 테스트 완료 ===");

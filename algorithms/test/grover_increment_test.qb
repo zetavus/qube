@@ -1,0 +1,39 @@
+// Grover와 동일한 패턴으로 += 테스트
+fn main() {
+    println("Grover 패턴 += 테스트");
+    println("===================");
+    
+    performance_test_fixed();
+}
+
+fn performance_test_fixed() {
+    println("📊 성능 테스트 (5회):");
+    
+    scalar trials = 5;
+    scalar successes = 0;
+    
+    for i in 0..trials {
+        println("시도 {}: ", i + 1);
+        
+        qubit test_qubit = H(|0⟩);
+        scalar result = measure(test_qubit);
+        
+        if (result == 1) {
+            println("  → ✅ 성공!");
+            successes += 1;  // ← += 사용
+            println("  → 현재 성공수: {}", successes);
+        } else {
+            println("  → 🔄 실패");
+        }
+        
+        println("  반복 끝 - 성공수: {}", successes);
+    }
+    
+    println("");
+    println("📈 최종 결과:");
+    println("총 시도: {}", trials);
+    println("성공 횟수: {}", successes);
+    
+    scalar success_rate = successes / trials;
+    println("성공률: {:.1f}%", success_rate * 100);
+}

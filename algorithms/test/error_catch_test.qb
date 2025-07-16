@@ -1,0 +1,29 @@
+// += 연산 에러 상세 확인
+fn main() {
+    println("+= 에러 상세 확인");
+    println("=================");
+    
+    test_detailed_increment();
+}
+
+fn test_detailed_increment() {
+    scalar count = 0;
+    println("초기 count: {}", count);
+    
+    // 조건문 밖에서 += 테스트
+    println("조건문 밖에서 += 시도...");
+    count += 1;
+    println("조건문 밖 += 성공: {}", count);
+    
+    // 조건문 안에서 += 테스트
+    if (count == 1) {
+        println("조건문 진입");
+        println("조건문 안에서 += 시도...");
+        
+        count += 1;
+        
+        println("조건문 안 += 성공: {}", count);
+    }
+    
+    println("최종 count: {}", count);
+}

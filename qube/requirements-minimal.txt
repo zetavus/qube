@@ -1,0 +1,5 @@
+# requirements-minimal.txt
+# QyTum 실행을 위한 최소 요구사항
+
+numpy>=1.21.0
+scipy>=1.7.0

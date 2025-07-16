@@ -1,0 +1,28 @@
+// test_comprehensive.qyt - 종합 테스트
+import { add, multiply, PI } from "module/math_utils";
+import { reverse_string } from "module/string_utils";
+import { Calculator } from "module/calculator";
+
+fn main() {
+    println("=== QyTum 모듈 시스템 종합 테스트 ===");
+    
+    // 1. 수학 함수 테스트
+    println("\\n1. 수학 함수 테스트:");
+    const math_result = add(multiply(5, 3), 7);
+    println("  add(multiply(5, 3), 7) = {}", math_result);
+    println("  PI = {}", PI);
+    
+    // 2. 문자열 함수 테스트
+    println("\\n2. 문자열 함수 테스트:");
+    const str_result = reverse_string("Module");
+    println("  reverse_string(Module) = {}", str_result);
+    
+    // 3. 클래스 테스트
+    println("\\n3. 클래스 테스트:");
+    calculator = Calculator.new();  // let 제거!
+    calculator.add(PI);
+    calculator.multiply(2.0);
+    println("  Calculator: PI * 2 = {}", calculator.get_value());
+    
+    println("\\n✅ 모든 테스트 완료!");
+}

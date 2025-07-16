@@ -1,0 +1,100 @@
+fn main() {
+    println("=== QyTum 언어 종합 데모 ===");
+    
+    // 1. 기본 타입들
+    scalar integer = 42;
+    scalar floating = 3.14159;
+    scalar complex_num = 3.0 + 4.0i;
+    scalar text = "안녕하세요, QyTum!";
+    scalar flag = true;
+    
+    println("1. 기본 타입:");
+    println("정수:", integer);
+    println("실수:", floating);
+    println("복소수:", complex_num);
+    println("문자열:", text);
+    println("불리언:", flag);
+    println();
+    
+    // 2. 배열과 반복문
+    scalar numbers = [1, 2, 3, 4, 5];
+    scalar sum = 0;
+    
+    for i in 0..len(numbers) {
+        sum += numbers[i];
+    }
+    
+    println("2. 배열과 반복:");
+    println("배열:", numbers);
+    println("합계:", sum);
+    println();
+    
+    // 3. 조건문
+    if sum > 10 {
+        println("3. 조건문: 합이 10보다 큽니다.");
+    } else {
+        println("3. 조건문: 합이 10 이하입니다.");
+    }
+    println();
+    
+    // 4. 양자 상태들
+    qubit zero = |0⟩;
+    qubit one = |1⟩;
+    qubit plus = |+⟩;
+    qubit minus = |-⟩;
+    
+    println("4. 기본 양자 상태들:");
+    println("|0⟩ 상태:", zero);
+    println("|1⟩ 상태:", one);
+    println("|+⟩ 상태:", plus);
+    println("|-⟩ 상태:", minus);
+    println();
+    
+    // 5. 양자 게이트
+    qubit q = |0⟩;
+    println("5. 양자 게이트 적용:");
+    println("초기 상태:", q);
+    
+    q = H(q);
+    println("H 게이트 후:", q);
+    
+    q = RZ(PI/4, q);
+    println("RZ(π/4) 후:", q);
+    
+    q = H(q);
+    println("다시 H 게이트 후:", q);
+    println();
+    
+    // 6. 양자 측정
+    println("6. 양자 측정 (10번):");
+    for i in 0..10 {
+        qubit test_q = |+⟩;
+        bit result = measure(test_q);
+        println("측정", i + 1, ":", result);
+    }
+    println();
+    
+    // 7. 벨 상태 생성
+    qubit q1 = |0⟩;
+    qubit q2 = |0⟩;
+    qubit bell = CNOT(H(q1), q2);
+    
+    println("7. 벨 상태:");
+    println("생성된 벨 상태:", bell);
+    println();
+    
+    // 8. 함수 호출
+    scalar fib_result = fibonacci(10);
+    println("8. 함수 호출:");
+    println("fibonacci(10) =", fib_result);
+    
+    println("=== 데모 완료 ===");
+}
+
+fn fibonacci(n: i32) -> i32 {
+    if n <= 1 {
+        return n;
+    } else {
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+}

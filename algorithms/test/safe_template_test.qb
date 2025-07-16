@@ -1,0 +1,11 @@
+println("Template test start");
+
+name = "Qube";
+
+println("Step 1: Normal string");
+println("Hello World");
+
+println("Step 2: Template string");
+println("${name}");
+
+println("Template test complete");

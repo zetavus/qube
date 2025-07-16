@@ -1,0 +1,45 @@
+class Person {
+    private name: str;
+    private age: i32;
+    
+    constructor() {
+        self.name = "Unknown";
+        self.age = 0;
+        println("✅ Default constructor: {}", self.name);
+    }
+    
+    constructor(name: str) {
+        self.name = name;
+        self.age = 0;
+        println("✅ Name constructor: {}", self.name);
+    }
+    
+    constructor(name: str, age: i32) {
+        self.name = name;
+        self.age = age;
+        println("✅ Full constructor: {} ({})", self.name, self.age);
+    }
+    
+    destructor() {
+        println("🗑️ Destructor: Goodbye {}", self.name);
+    }
+    
+    public fn get_name(self) -> str {
+        return self.name;
+    }
+}
+
+fn main() {
+    println("🧪 Constructor/Destructor execution test");
+    
+    // QyTum 방식으로 변수 선언
+    const p1 = Person();
+    const p2 = Person("Alice");  
+    const p3 = Person("Bob", 25);
+    
+    println("Name: {}", p1.get_name());
+    println("Name: {}", p2.get_name());
+    println("Name: {}", p3.get_name());
+    
+    println("Test completed!");
+}

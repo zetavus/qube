@@ -1,0 +1,59 @@
+class BankAccount {
+    private balance: f64;
+    public name: str;
+    
+    public fn init(self, initial_balance) {
+        self.balance = initial_balance;
+        println("Account initialized with balance: {}", self.balance);
+    }
+    
+    public fn deposit(self, amount) {
+        self.balance = self.balance + amount;
+        println("Deposited {}. New balance: {}", amount, self.balance);
+    }
+    
+    private fn validate(self) {
+        return self.balance >= 0;
+    }
+    
+    public fn get_balance(self) {
+        if (self.validate()) {
+            return self.balance;
+        }
+        return 0;
+    }
+    
+    public fn withdraw(self, amount) {
+        if (self.balance >= amount) {
+            self.balance = self.balance - amount;
+            println("Withdrew {}. New balance: {}", amount, self.balance);
+        } else {
+            println("Insufficient funds! Current balance: {}", self.balance);
+        }
+    }
+}
+
+fn main() {
+    println("=== QyTum 접근 제어자 완전 테스트 ===");
+    
+    // 1. 객체 생성
+    account = BankAccount { name: "John Doe" };
+    println("Account created for: {}", account.name);
+    
+    // 2. 초기화
+    account.init(1000.0);
+    
+    // 3. 입금 테스트
+    account.deposit(500.0);
+    
+    // 4. 잔액 조회
+    balance = account.get_balance();
+    println("Current balance via public method: {}", balance);
+    
+    // 5. 출금 테스트
+    account.withdraw(200.0);
+    account.withdraw(2000.0);
+    
+    println("=== 모든 PUBLIC 기능 테스트 완료! ===");
+    println("이제 PRIVATE 접근 테스트를 별도로 해보세요!");
+}

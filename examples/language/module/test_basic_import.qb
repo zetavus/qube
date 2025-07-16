@@ -1,0 +1,15 @@
+// test_basic_import.qyt - 기본 import 테스트
+import { add, multiply, square } from "module/math_utils";
+
+fn main() {
+    println("=== 기본 Import 테스트 ===");
+    
+    const sum = add(5, 3);
+    println("add(5, 3) = {}", sum);
+    
+    const product = multiply(4, 7);
+    println("multiply(4, 7) = {}", product);
+    
+    const squared = square(6);
+    println("square(6) = {}", squared);
+}

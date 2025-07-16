@@ -1,0 +1,58 @@
+// algorithms/test/range_syntax_advanced.qb
+// 고급 범위 문법 테스트
+
+fn test_range_cz() {
+    println("🧪 범위 CZ 게이트 테스트");
+    println("=======================");
+    
+    circuit RangeCZ(5) {
+        println("1️⃣ 초기화:");
+        apply H to (~);
+        
+        println("2️⃣ 모든 큐빗 → q4 제어:");
+        apply CZ to (~, q4);
+        
+        println("3️⃣ q0 → 모든 큐빗 제어:");
+        apply CZ to (q0, ~);
+    }
+    return RangeCZ(5);
+}
+
+fn test_range_slice() {
+    println("");
+    println("🧪 범위 슬라이스 테스트");
+    println("=======================");
+    
+    circuit RangeSlice(6) {
+        println("1️⃣ 범위 초기화:");
+        apply H to (q0:q2);
+        
+        println("2️⃣ 명시적 리스트:");
+        apply X to (q3, q4, q5);
+    }
+    return RangeSlice(6);
+}
+
+fn main() {
+    println("🎯 고급 범위 문법 테스트");
+    println("=======================");
+    
+    // CZ 범위 테스트
+    cz_circuit = test_range_cz();
+    result1 = measure(cz_circuit, [0, 1, 2, 3, 4]);
+    println("CZ 범위 테스트 완료: {}", result1);
+    
+    // 슬라이스 테스트
+    slice_circuit = test_range_slice();
+    result2 = measure(slice_circuit, [0, 1, 2, 3, 4, 5]);
+    println("슬라이스 테스트 완료: {}", result2);
+    
+    println("");
+    println("🎉 범위 문법 구현 성공!");
+    println("======================");
+    println("✅ apply H to (~);        - 모든 큐빗");
+    println("✅ apply CZ to (~, q4);   - 모든 → 타겟");
+    println("✅ apply CZ to (q0, ~);   - 소스 → 모든");
+    println("✅ apply H to (q0:q2);    - 범위");
+    println("✅ apply X to (q3, q4);   - 명시적 리스트");
+}

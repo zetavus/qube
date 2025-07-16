@@ -1,0 +1,234 @@
+fn main() {
+    println("=== QyTum 함수 시스템 종합 테스트 ===");
+    println();
+    
+    test_basic_functions();
+    test_parameter_types();
+    test_return_types();
+    test_recursion();
+    test_higher_order_functions();
+    test_closures();
+    test_function_overloading();
+    test_default_parameters();
+    test_variable_arguments();
+    test_quantum_functions();
+    test_error_handling();
+    
+    println();
+    println("=== 테스트 완료 ===");
+}
+
+// 1. 기본 함수 호출 테스트
+fn test_basic_functions() {
+    println("1. 기본 함수 호출 테스트");
+    
+    scalar result1 = simple_add(3, 5);
+    println("simple_add(3, 5) = {}", result1);
+    
+    no_return_function();
+    
+    scalar result2 = function_with_void();
+    println("function_with_void() = {}", result2);
+    println();
+}
+
+fn simple_add(a: i32, b: i32) -> i32 {
+    return a + b;
+}
+
+fn no_return_function() {
+    println("이 함수는 반환값이 없습니다");
+}
+
+fn function_with_void() {
+    println("void 함수 호출됨");
+}
+
+// 2. 다양한 매개변수 타입 테스트
+fn test_parameter_types() {
+    println("2. 매개변수 타입 테스트");
+    
+    scalar int_result = int_param(42);
+    println("int_param(42) = {}", int_result);
+    
+    scalar float_result = float_param(3.14);
+    println("float_param(3.14) = {}", float_result);
+    
+    scalar string_result = string_param("Hello");
+    println("string_param('Hello') = {}", string_result);
+    
+    scalar array_result = array_param([1, 2, 3]);
+    println("array_param([1,2,3]) = {}", array_result);
+    
+    scalar complex_result = complex_param(1 + 2i);
+    println("complex_param(1+2i) = {}", complex_result);
+    println();
+}
+
+fn int_param(x: i32) -> i32 { return x * 2; }
+fn float_param(x: f64) -> f64 { return x * 2.0; }
+fn string_param(s: string) -> string { return s; }
+fn array_param(arr: [i32]) -> i32 { return len(arr); }
+fn complex_param(c: complex) -> complex { return c * c; }
+
+// 3. 다양한 반환 타입 테스트
+fn test_return_types() {
+    println("3. 반환 타입 테스트");
+    
+    scalar bool_val = return_bool();
+    println("return_bool() = {}", bool_val);
+    
+    scalar array_val = return_array();
+    println("return_array() = {}", array_val);
+    
+    scalar complex_val = return_complex();
+    println("return_complex() = {}", complex_val);
+    println();
+}
+
+fn return_bool() -> bool { return true; }
+fn return_array() -> [i32] { return [1, 2, 3, 4, 5]; }
+fn return_complex() -> complex { return 3 + 4i; }
+
+// 4. 재귀 함수 테스트
+fn test_recursion() {
+    println("4. 재귀 함수 테스트");
+    
+    scalar fact5 = factorial(5);
+    println("factorial(5) = {}", fact5);
+    
+    scalar fib7 = fibonacci(7);
+    println("fibonacci(7) = {}", fib7);
+    
+    scalar sum10 = sum_to_n(10);
+    println("sum_to_n(10) = {}", sum10);
+    println();
+}
+
+fn factorial(n: i32) -> i32 {
+    if (n <= 1) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+fn fibonacci(n: i32) -> i32 {
+    if (n <= 1) {
+        return n;
+    } else {
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+}
+
+fn sum_to_n(n: i32) -> i32 {
+    if (n <= 0) {
+        return 0;
+    } else {
+        return n + sum_to_n(n - 1);
+    }
+}
+
+// 5. 고차 함수 테스트
+fn test_higher_order_functions() {
+    println("5. 고차 함수 테스트");
+    
+    scalar numbers = [1, 2, 3, 4, 5];
+    
+    scalar mapped = map(square, numbers);
+    println("map(square, [1,2,3,4,5]) = {}", mapped);
+    
+    scalar filtered = filter(is_positive, numbers);
+    println("filter(is_positive, [1,2,3,4,5]) = {}", filtered);
+    
+    scalar reduced = reduce(add_two, numbers, 0);
+    println("reduce(add_two, [1,2,3,4,5], 0) = {}", reduced);
+    
+    // 함수 체이닝
+    scalar chained = filter(is_even, map(square, numbers));
+    println("filter(is_even, map(square, numbers)) = {}", chained);
+    println();
+}
+
+fn square(x: i32) -> i32 { return x * x; }
+fn is_positive(x: i32) -> bool { return x > 0; }
+fn is_even(x: i32) -> bool { return x % 2 == 0; }
+fn add_two(a: i32, b: i32) -> i32 { return a + b; }
+
+// 6. 클로저/람다 테스트 (만약 구현되어 있다면)
+fn test_closures() {
+    println("6. 클로저/람다 테스트");
+    println("TODO: 클로저 기능이 구현되어 있지 않음");
+    println();
+}
+
+// 7. 함수 오버로딩 테스트
+fn test_function_overloading() {
+    println("7. 함수 오버로딩 테스트");
+    println("TODO: 함수 오버로딩이 구현되어 있지 않음");
+    println();
+}
+
+// 8. 기본 매개변수 테스트
+fn test_default_parameters() {
+    println("8. 기본 매개변수 테스트");
+    println("TODO: 기본 매개변수가 구현되어 있지 않음");
+    println();
+}
+
+// 9. 가변 인수 테스트
+fn test_variable_arguments() {
+    println("9. 가변 인수 테스트");
+    println("TODO: 가변 인수가 구현되어 있지 않음");
+    println();
+}
+
+// 10. 양자 함수 테스트
+fn test_quantum_functions() {
+    println("10. 양자 함수 테스트");
+    
+    scalar qubit = |0⟩;
+    println("초기 상태: {}", qubit);
+    
+    scalar hadamard_result = apply_hadamard(qubit);
+    println("H|0⟩ = {}", hadamard_result);
+    
+    scalar pauli_x_result = apply_pauli_x(qubit);
+    println("X|0⟩ = {}", pauli_x_result);
+    
+    // 다중 큐비트 함수
+    scalar two_qubit_result = create_bell_state();
+    println("Bell state = {}", two_qubit_result);
+    println();
+}
+
+fn apply_hadamard(q: qubit) -> qubit {
+    return H(q);
+}
+
+fn apply_pauli_x(q: qubit) -> qubit {
+    return X(q);
+}
+
+fn create_bell_state() -> qubit {
+    scalar q1 = |0⟩;
+    scalar q2 = |0⟩;
+    scalar h_q1 = H(q1);
+    return CNOT(h_q1, q2);
+}
+
+// 11. 에러 처리 테스트
+fn test_error_handling() {
+    println("11. 에러 처리 테스트");
+    
+    // 잘못된 함수 호출 (존재하지 않는 함수)
+    println("존재하지 않는 함수 호출 테스트는 런타임에서 확인");
+    
+    // 타입 불일치
+    println("타입 불일치 테스트는 런타임에서 확인");
+    
+    // 무한 재귀 (스택 오버플로우)
+    println("무한 재귀 테스트는 주의해서 수행");
+    
+    println();
+}

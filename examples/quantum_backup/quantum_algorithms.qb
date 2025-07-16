@@ -1,0 +1,78 @@
+fn main() {
+    println("=== 양자 알고리즘 예제 ===");
+    
+    // 1. 양자 동전 던지기
+    quantum_coin_flip();
+    
+    // 2. 벨 상태 테스트
+    bell_state_test();
+    
+    // 3. 위상 킥백 데모
+    phase_kickback_demo();
+}
+
+fn quantum_coin_flip() {
+    println("1. 양자 동전 던지기:");
+    
+    scalar heads = 0;
+    scalar trials = 100;
+    
+    for i in 0..trials {
+        qubit coin = |0⟩;
+        coin = H(coin);  // 공정한 중첩 생성
+        bit result = measure(coin);
+        
+        if result == 1 {
+            heads += 1;
+        }
+    }
+    
+    scalar heads_ratio = heads / trials;
+    println("앞면 비율:", heads_ratio);
+    println("이론값: 0.5");
+    println();
+}
+
+fn bell_state_test() {
+    println("2. 벨 상태 상관관계 테스트:");
+    
+    scalar same_results = 0;
+    scalar trials = 100;
+    
+    for i in 0..trials {
+        // 벨 상태 생성
+        qubit q1 = |0⟩;
+        qubit q2 = |0⟩;
+        qubit bell = CNOT(H(q1), q2);
+        
+        // 개별 측정 (실제로는 동시 측정이어야 함)
+        bit result1 = measure(q1);
+        bit result2 = measure(q2);
+        
+        if result1 == result2 {
+            same_results += 1;
+        }
+    }
+    
+    scalar correlation = same_results / trials;
+    println("같은 결과 비율:", correlation);
+    println("이론값: 1.0 (완전 상관)");
+    println();
+}
+
+fn phase_kickback_demo() {
+    println("3. 위상 킥백 데모:");
+    
+    // 제어 큐비트를 |+⟩ 상태로 준비
+    qubit control = H(|0⟩);
+    qubit target = |1⟩;
+    
+    println("제어 큐비트 초기:", control);
+    println("타겟 큐비트 초기:", target);
+    
+    // 제어-Z 게이트 (CNOT과 Hadamard로 구현)
+    qubit entangled = CNOT(control, H(target));
+    
+    println("얽힘 후 상태:", entangled);
+    println();
+}

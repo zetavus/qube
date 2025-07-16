@@ -1,0 +1,177 @@
+// 올바른 Deutsch-Jozsa 알고리즘 (2큐빗 측정)
+
+fn oracle_constant_0() {
+    println("    Oracle: f(x) = 0 (상수함수)");
+    // 아무것도 하지 않음
+}
+
+fn oracle_constant_1() {
+    println("    Oracle: f(x) = 1 (상수함수)");
+    apply X to q1;
+}
+
+fn oracle_balanced_identity() {
+    println("    Oracle: f(x) = x (균형함수)");  
+    apply CNOT to (q0, q1);
+}
+
+fn oracle_balanced_not() {
+    println("    Oracle: f(x) = NOT x (균형함수)");
+    apply X to q0;
+    apply CNOT to (q0, q1);
+    apply X to q0;
+}
+
+fn analyze_2qubit_result(result, expected_type, test_name) {
+    println("  측정 결과: {}", result);
+    
+    // 2큐빗 결과 분석: [첫번째, 두번째]
+    if (result[0] == 0 && result[1] == 0) {
+        println("  📊 결과: 00 → 상수함수");
+        if (expected_type == 0) {
+            println("  ✅ {} 성공!", test_name);
+            return true;
+        } else {
+            println("  ❌ {} 실패", test_name);
+            return false;
+        }
+    } else {
+        if (result[0] == 0 && result[1] == 1) {
+            println("  📊 결과: 01 → 균형함수");
+        } else {
+            println("  📊 결과: {} → 예상외 결과", result);
+        }
+        
+        if (expected_type == 1) {
+            println("  ✅ {} 성공!", test_name);
+            return true;
+        } else {
+            println("  ❌ {} 실패", test_name);
+            return false;
+        }
+    }
+}
+
+fn test_constant_0() {
+    println("테스트 1: f(x) = 0 (상수함수)");
+    
+    circuit TestConstant0(2) {
+        apply X to q1;
+        apply H to ~;
+        oracle_constant_0();
+        apply H to q0;
+    }
+    
+    circuit1 = TestConstant0(2);
+    result1 = measure(circuit1, [0, 1]);  // 2큐빗 모두 측정
+    
+    return analyze_2qubit_result(result1, 0, "상수함수 f(x)=0");
+}
+
+fn test_constant_1() {
+    println("테스트 2: f(x) = 1 (상수함수)");
+    
+    circuit TestConstant1(2) {
+        apply X to q1;
+        apply H to ~;
+        oracle_constant_1();
+        apply H to q0;
+    }
+    
+    circuit2 = TestConstant1(2);
+    result2 = measure(circuit2, [0, 1]);  // 2큐빗 모두 측정
+    
+    return analyze_2qubit_result(result2, 0, "상수함수 f(x)=1");
+}
+
+fn test_balanced_identity() {
+    println("테스트 3: f(x) = x (균형함수)");
+    
+    circuit TestBalancedId(2) {
+        apply X to q1;
+        apply H to ~;
+        oracle_balanced_identity();
+        apply H to q0;
+    }
+    
+    circuit3 = TestBalancedId(2);
+    result3 = measure(circuit3, [0, 1]);  // 2큐빗 모두 측정
+    
+    return analyze_2qubit_result(result3, 1, "균형함수 f(x)=x");
+}
+
+fn test_balanced_not() {
+    println("테스트 4: f(x) = NOT x (균형함수)");
+    
+    circuit TestBalancedNot(2) {
+        apply X to q1;
+        apply H to ~;
+        oracle_balanced_not();
+        apply H to q0;
+    }
+    
+    circuit4 = TestBalancedNot(2);
+    result4 = measure(circuit4, [0, 1]);  // 2큐빗 모두 측정
+    
+    return analyze_2qubit_result(result4, 1, "균형함수 f(x)=NOT x");
+}
+
+fn run_corrected_tests() {
+    println("🧪 올바른 Deutsch-Jozsa 테스트 (2큐빗 측정)");
+    println("==========================================");
+    println("이론: 상수함수 → 00, 균형함수 → 01");
+    println("");
+    
+    success_count = 0;
+    
+    if (test_constant_0()) {
+        success_count = success_count + 1;
+    }
+    println("");
+    
+    if (test_constant_1()) {
+        success_count = success_count + 1;
+    }
+    println("");
+    
+    if (test_balanced_identity()) {
+        success_count = success_count + 1;
+    }
+    println("");
+    
+    if (test_balanced_not()) {
+        success_count = success_count + 1;
+    }
+    println("");
+    
+    success_rate = (success_count * 100) / 4;
+    
+    println("🏆 최종 결과:");
+    println("============");
+    println("성공: {} / 4 테스트", success_count);
+    println("성공률: {}%", success_rate);
+    
+    return success_rate;
+}
+
+fn main() {
+    println("🌟 올바른 Deutsch-Jozsa 알고리즘");
+    println("===============================");
+    println("목적: 함수가 상수인지 균형인지 1번 호출로 판별");
+    println("핵심: 2큐빗 모두 측정해서 00 vs 01로 구분");
+    println("");
+    
+    success_rate = run_corrected_tests();
+    
+    println("");
+    println("🚀 성능 분석:");
+    println("=============");
+    println("고전 알고리즘: 최악 3번 함수 호출");
+    println("양자 알고리즘: 1번 함수 호출");
+    
+    if (success_rate == 100) {
+        println("🎉 완벽한 Deutsch-Jozsa 구현!");
+    } else {
+        println("🔧 추가 디버깅 필요 ({}% 성공)", success_rate);
+    }
+}

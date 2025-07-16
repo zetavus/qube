@@ -1,0 +1,120 @@
+// algorithms/search/grover_3qubit_test.qb
+// 3큐빗 Grover로 알고리즘 정확성 검증
+// 목표: |101⟩ 상태 찾기 (8개 중 1개)
+
+fn create_3qubit_grover() {
+    circuit Grover3Qubit(3) {
+        println("🧪 3큐빗 Grover 테스트");
+        println("======================");
+        println("목표: |101⟩ 상태 찾기");
+        println("이론적 최적 반복: π/4 × √8 ≈ 2.2 → 2회");
+        
+        // 초기화: H⊗H⊗H
+        apply H to q0; apply H to q1; apply H to q2;
+        println("1️⃣ 초기화: 8개 상태 균등 분포");
+        
+        // 첫 번째 Grover 반복
+        println("2️⃣ 첫 번째 반복:");
+        
+        // Oracle: |101⟩ = q2=1, q1=0, q0=1
+        apply X to q1;  // q1: 0→1 변환
+        apply CZ to (q2, q1, q0);  // 3큐빗 CZ
+        apply X to q1;  // 복원
+        println("2-1) Oracle 완료");
+        
+        // Diffusion
+        apply H to q0; apply H to q1; apply H to q2;
+        apply X to q0; apply X to q1; apply X to q2;
+        apply CZ to (q2, q1, q0);
+        apply X to q0; apply X to q1; apply X to q2;
+        apply H to q0; apply H to q1; apply H to q2;
+        println("2-2) Diffusion 완료");
+        
+        // 두 번째 Grover 반복 (최적)
+        println("3️⃣ 두 번째 반복 (최적):");
+        
+        apply X to q1;
+        apply CZ to (q2, q1, q0);
+        apply X to q1;
+        
+        apply H to q0; apply H to q1; apply H to q2;
+        apply X to q0; apply X to q1; apply X to q2;
+        apply CZ to (q2, q1, q0);
+        apply X to q0; apply X to q1; apply X to q2;
+        apply H to q0; apply H to q1; apply H to q2;
+        
+        println("4️⃣ 3큐빗 Grover 완료");
+        println("예상: |101⟩이 85% 확률");
+    }
+    return Grover3Qubit(3);
+}
+
+fn test_3qubit_performance() {
+    println("");
+    println("🎯 3큐빗 성능 테스트 (10회):");
+    println("============================");
+    
+    success_count = 0;
+    total_trials = 10;
+    
+    i = 0;
+    while (i < total_trials) {
+        trial_circuit = create_3qubit_grover();
+        trial_result = measure(trial_circuit, [0, 1, 2]);
+        trial_value = trial_result[0] + trial_result[1]*2 + trial_result[2]*4;
+        
+        if (trial_value == 5) {  // |101⟩ = 5
+            success_count = success_count + 1;
+            println("시도 {}: ✅ 성공 |101⟩", i+1);
+        } else {
+            println("시도 {}: 🔄 실패 ({})", i+1, trial_value);
+        }
+        
+        i = i + 1;
+    }
+    
+    println("");
+    println("📊 3큐빗 결과:");
+    println("성공: {} / {}", success_count, total_trials);
+    
+    if (success_count >= 7) {
+        println("✅ 3큐빗 Grover 정상 작동!");
+        println("5큐빗 문제는 다른 원인");
+    } else {
+        println("❌ 3큐빗도 문제 있음");
+        println("Grover 구현 자체에 오류");
+    }
+}
+
+fn main() {
+    println("🧪 3큐빗 Grover 검증 테스트");
+    println("===========================");
+    
+    // 단일 실행 테스트
+    grover_circuit = create_3qubit_grover();
+    result = measure(grover_circuit, [0, 1, 2]);
+    
+    decimal_value = result[0] + result[1]*2 + result[2]*4;
+    
+    println("");
+    println("📊 단일 실행 결과:");
+    println("==================");
+    if (decimal_value == 5) {  // |101⟩
+        println("✅ 성공! |101⟩ 상태 발견");
+    } else {
+        println("🔄 다른 상태: {}", decimal_value);
+    }
+    
+    // 성능 테스트
+    test_3qubit_performance();
+    
+    println("");
+    println("🎯 분석:");
+    println("========");
+    println("• 3큐빗이 성공하면: 5큐빗 반복 횟수 문제");
+    println("• 3큐빗도 실패하면: Diffusion 구현 문제");
+    println("• 두 경우 모두: 범위 문법 구현 후 재검토");
+    
+    println("");
+    println("다음: 범위 문법 (apply CZ to (~, q5)) 구현");
+}

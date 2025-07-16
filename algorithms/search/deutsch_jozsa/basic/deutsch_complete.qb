@@ -1,0 +1,85 @@
+print("=== Deutsch-Jozsa 알고리즘 완전 테스트 ===");
+print("목적: 함수가 상수인지 균형인지 1번 호출로 판별");
+print("이론: 측정 결과 0=상수함수, 1=균형함수");
+print();
+
+fn oracle_constant_0() {
+    // 상수 함수 f(x) = 0 - 아무것도 하지 않음
+}
+
+fn oracle_constant_1() {
+    // 상수 함수 f(x) = 1 - 출력을 항상 뒤집음
+    apply X to q1;
+}
+
+fn oracle_balanced_identity() {
+    // 균형 함수 f(x) = x - 항등함수
+    apply CNOT to (q0, q1);
+}
+
+fn oracle_balanced_not() {
+    // 균형 함수 f(x) = NOT x - 반전함수
+    apply X to q0;
+    apply CNOT to (q0, q1);
+    apply X to q0;
+}
+
+print("=== 테스트 1: 상수 함수 f(x) = 0 ===");
+circuit Test1(2) {
+    apply X to q1;
+    apply H to ~;
+    oracle_constant_0();
+    apply H to q0;
+}
+
+test1 = Test1(2);
+result1 = measure(test1, [0]);
+print("측정 결과:", result1);
+print("예상: 0 (상수함수)");
+print();
+
+print("=== 테스트 2: 상수 함수 f(x) = 1 ===");
+circuit Test2(2) {
+    apply X to q1;
+    apply H to ~;
+    oracle_constant_1();
+    apply H to q0;
+}
+
+test2 = Test2(2);
+result2 = measure(test2, [0]);
+print("측정 결과:", result2);
+print("예상: 0 (상수함수)");
+print();
+
+print("=== 테스트 3: 균형 함수 f(x) = x ===");
+circuit Test3(2) {
+    apply X to q1;
+    apply H to ~;
+    oracle_balanced_identity();
+    apply H to q0;
+}
+
+test3 = Test3(2);
+result3 = measure(test3, [0]);
+print("측정 결과:", result3);
+print("예상: 1 (균형함수)");
+print();
+
+print("=== 테스트 4: 균형 함수 f(x) = NOT x ===");
+circuit Test4(2) {
+    apply X to q1;
+    apply H to ~;
+    oracle_balanced_not();
+    apply H to q0;
+}
+
+test4 = Test4(2);
+result4 = measure(test4, [0]);
+print("측정 결과:", result4);
+print("예상: 1 (균형함수)");
+print();
+
+print("=== 성능 비교 ===");
+print("고전: 최악 3번 호출 | 양자: 1번 호출");
+print("Deutsch-Jozsa 알고리즘 테스트 완료!");

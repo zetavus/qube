@@ -1,0 +1,15 @@
+fn main() {
+    println("=== Identifier 문제 디버깅 ===");
+    
+    // 가장 기본적인 변수 사용
+    scalar x = 5;
+    println("x = {}", x);
+    
+    // 함수 호출
+    scalar result = simple_test();
+    println("result = {}", result);
+}
+
+fn simple_test() -> i32 {
+    return 42;
+}

@@ -1,0 +1,20 @@
+// 함수 구현 문제 검증 테스트
+fn main() {
+    println("함수 테스트 시작");
+    
+    // 1. 직접 코드 (문제없음)
+    println("직접 실행");
+    qubit q1 = |0⟩;
+    scalar r1 = measure(q1);
+    println("결과: {}", r1);
+    
+    // 2. 함수 호출 시도
+    simple_func();
+}
+
+fn simple_func() {
+    println("간단한 함수");
+    qubit q2 = |1⟩;
+    scalar r2 = measure(q2);
+    println("함수 결과: {}", r2);
+}

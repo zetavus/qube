@@ -1,0 +1,36 @@
+class BankAccount {
+    private balance: f64;
+    public name: str;
+    
+    public fn test1(self) {
+        println("Test1: Method called successfully");
+    }
+    
+    public fn test2(self) {
+        println("Test2: Trying to access self.balance...");
+        self.balance = 100.0;
+        println("Test2: Self.balance set successfully");
+    }
+    
+    public fn test3(self) {
+        println("Test3: Trying to read self.balance...");
+        temp = self.balance;
+        println("Test3: Balance is: {}", temp);
+    }
+}
+
+fn main() {
+    println("=== Self 접근 디버그 테스트 ===");
+    
+    account = BankAccount { name: "John" };
+    println("1. Object created");
+    
+    account.test1();
+    println("2. Test1 completed");
+    
+    account.test2();
+    println("3. Test2 completed");
+    
+    account.test3();
+    println("4. Test3 completed");
+}

@@ -1,0 +1,17 @@
+class BankAccount {
+    private balance: f64;
+    public name: str;
+    
+    public fn simple_assignment(self) {
+        self.balance = 1000.0;
+    }
+}
+
+fn main() {
+    println("=== 독립적 할당 테스트 ===");
+    
+    account = BankAccount { name: "Test" };
+    account.simple_assignment();
+    
+    println("Test completed");
+}

@@ -1,0 +1,14 @@
+// real_error_test.qyt - 실제 에러 발생 테스트
+
+println("=== 실제 에러 테스트 ===");
+
+// 테스트 1: 큐빗 범위 초과 (실제 실행)
+println("❌ 큐빗 범위 초과:");
+circuit OutOfRange(2) {
+    apply H to q0;
+    apply H to q2;  // q2는 존재하지 않음 (범위: 0, 1)
+    measure q0;
+}
+
+out_of_range = OutOfRange();
+println("범위 초과 테스트 완료");

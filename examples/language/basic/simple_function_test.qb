@@ -1,0 +1,56 @@
+fn main() {
+    println("=== 기본 함수 테스트 ===");
+    
+    // 1. 기본 함수 호출
+    scalar result1 = simple_add(3, 5);
+    println("simple_add(3, 5) = {}", result1);
+    
+    // 2. 반환값 없는 함수
+    no_return_function();
+    
+    // 3. 재귀 함수
+    scalar fact5 = factorial(5);
+    println("factorial(5) = {}", fact5);
+    
+    // 4. 고차 함수
+    scalar numbers = [1, 2, 3, 4, 5];
+    scalar doubled = map(double, numbers);
+    println("map(double, [1,2,3,4,5]) = {}", doubled);
+    
+    // 5. 다양한 타입 테스트
+    scalar float_result = multiply_float(3.14, 2.0);
+    println("multiply_float(3.14, 2.0) = {}", float_result);
+    
+    scalar bool_result = is_positive(5);
+    println("is_positive(5) = {}", bool_result);
+    
+    println("=== 기본 테스트 완료 ===");
+}
+
+fn simple_add(a: i32, b: i32) -> i32 {
+    return a + b;
+}
+
+fn no_return_function() {
+    println("이 함수는 반환값이 없습니다");
+}
+
+fn factorial(n: i32) -> i32 {
+    if (n <= 1) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+fn double(x: i32) -> i32 {
+    return x * 2;
+}
+
+fn multiply_float(x: f64, y: f64) -> f64 {
+    return x * y;
+}
+
+fn is_positive(x: i32) -> bool {
+    return x > 0;
+}

@@ -1,0 +1,5 @@
+circuit Simple(1) {
+    apply H to q2;  // 범위 초과
+}
+
+simple = Simple(1);

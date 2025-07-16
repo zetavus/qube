@@ -1,0 +1,32 @@
+// algorithms/test/range_syntax_basic.qb
+// 범위 문법 기본 테스트 (괄호 없는 버전)
+
+fn test_basic_range() {
+    println("🧪 기본 범위 문법 테스트");
+    println("=======================");
+    
+    circuit BasicRange(3) {
+        println("1️⃣ 모든 큐빗에 H 적용:");
+        apply H to ~;
+        
+        println("2️⃣ 단일 큐빗:");
+        apply Z to q2;
+    }
+    return BasicRange(3);
+}
+
+fn main() {
+    println("🎯 범위 문법 기본 테스트");
+    println("========================");
+    
+    test_circuit = test_basic_range();
+    result = measure(test_circuit, [0, 1, 2]);
+    
+    println("✅ 기본 범위 문법 테스트 완료");
+    println("결과: {}", result);
+    
+    println("");
+    println("🎉 성공! 다음 테스트 예정:");
+    println("• apply CZ to (q0, q1);  # 명시적 리스트");
+    println("• apply X to q0:q2;      # 범위 (괄호 없이)");
+}

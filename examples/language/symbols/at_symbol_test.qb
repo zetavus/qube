@@ -1,0 +1,21 @@
+// @ 기호 변환 테스트
+
+fn main() {
+    // 그리스 문자 테스트
+    alpha@ = 3.14159;
+    beta@ = 2.71828;
+    gamma@ = 1.41421;
+    
+    println("alpha@ = {}", alpha@);
+    println("beta@ = {}", beta@);
+    println("gamma@ = {}", gamma@);
+    
+    // 수학 기호 테스트
+    pi@ = 3.14159;
+    sum@ = alpha@ + beta@ + gamma@;
+    
+    println("pi@ = {}", pi@);
+    println("sum@ = {}", sum@);
+    
+    println("변환 테스트 완료!");
+}

@@ -1,0 +1,40 @@
+import re
+
+# 테스트할 문자열
+test_string = '"${name}"'
+print(f"테스트 문자열: {test_string}")
+
+# 다양한 패턴들 테스트
+patterns = [
+    r'".*\$\{.*\}.*"',                    # 패턴 1: 가장 단순
+    r'"[^"]*\$\{[^}]+\}[^"]*"',          # 패턴 2: 현재 사용중
+    r'"\$\{[^}]+\}"',                     # 패턴 3: 순수 템플릿만
+    r'"[^"]*\$\{[a-zA-Z_][a-zA-Z0-9_]*\}[^"]*"',  # 패턴 4: 변수명 구체화
+]
+
+for i, pattern in enumerate(patterns, 1):
+    try:
+        match = re.match(pattern, test_string)
+        if match:
+            print(f"패턴 {i}: ✅ 매치됨 - {match.group(0)}")
+        else:
+            print(f"패턴 {i}: ❌ 매치 안됨")
+    except Exception as e:
+        print(f"패턴 {i}: 🔥 오류 - {e}")
+
+# 다른 테스트 케이스들
+test_cases = [
+    '"${name}"',                    # 순수 템플릿
+    '"Hello ${name}"',             # 앞에 텍스트
+    '"${name} world"',             # 뒤에 텍스트  
+    '"Hello ${name} world"',       # 앞뒤 텍스트
+    '"Hello"',                     # 일반 문자열
+]
+
+print(f"\n=== 다양한 케이스 테스트 ===")
+best_pattern = r'".*\$\{.*\}.*"'  # 가장 단순한 패턴
+
+for case in test_cases:
+    match = re.match(best_pattern, case)
+    result = "✅ 템플릿" if match else "❌ 일반"
+    print(f"{case:20} -> {result}")

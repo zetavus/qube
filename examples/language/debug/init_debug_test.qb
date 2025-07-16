@@ -1,0 +1,23 @@
+class BankAccount {
+    private balance: f64;
+    public name: str;
+    
+    public fn init(self, initial_balance) {
+        println("Init step 1: Method called");
+        println("Init step 2: Parameter is {}", initial_balance);
+        println("Init step 3: About to set balance");
+        self.balance = initial_balance;
+        println("Init step 4: Balance set successfully");
+    }
+}
+
+fn main() {
+    println("=== Init 메서드 디버깅 ===");
+    
+    account = BankAccount { name: "John" };
+    println("1. Account created");
+    
+    println("2. About to call init...");
+    account.init(1000.0);
+    println("3. Init call completed");
+}

@@ -1,0 +1,65 @@
+// working_protected_test.qyt
+// 기존 방식 그대로 사용해서 Protected 테스트
+
+class BankAccount {
+    protected balance: f64;    // Protected로 변경!
+    public name: str;
+    
+    public fn init(self, initial_balance) {
+        self.balance = initial_balance;
+        println("✅ Account initialized with balance: {}", self.balance);
+    }
+    
+    public fn deposit(self, amount) {
+        self.balance = self.balance + amount;
+        println("✅ Deposited {}. New balance: {}", amount, self.balance);
+    }
+    
+    protected fn validate(self) {    // Protected 메서드
+        return self.balance >= 0;
+    }
+    
+    public fn get_balance(self) {
+        if (self.validate()) {
+            return self.balance;
+        }
+        return 0;
+    }
+}
+
+class SavingsAccount extends BankAccount {
+    public interest_rate: f64;
+    
+    public fn new_savings(self, name: str, balance: f64, rate: f64) {
+        self.name = name;
+        self.balance = balance;      // ✅ Protected 필드 접근 (상속)
+        self.interest_rate = rate;
+    }
+    
+    public fn add_interest(self) {
+        if (self.validate()) {       // ✅ Protected 메서드 호출 (상속)
+            interest = self.balance * self.interest_rate;
+            self.balance = self.balance + interest;
+            println("✅ Interest added: {}. New balance: {}", interest, self.balance);
+        }
+    }
+}
+
+fn main() {
+    println("🎯 QyTum Protected 접근 제어자 테스트");
+    println("==================================");
+    
+    // 기본 계좌 생성 (기존 방식)
+    account = BankAccount { name: "John Doe" };
+    println("✅ Account created for: {}", account.name);
+    
+    account.init(1000.0);
+    account.deposit(500.0);
+    
+    println("==================================");
+    println("🔒 Protected 접근 테스트");
+    
+    // ❌ Protected 필드 외부 접근 시도 (에러 발생해야 함)
+    println("Trying to access protected balance...");
+    println("Balance: {}", account.balance);
+}

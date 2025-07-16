@@ -1,0 +1,186 @@
+// 올바른 Deutsch-Jozsa 알고리즘 구현
+
+fn oracle_constant_0() {
+    println("    Oracle: f(x) = 0 (상수함수)");
+    // 아무것도 하지 않음 - 출력 큐빗을 변경하지 않음
+}
+
+fn oracle_constant_1() {
+    println("    Oracle: f(x) = 1 (상수함수)");
+    // 출력 큐빗을 항상 뒤집음
+    apply X to q1;
+}
+
+fn oracle_balanced_identity() {
+    println("    Oracle: f(x) = x (균형함수)");
+    // 입력이 1이면 출력을 뒤집음 (CNOT)
+    apply CNOT to (q0, q1);
+}
+
+fn oracle_balanced_not() {
+    println("    Oracle: f(x) = NOT x (균형함수)");
+    // 입력이 0이면 출력을 뒤집음
+    apply X to q0;      // 입력 반전
+    apply CNOT to (q0, q1);  // 조건부 뒤집기
+    apply X to q0;      // 입력 복원
+}
+
+fn analyze_input_measurement(result, expected_type, test_name) {
+    println("  입력 큐빗 측정: {}", result);
+    
+    // 입력 큐빗이 모두 0인지 확인
+    if (result[0] == 0) {
+        println("  📊 결과: 모든 입력이 0 → 상수함수");
+        if (expected_type == 0) {
+            println("  ✅ {} 성공!", test_name);
+            return true;
+        } else {
+            println("  ❌ {} 실패", test_name);
+            return false;
+        }
+    } else {
+        println("  📊 결과: 입력 중 1이 있음 → 균형함수");
+        if (expected_type == 1) {
+            println("  ✅ {} 성공!", test_name);
+            return true;
+        } else {
+            println("  ❌ {} 실패", test_name);
+            return false;
+        }
+    }
+}
+
+fn test_constant_0_proper() {
+    println("테스트 1: f(x) = 0 (상수함수)");
+    
+    circuit ProperConstant0(2) {
+        // 1. 입력 큐빗 중첩상태 (q0)
+        apply H to q0;
+        // 2. 출력 큐빗을 |1⟩ 상태로 초기화 (q1)
+        apply X to q1;
+        apply H to q1;
+        // 3. Oracle 적용
+        oracle_constant_0();
+        // 4. 입력 큐빗에 다시 H 적용
+        apply H to q0;
+    }
+    
+    circuit1 = ProperConstant0(2);
+    result1 = measure(circuit1, [0]);  // 입력 큐빗만 측정!
+    
+    return analyze_input_measurement(result1, 0, "상수함수 f(x)=0");
+}
+
+fn test_constant_1_proper() {
+    println("테스트 2: f(x) = 1 (상수함수)");
+    
+    circuit ProperConstant1(2) {
+        apply H to q0;
+        apply X to q1;
+        apply H to q1;
+        oracle_constant_1();
+        apply H to q0;
+    }
+    
+    circuit2 = ProperConstant1(2);
+    result2 = measure(circuit2, [0]);
+    
+    return analyze_input_measurement(result2, 0, "상수함수 f(x)=1");
+}
+
+fn test_balanced_identity_proper() {
+    println("테스트 3: f(x) = x (균형함수)");
+    
+    circuit ProperBalancedId(2) {
+        apply H to q0;
+        apply X to q1;
+        apply H to q1;
+        oracle_balanced_identity();
+        apply H to q0;
+    }
+    
+    circuit3 = ProperBalancedId(2);
+    result3 = measure(circuit3, [0]);
+    
+    return analyze_input_measurement(result3, 1, "균형함수 f(x)=x");
+}
+
+fn test_balanced_not_proper() {
+    println("테스트 4: f(x) = NOT x (균형함수)");
+    
+    circuit ProperBalancedNot(2) {
+        apply H to q0;
+        apply X to q1;
+        apply H to q1;
+        oracle_balanced_not();
+        apply H to q0;
+    }
+    
+    circuit4 = ProperBalancedNot(2);
+    result4 = measure(circuit4, [0]);
+    
+    return analyze_input_measurement(result4, 1, "균형함수 f(x)=NOT x");
+}
+
+fn run_proper_tests() {
+    println("🧪 올바른 Deutsch-Jozsa 구현 테스트");
+    println("===================================");
+    println("핵심: 출력 큐빗 |1⟩ 초기화 + 입력 큐빗만 측정");
+    println("이론: 상수함수 → 입력 0, 균형함수 → 입력 1");
+    println("");
+    
+    success_count = 0;
+    
+    if (test_constant_0_proper()) {
+        success_count = success_count + 1;
+    }
+    println("");
+    
+    if (test_constant_1_proper()) {
+        success_count = success_count + 1;
+    }
+    println("");
+    
+    if (test_balanced_identity_proper()) {
+        success_count = success_count + 1;
+    }
+    println("");
+    
+    if (test_balanced_not_proper()) {
+        success_count = success_count + 1;
+    }
+    println("");
+    
+    success_rate = (success_count * 100) / 4;
+    
+    println("🏆 최종 결과:");
+    println("============");
+    println("성공: {} / 4 테스트", success_count);
+    println("성공률: {}%", success_rate);
+    
+    return success_rate;
+}
+
+fn main() {
+    println("🌟 올바른 Deutsch-Jozsa 알고리즘");
+    println("===============================");
+    println("목적: 함수가 상수인지 균형인지 1번 호출로 판별");
+    println("핵심 수정:");
+    println("1. 출력 큐빗을 |1⟩로 초기화 (X + H)");
+    println("2. 입력 큐빗만 측정 (출력 큐빗 무시)");
+    println("");
+    
+    success_rate = run_proper_tests();
+    
+    println("");
+    println("🚀 성능 분석:");
+    println("=============");
+    println("고전 알고리즘: 최악 3번 함수 호출");
+    println("양자 알고리즘: 1번 함수 호출");
+    
+    if (success_rate == 100) {
+        println("🎉 완벽한 Deutsch-Jozsa 구현 성공!");
+    } else {
+        println("🔧 {}% 성공 - 더 분석 필요", success_rate);
+    }
+}

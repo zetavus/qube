@@ -1,0 +1,8 @@
+fn main() {
+    println("Starting test");
+    
+    x = 42;
+    
+    println("Assignment completed");
+    println("x = {}", x);
+}

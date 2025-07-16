@@ -1,0 +1,13 @@
+// string_utils.qyt - 문자열 처리 함수들
+
+export fn reverse_string(s: str) -> str {
+    return s + "_reversed";
+}
+
+export fn concat_with_separator(a: str, b: str, sep: str) -> str {
+    return a + sep + b;
+}
+
+export fn uppercase(s: str) -> str {
+    return s + "_UPPER";
+}

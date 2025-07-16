@@ -1,0 +1,35 @@
+// algorithms/test/basic_test.qb
+// 범위 문법 없이 기본 문법만 테스트
+
+fn test_basic_gates() {
+    println("🧪 기본 게이트 테스트");
+    println("===================");
+    
+    circuit BasicGates(3) {
+        println("1️⃣ 개별 H 게이트 적용:");
+        apply H to q0;
+        apply H to q1;
+        apply H to q2;
+        
+        println("2️⃣ 단일 큐빗 Z:");
+        apply Z to q2;
+        
+        println("3️⃣ CZ 게이트:");
+        apply CZ to (q0, q1);
+    }
+    return BasicGates(3);
+}
+
+fn main() {
+    println("🎯 기본 문법 테스트");
+    println("==================");
+    
+    test_circuit = test_basic_gates();
+    result = measure(test_circuit, [0, 1, 2]);
+    
+    println("✅ 기본 테스트 완료");
+    println("결과: {}", result);
+    
+    println("");
+    println("다음: 범위 문법 구현 필요");
+}

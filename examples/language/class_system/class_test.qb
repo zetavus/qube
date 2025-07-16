@@ -1,0 +1,51 @@
+// class_test.qyt - 클래스 시스템 테스트
+
+class Person {
+    name: str;
+    age: i32;
+    
+    fn new(name, age) {
+        return "Person created successfully";
+    }
+    
+    fn createMultiple(count) {
+        return "Created " + count + " persons";
+    }
+    
+    fn greet(self) {
+        println("Hello, I'm a person!");
+    }
+    
+    fn getInfo(self) {
+        return "Person info";
+    }
+}
+
+fn main() {
+    println("🏗️ QyTum 클래스 시스템 테스트!");
+    println("===============================");
+    
+    // 1. 클래스 정의 테스트
+    println("\n1. 클래스 정의 완료!");
+    
+    // 2. 클래스 메서드 호출 테스트 (self 없는 메서드)
+    println("\n2. 클래스 메서드 호출:");
+    try {
+        scalar result = Person.new("Alice", 25);
+        println("Person.new() 결과:", result);
+    } catch (e) {
+        println("오류:", e.type, e.message);
+    }
+    
+    // 3. 다른 클래스 메서드 테스트 (self 없는 메서드)
+    println("\n3. 추가 클래스 메서드 테스트:");
+    try {
+        scalar info = Person.createMultiple("5");
+        println("Person.createMultiple() 결과:", info);
+    } catch (e) {
+        println("오류:", e.type, e.message);
+    }
+    
+    println("\n✅ 클래스 기본 테스트 완료!");
+    println("💡 인스턴스 메서드(self 포함)는 나중에 객체 생성 기능과 함께 테스트할 예정입니다.");
+}

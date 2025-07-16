@@ -1,0 +1,32 @@
+// algorithms/search/simple_loop_test.qb
+// 단계별 테스트: 회로 내부 반복문
+
+fn main() {
+    println("🧪 간단한 반복문 테스트");
+    println("=====================");
+    
+    circuit LoopTest(3) {
+        println("회로 시작");
+        
+        // 초기화
+        apply H to ~;
+        
+        // 반복문 테스트
+        println("반복문 시작...");
+        for i in 0..3 {
+            println("  반복 {}: X 게이트 적용", i);
+            apply X to q0;
+        }
+        
+        println("회로 완료");
+    }
+    
+    println("회로 생성 중...");
+    circuit = LoopTest();
+    
+    println("측정 중...");
+    result = measure(circuit, [0, 1, 2]);
+    
+    println("결과: {}", result);
+    println("✅ 테스트 완료!");
+}

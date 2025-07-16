@@ -1,0 +1,48 @@
+// 복잡도 단계별 테스트
+fn main() {
+    println("복잡도 테스트");
+    
+    test_level1();
+    test_level2(); 
+    test_level3();
+}
+
+// Level 1: 기본 함수 (이미 성공 확인)
+fn test_level1() {
+    println("Level 1: 기본 함수");
+    qubit q = |0⟩;
+    scalar r = measure(q);
+    println("결과: {}", r);
+}
+
+// Level 2: 반복문 추가
+fn test_level2() {
+    println("Level 2: 반복문 추가");
+    
+    for i in 0..3 {
+        qubit q = |0⟩;
+        scalar r = measure(q);
+        println("시도 {}: {}", i, r);
+    }
+}
+
+// Level 3: 조건문 + 계산 추가
+fn test_level3() {
+    println("Level 3: 조건문 + 계산");
+    
+    scalar count = 3;
+    scalar success = 0;
+    
+    for i in 0..count {
+        qubit q = H(|0⟩);
+        scalar r = measure(q);
+        
+        if (r == 1) {
+            success += 1;
+        }
+        
+        println("시도 {}: {}", i, r);
+    }
+    
+    println("성공: {}", success);
+}

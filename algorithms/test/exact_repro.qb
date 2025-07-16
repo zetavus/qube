@@ -1,0 +1,16 @@
+// element_test.qb의 정확한 재현
+fn main() {
+    println("구체적 요소 테스트");  // ← 정확히 같은 문구
+    
+    test_hadamard();  // ← 첫 번째 함수만 먼저
+}
+
+fn test_hadamard() {
+    println("1. Hadamard 게이트 테스트:");  // ← 정확히 같은 문구
+    
+    for i in 0..2 {
+        qubit q = H(|0⟩);
+        scalar r = measure(q);
+        println("H 테스트 {}: {}", i, r);  // ← 정확히 같은 문구
+    }
+}

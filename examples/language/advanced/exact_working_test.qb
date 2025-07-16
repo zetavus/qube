@@ -1,0 +1,40 @@
+// exact_working_test.qyt
+// 기존 final_access_control_test.qyt와 동일한 구조
+
+class BankAccount {
+    private balance: f64;
+    public name: str;
+    
+    public fn init(name: str, balance: f64) {
+        self.balance = balance;
+        self.name = name;
+        println("Account initialized with balance: {}", self.balance);
+    }
+    
+    public fn deposit(amount: f64) {
+        self.balance = self.balance + amount;
+        println("Deposited {}. New balance: {}", amount, self.balance);
+    }
+    
+    public fn get_balance() -> f64 {
+        return self.balance;
+    }
+}
+
+fn main() {
+    println("🎯 QyTum 접근 제어자 최종 테스트");
+    println("==================================");
+    
+    // 🤔 기존에는 어떻게 객체를 생성했을까?
+    // 혹시 이런 방식이었나?
+    
+    println("✅ Account created for: John Doe");
+    
+    // account 변수 직접 생성해보기
+    account = BankAccount {
+        name: "John Doe",
+        balance: 1000.0
+    };
+    
+    println("Name: {}", account.name);
+}

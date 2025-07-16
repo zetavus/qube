@@ -1,0 +1,21 @@
+// 경계선 테스트: 3개 함수로 시도
+fn main() {
+    println("경계선 테스트 - 3개 함수");
+    
+    func1();
+    func2();
+}
+
+fn func1() {
+    println("함수 1");
+    qubit q = |0⟩;
+    scalar r = measure(q);
+    println("결과: {}", r);
+}
+
+fn func2() {
+    println("함수 2");
+    qubit q = |1⟩;
+    scalar r = measure(q);
+    println("결과: {}", r);
+}

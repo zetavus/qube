@@ -1,0 +1,120 @@
+// algorithms/search/complete_grover_with_functions.qb
+// 완전한 함수 기반 Grover 알고리즘
+
+fn oracle_10101() {
+    println("    🎯 Oracle: |10101⟩ 마킹");
+    apply X to q1;
+    apply X to q3;
+    apply CZ to (q0, q1, q2, q3, q4);
+    apply X to q1;
+    apply X to q3;
+}
+
+fn diffusion_operator() {
+    println("    🔄 Diffusion: 진폭 증폭");
+    apply H to ~;
+    apply X to ~;
+    apply CZ to (q0, q1, q2, q3, q4);
+    apply X to ~;
+    apply H to ~;
+}
+
+fn grover_iteration(iteration_num) {
+    println("  --- Grover 반복 {}/4 ---", iteration_num);
+    oracle_10101();
+    diffusion_operator();
+}
+
+circuit GroverComplete(5) {
+    println("🚀 5큐빗 Grover 알고리즘 시작");
+    
+    // 1단계: 초기화
+    println("📦 초기화: 균등 중첩 상태");
+    apply H to ~;
+    
+    // 2단계: Grover 반복 4회
+    println("🔄 Grover 반복 시작");
+    
+    iterations = range(1, 5);
+    for i in iterations {
+        grover_iteration(i);
+    }
+    
+    println("✅ Grover 알고리즘 완료");
+}
+
+fn analyze_result(result) {
+    decimal = result[0] + result[1]*2 + result[2]*4 + result[3]*8 + result[4]*16;
+    
+    if (decimal == 21) {
+        println("✅ 성공! |10101⟩ 발견!");
+        return true;
+    } else {
+        println("❌ 다른 상태: {} (십진수: {})", result, decimal);
+        return false;
+    }
+}
+
+fn run_performance_test() {
+    println("🎯 성능 테스트 (5회 시도)");
+    println("========================");
+    
+    success_count = 0;
+    total_trials = 5;
+    
+    trial_numbers = range(1, 6);
+    for trial in trial_numbers {
+        println("시도 {}/{}:", trial, total_trials);
+        
+        grover_circuit = GroverComplete();
+        result = measure(grover_circuit, [0, 1, 2, 3, 4]);
+        
+        if (analyze_result(result)) {
+            success_count = success_count + 1;
+        }
+        
+        println("");
+    }
+    
+    success_rate = (success_count * 100) / total_trials;
+    
+    println("🏆 최종 결과:");
+    println("============");
+    println("성공: {} / {} 시도", success_count, total_trials);
+    println("성공률: {}%", success_rate);
+    
+    if (success_rate >= 80) {
+        println("🎉 훌륭한 성능!");
+    } else {
+        if (success_rate >= 60) {
+            println("✅ 양호한 성능");
+        } else {
+            println("🔧 추가 최적화 필요");
+        }
+    }
+}
+
+fn main() {
+    println("🌟 완전한 함수 기반 Grover 알고리즘");
+    println("=================================");
+    println("목표: |10101⟩ 찾기 (십진수: 21)");
+    println("");
+    
+    println("🎯 기술적 혁신:");
+    println("==============");
+    println("✅ 회로 내부 함수 호출");
+    println("✅ 회로 내부 for 반복문");
+    println("✅ Oracle과 Diffusion 분리");
+    println("✅ 코드 재사용성 극대화");
+    println("");
+    
+    run_performance_test();
+    
+    println("");
+    println("🚀 구조화의 장점:");
+    println("================");
+    println("• Oracle 함수: 목표 상태 변경 시 수정 용이");
+    println("• Diffusion 함수: 재사용 가능한 컴포넌트");
+    println("• 반복문: 반복 횟수 동적 조정 가능");
+    println("• 함수 분리: 디버깅 및 테스트 용이");
+}

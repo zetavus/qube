@@ -1,0 +1,16 @@
+// test_constants_import.qyt - 상수 import 테스트
+import { PI, E, add } from "module/math_utils";
+
+fn main() {
+    println("=== 상수 Import 테스트 ===");
+    
+    println("PI = {}", PI);
+    println("E = {}", E);
+    
+    const circle_area = PI * square(5.0);
+    println("원의 넓이 (반지름 5) = {}", circle_area);
+}
+
+fn square(x: f64) -> f64 {
+    return x * x;
+}

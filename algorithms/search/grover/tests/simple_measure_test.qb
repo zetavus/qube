@@ -1,0 +1,80 @@
+// 간단한 측정 방식 테스트
+// 다양한 측정 방법 시도
+
+fn main() {
+    println("🔧 측정 방법 테스트");
+    println("==================");
+    
+    println("🧪 방법 1: 기본 측정");
+    println("-------------------");
+    
+    // 간단한 1큐빗 회로
+    circuit SimpleTest(1) {
+        apply X to q0;  // |0⟩ → |1⟩
+    }
+    
+    simple = SimpleTest(1);
+    
+    // 🔧 다양한 측정 방법 시도
+    println("회로 생성 완료");
+    
+    // 방법 1: measure() 메서드
+    try {
+        result1 = simple.measure();
+        println("✅ 방법 1 성공: simple.measure()");
+        println("결과: " + result1[0]);
+    } catch {
+        println("❌ 방법 1 실패: simple.measure()");
+    }
+    
+    println("");
+    println("🧪 방법 2: measure 함수");
+    println("---------------------");
+    
+    simple2 = SimpleTest(1);
+    
+    // 방법 2: measure 함수
+    try {
+        result2 = measure(simple2);
+        println("✅ 방법 2 성공: measure(circuit)");
+        println("결과: " + result2[0]);
+    } catch {
+        println("❌ 방법 2 실패: measure(circuit)");
+    }
+    
+    println("");
+    println("🧪 방법 3: run + get_result");
+    println("---------------------------");
+    
+    simple3 = SimpleTest(1);
+    
+    // 방법 3: run + get_result
+    try {
+        simple3.run();
+        result3 = simple3.get_result();
+        println("✅ 방법 3 성공: run() + get_result()");
+        println("결과: " + result3[0]);
+    } catch {
+        println("❌ 방법 3 실패: run() + get_result()");
+    }
+    
+    println("");
+    println("🧪 방법 4: execute + measure");
+    println("----------------------------");
+    
+    simple4 = SimpleTest(1);
+    
+    // 방법 4: execute + measure
+    try {
+        executed = simple4.execute();
+        result4 = executed.measure();
+        println("✅ 방법 4 성공: execute() + measure()");
+        println("결과: " + result4[0]);
+    } catch {
+        println("❌ 방법 4 실패: execute() + measure()");
+    }
+    
+    println("");
+    println("🎯 목표: 올바른 측정 방법 찾기");
+    println("5큐빗 Grover에서 85% 성공률 확인하기");
+}

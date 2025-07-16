@@ -1,0 +1,65 @@
+// 성공한 grover_simple.qb의 정확한 복사본
+fn main() {
+    println("🔍 단순 Grover 알고리즘");
+    println("======================");
+    
+    run_grover();
+    test_measurements();
+}
+
+fn run_grover() {
+    println("🎯 Grover 회로 실행:");
+    
+    circuit GroverCircuit(2) {
+        println("  1. 초기화");
+        apply H to q0;
+        apply H to q1;
+        
+        println("  2. Oracle");
+        apply CNOT to (q0, q1);
+        apply Z to q1;
+        apply CNOT to (q0, q1);
+        
+        println("  3. Diffusion");
+        apply H to q0;
+        apply H to q1;
+        apply X to q0;
+        apply X to q1;
+        apply CNOT to (q0, q1);
+        apply Z to q1;
+        apply CNOT to (q0, q1);
+        apply X to q0;
+        apply X to q1;
+        apply H to q0;
+        apply H to q1;
+        
+        println("  4. 완료");
+    }
+    
+    println("✅ Grover 회로 실행 완료");
+}
+
+fn test_measurements() {
+    println("");
+    println("📊 측정 테스트:");
+    
+    // 간단한 측정들
+    qubit q1 = |0⟩;
+    scalar r1 = measure(q1);
+    println("  |0⟩ 측정: {}", r1);
+    
+    qubit q2 = |1⟩;
+    scalar r2 = measure(q2);
+    println("  |1⟩ 측정: {}", r2);
+    
+    // 결과 계산
+    scalar combined = r1 * 2 + r2;
+    println("  조합 결과: {}", combined);
+    
+    // 성공 체크
+    if (combined == 1) {
+        println("  ✅ 목표 달성!");
+    } else {
+        println("  🔄 재시도 필요");
+    }
+}

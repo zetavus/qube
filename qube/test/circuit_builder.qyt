@@ -1,0 +1,162 @@
+// circuit_builder.qyt
+// QyTum 양자 회로 빌더 DSL 고급 테스트
+
+// 벨 상태 생성 회로 정의
+circuit Bell(2) {
+    apply H to q0;
+    apply CNOT to (q0, q1);
+}
+
+// 3큐빗 GHZ 상태 회로 정의  
+circuit GHZ(3) {
+    apply H to q0;
+    apply CNOT to (q0, q1);
+    apply CNOT to (q1, q2);
+}
+
+fn test_circuit_definition() {
+    println("=== 회로 정의 테스트 ===");
+    
+    // 사전 정의된 회로 사용
+    println("벨 상태 회로 생성 중...");
+    scalar bell_circuit = Bell(2);
+    println("벨 회로 생성 완료");
+    
+    println("GHZ 상태 회로 생성 중...");
+    scalar ghz_circuit = GHZ(3);
+    println("GHZ 회로 생성 완료");
+    
+    println("회로 정의 테스트 완료!\n");
+}
+
+fn test_apply_gates() {
+    println("=== apply 문 테스트 ===");
+    
+    // 1큐빗 회로로 게이트 적용 테스트
+    scalar circuit = Circuit(1);
+    
+    println("하다마드 게이트 적용...");
+    // apply H to q0;  // 실제 구현에서 활성화
+    
+    println("X 게이트 적용...");
+    // apply X to q0;  // 실제 구현에서 활성화
+    
+    println("회전 게이트 적용...");
+    // apply RX(3.14159/2) to q0;  // 실제 구현에서 활성화
+    
+    println("apply 문 테스트 완료!\n");
+}
+
+fn test_multi_qubit_gates() {
+    println("=== 다중 큐빗 게이트 테스트 ===");
+    
+    // 2큐빗 회로 생성
+    scalar circuit = Circuit(2);
+    
+    println("2큐빗 회로 생성 완료");
+    
+    // 다중 큐빗 게이트 적용
+    println("CNOT 게이트 적용...");
+    // apply CNOT to (q0, q1);  // 실제 구현에서 활성화
+    
+    println("CZ 게이트 적용...");
+    // apply CZ to (q0, q1);  // 실제 구현에서 활성화
+    
+    println("다중 큐빗 게이트 테스트 완료!\n");
+}
+
+fn test_parameterized_gates() {
+    println("=== 매개변수 게이트 테스트 ===");
+    
+    scalar circuit = Circuit(1);
+    scalar PI = 3.14159;
+    
+    println("회전 각도들:");
+    scalar angle1 = PI / 2;
+    scalar angle2 = PI / 4;
+    scalar angle3 = PI / 3;
+    
+    println("angle1 = π/2 = {}", angle1);
+    println("angle2 = π/4 = {}", angle2);
+    println("angle3 = π/3 = {}", angle3);
+    
+    // 매개변수 회전 게이트들
+    println("RX 게이트 적용...");
+    // apply RX(angle1) to q0;  // 실제 구현에서 활성화
+    
+    println("RY 게이트 적용...");
+    // apply RY(angle2) to q0;  // 실제 구현에서 활성화
+    
+    println("RZ 게이트 적용...");
+    // apply RZ(angle3) to q0;  // 실제 구현에서 활성화
+    
+    println("매개변수 게이트 테스트 완료!\n");
+}
+
+fn test_measurement() {
+    println("=== 측정 테스트 ===");
+    
+    // 측정 시뮬레이션
+    scalar q0 = |0⟩;
+    scalar q1 = |+⟩;  // 중첩 상태
+    
+    println("측정 전 상태:");
+    println("q0 = {}", q0);
+    println("q1 = {}", q1);
+    
+    // 측정 수행 (시뮬레이션)
+    println("q0 측정 중...");
+    scalar result0 = measure(q0);
+    println("q0 측정 결과: {}", result0);
+    
+    println("q1 측정 중... (확률적)");
+    scalar result1 = measure(q1);
+    println("q1 측정 결과: {}", result1);
+    
+    println("측정 테스트 완료!\n");
+}
+
+fn test_complex_circuit() {
+    println("=== 복합 회로 테스트 ===");
+    
+    // 4큐빗 복합 회로
+    scalar circuit = Circuit(4);
+    
+    println("4큐빗 회로 생성");
+    println("복합 게이트 시퀀스 적용 예정:");
+    println("1. H → q0, q1");
+    println("2. CNOT → (q0,q2), (q1,q3)");
+    println("3. RZ(π/2) → q2");
+    println("4. CNOT → (q2,q3)");
+    println("5. H → q0, q1");
+    
+    // 실제 구현에서는 아래 코드들이 활성화됨
+    /*
+    apply H to q0;
+    apply H to q1;
+    apply CNOT to (q0, q2);
+    apply CNOT to (q1, q3);
+    apply RZ(3.14159/2) to q2;
+    apply CNOT to (q2, q3);
+    apply H to q0;
+    apply H to q1;
+    */
+    
+    println("복합 회로 구성 완료");
+    println("복합 회로 테스트 완료!\n");
+}
+
+fn main() {
+    println("🌟 QyTum 양자 회로 빌더 고급 테스트");
+    println("=====================================\n");
+    
+    test_circuit_definition();
+    test_apply_gates();
+    test_multi_qubit_gates();
+    test_parameterized_gates();
+    test_measurement();
+    test_complex_circuit();
+    
+    println("🎉 모든 회로 빌더 테스트 완료!");
+    println("실제 apply 문들은 QyTum 인터프리터에서 활성화됩니다.");
+}

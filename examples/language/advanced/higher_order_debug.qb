@@ -1,0 +1,21 @@
+fn main() {
+    println("=== 고급 고차 함수 테스트 ===");
+    
+    scalar numbers = [1, 2, 3, 4, 5];
+    
+    // reduce 테스트
+    scalar sum = reduce(add, numbers, 0);
+    println("합계: {}", sum);
+    
+    scalar product = reduce(multiply, numbers, 1);
+    println("곱: {}", product);
+    
+    // 함수 체이닝
+    scalar result = filter(is_odd, map(triple, numbers));
+    println("3배 후 홀수만: {}", result);
+}
+
+fn add(a: i32, b: i32) -> i32 { return a + b; }
+fn multiply(a: i32, b: i32) -> i32 { return a * b; }
+fn triple(x: i32) -> i32 { return x * 3; }
+fn is_odd(x: i32) -> bool { return x % 2 == 1; }

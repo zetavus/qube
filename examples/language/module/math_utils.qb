@@ -1,0 +1,16 @@
+// math_utils.qyt - 수학 관련 함수들
+
+export fn add(a: i32, b: i32) -> i32 {
+    return a + b;
+}
+
+export fn multiply(a: i32, b: i32) -> i32 {
+    return a * b;
+}
+
+export fn square(x: i32) -> i32 {
+    return x * x;
+}
+
+export const PI = 3.14159;
+export const E = 2.71828;

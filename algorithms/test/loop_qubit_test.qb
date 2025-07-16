@@ -1,0 +1,25 @@
+// 반복문 내 qubit 선언 테스트
+fn main() {
+    println("반복문 내 qubit 테스트");
+    
+    test_simple_loop();
+    test_qubit_in_loop();
+}
+
+fn test_simple_loop() {
+    println("1. 단순 반복문:");
+    
+    for i in 0..3 {
+        println("반복 {}", i);
+    }
+}
+
+fn test_qubit_in_loop() {
+    println("2. 반복문 내 qubit:");
+    
+    for i in 0..2 {
+        qubit q = |0⟩;
+        scalar r = measure(q);
+        println("시도 {}: {}", i, r);
+    }
+}

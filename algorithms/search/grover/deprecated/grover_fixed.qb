@@ -1,0 +1,163 @@
+// algorithms/search/grover_fixed.qb
+// 수정된 5큐빗 Grover 알고리즘
+// Oracle 정확성 수정: |10101⟩만 정확히 phase flip
+
+fn create_correct_oracle_grover() {
+    circuit FixedGrover5Qubit(5) {
+        println("🔧 수정된 Oracle로 Grover 알고리즘");
+        println("===================================");
+        
+        // 1. 초기화: 균등 중첩
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        println("1️⃣ 초기화 완료: 32개 상태 균등 분포");
+        
+        // 수정된 Oracle 테스트
+        println("2️⃣ 수정된 Oracle 적용:");
+        println("목표: |10101⟩ = q4=1, q3=0, q2=1, q1=0, q0=1");
+        
+        // Oracle 방법 1: 직접 제어 (더 정확)
+        // |10101⟩에서만 phase flip하려면:
+        // q4=1, q2=1, q0=1 제어하고, q3=0, q1=0는 X로 뒤집어서 제어
+        
+        apply X to q3;  // q3: 0→1 변환
+        apply X to q1;  // q1: 0→1 변환
+        
+        // 이제 |10101⟩ 상태는 |11111⟩로 변환됨
+        // 5큐빗 모두 1인 상태에 CZ 적용
+        apply CZ to (q4, q3, q2, q1, q0);
+        
+        apply X to q1;  // q1 복원
+        apply X to q3;  // q3 복원
+        println("2-1) Oracle 1회차 완료");
+        
+        // Diffusion 연산자
+        println("2-2) Diffusion 연산자 적용");
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        println("2-3) 첫 번째 Grover 반복 완료");
+        
+        // 2회차
+        println("3️⃣ 2회차 Grover 반복:");
+        apply X to q3; apply X to q1;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q1; apply X to q3;
+        
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        
+        // 3회차
+        println("4️⃣ 3회차 Grover 반복:");
+        apply X to q3; apply X to q1;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q1; apply X to q3;
+        
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        
+        // 4회차 (최적 반복)
+        println("5️⃣ 4회차 Grover 반복 (최적):");
+        apply X to q3; apply X to q1;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q1; apply X to q3;
+        
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        
+        println("6️⃣ 4회 Grover 반복 완료");
+        println("예상: |10101⟩ 확률이 85%에 근접해야 함");
+    }
+    return FixedGrover5Qubit(5);
+}
+
+fn test_oracle_isolation() {
+    println("");
+    println("🧪 Oracle 단독 검증:");
+    println("====================");
+    
+    circuit OracleOnly(5) {
+        // 특정 상태로 초기화해서 Oracle 테스트
+        // |10101⟩ 상태를 만들어서 Oracle이 정확히 작동하는지 확인
+        
+        apply X to q4;  // q4 = 1
+        apply X to q2;  // q2 = 1  
+        apply X to q0;  // q0 = 1
+        // 현재 상태: |10101⟩
+        
+        println("초기 상태: |10101⟩ 준비 완료");
+        
+        // Oracle 적용
+        apply X to q3;  // q3: 0→1
+        apply X to q1;  // q1: 0→1
+        apply CZ to (q4, q3, q2, q1, q0);  // phase flip
+        apply X to q1;  // 복원
+        apply X to q3;  // 복원
+        
+        println("Oracle 적용 완료");
+        println("결과: |10101⟩ 상태에 phase가 -1 곱해짐 (측정으로는 보이지 않음)");
+    }
+    
+    oracle_test = OracleOnly(5);
+    oracle_result = measure(oracle_test, [0, 1, 2, 3, 4]);
+    oracle_value = oracle_result[0] + oracle_result[1]*2 + oracle_result[2]*4 + oracle_result[3]*8 + oracle_result[4]*16;
+    
+    if (oracle_value == 21) {
+        println("✅ Oracle 테스트: |10101⟩ 상태 유지됨 (정상)");
+    } else {
+        println("❌ Oracle 테스트: 상태가 변경됨 (오류!)");
+    }
+}
+
+fn main() {
+    println("🚀 수정된 5큐빗 Grover 알고리즘");
+    println("================================");
+    
+    // Oracle 단독 테스트
+    test_oracle_isolation();
+    
+    println("");
+    println("🔧 전체 Grover 알고리즘 실행:");
+    
+    // 수정된 Grover 실행
+    grover_circuit = create_correct_oracle_grover();
+    result = measure(grover_circuit, [0, 1, 2, 3, 4]);
+    
+    decimal_value = result[0] + result[1]*2 + result[2]*4 + result[3]*8 + result[4]*16;
+    
+    println("");
+    println("📊 최종 측정 결과:");
+    println("==================");
+    if (decimal_value == 21) {  // |10101⟩
+        println("✅ 성공! |10101⟩ 상태 발견");
+        println("🎉 Oracle 수정 후 정상 작동!");
+    } else {
+        println("🔄 다른 상태 측정됨: {}", decimal_value);
+        println("상태 분포를 확인해보세요");
+    }
+    
+    println("");
+    println("🎯 다음 단계:");
+    println("=============");
+    println("1. 성능 테스트 (100회 시도)");
+    println("2. 다른 타겟 상태로 Oracle 일반화");
+    println("3. 범위 문법 구현 (apply CZ to (~, q5))");
+    
+    println("");
+    println("💡 이론적 배경:");
+    println("================");
+    println("• 5큐빗 최적 반복: π/4 × √32 ≈ 4.4회");
+    println("• 4회 반복 시 성공률: ~85%");
+    println("• 5회 반복 시 성공률: ~70% (overshoot)");
+    println("• 현재 구현: 4회 반복 = 최적!");
+}

@@ -1,0 +1,33 @@
+// 두 번째 함수 추가
+fn main() {
+    println("구체적 요소 테스트");
+    
+    test_hadamard();
+    test_increment();  // ← 두 번째 함수 추가
+}
+
+fn test_hadamard() {
+    println("1. Hadamard 게이트 테스트:");
+    
+    for i in 0..2 {
+        qubit q = H(|0⟩);
+        scalar r = measure(q);
+        println("H 테스트 {}: {}", i, r);
+    }
+}
+
+fn test_increment() {
+    println("2. 변수 증감 테스트:");  // ← 정확히 같은 내용
+    
+    scalar count = 3;
+    scalar success = 0;
+    
+    for i in 0..count {
+        if (i == 1) {
+            success += 1;
+        }
+        println("증감 테스트 {}: {}", i, success);
+    }
+    
+    println("최종 성공: {}", success);
+}

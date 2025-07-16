@@ -1,0 +1,16 @@
+// algorithms/search/circuit_creation_test.qb
+// 회로 생성 테스트
+
+circuit SimpleCircuit(2) {
+    apply H to q0;
+    apply X to q1;
+}
+
+fn main() {
+    println("회로 생성 테스트");
+    
+    // 회로 생성 시도
+    simple = SimpleCircuit();
+    
+    println("회로가 생성되었습니다");
+}

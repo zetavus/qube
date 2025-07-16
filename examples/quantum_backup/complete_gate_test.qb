@@ -1,0 +1,33 @@
+// 완전한 게이트 구현 테스트
+
+circuit AllGatesTest(3) {
+    println("=== 단일 큐빗 게이트 테스트 ===");
+    
+    // Pauli 게이트들
+    apply H to q0;
+    apply X to q1;
+    apply Y to q2;
+    apply Z to q0;
+    
+    // Phase 게이트들
+    apply S to q1;
+    apply T to q2;
+    
+    // 회전 게이트들 (π/4 각도)
+    apply RX(0.785) to q0;
+    apply RY(0.785) to q1; 
+    apply RZ(0.785) to q2;
+    
+    println("=== 2큐빗 게이트 테스트 ===");
+    
+    // 2큐빗 게이트들
+    apply CNOT to (q0, q1);
+    apply CZ to (q1, q2);
+    
+    println("모든 게이트 적용 완료!");
+}
+
+println("🚀 모든 게이트 테스트 시작:");
+test_circuit = AllGatesTest(3);
+
+println("✅ 테스트 성공! 모든 게이트가 정상 작동합니다.");

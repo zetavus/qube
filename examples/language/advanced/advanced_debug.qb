@@ -1,0 +1,28 @@
+fn main() {
+    println("=== 고급 함수 단계별 진단 ===");
+    
+    // 1단계: 기본 함수 호출
+    println("1단계: 기본 함수 호출 테스트");
+    higher_order_demo();
+    println("1단계 완료");
+}
+
+fn higher_order_demo() {
+    println("1. 고차 함수:");
+    
+    // 2단계: 배열 선언
+    println("2단계: 배열 선언 테스트");
+    scalar numbers = [1, 2, 3, 4, 5];
+    println("배열 생성 완료: {}", numbers);
+    
+    // 3단계: 함수를 인자로 전달 (문제 발생 예상 지점)
+    println("3단계: map 함수 호출 테스트");
+    // scalar squared = map(square, numbers);  // 이 줄을 주석 처리
+    println("3단계 건너뛰기");
+    
+    println("higher_order_demo 완료");
+}
+
+fn square(x: i32) -> i32 {
+    return x * x;
+}

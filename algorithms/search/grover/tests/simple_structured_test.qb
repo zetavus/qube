@@ -1,0 +1,54 @@
+// algorithms/search/simple_structured_test.qb
+// 기본 문법 확인: 함수 호출이 가능한지 테스트
+
+fn oracle_function() {
+    println("Oracle 함수 호출됨");
+    // 실제 Oracle 로직은 회로 외부에서는 불가능할 수 있음
+}
+
+fn diffusion_function() {
+    println("Diffusion 함수 호출됨");
+    // 실제 Diffusion 로직은 회로 외부에서는 불가능할 수 있음
+}
+
+fn main() {
+    println("🧪 함수 호출 테스트");
+    println("=================");
+    
+    // 회로 외부에서 함수 호출 테스트
+    oracle_function();
+    diffusion_function();
+    
+    // 기본 회로 테스트
+    circuit SimpleTest(5) {
+        println("회로 내부에서 실행됨");
+        
+        // 초기화
+        apply H to ~;
+        
+        // Oracle (함수 호출 없이 직접 구현)
+        apply X to q1; apply X to q3;
+        apply CZ to (q0, q1, q2, q3, q4);
+        apply X to q1; apply X to q3;
+        
+        // Diffusion (함수 호출 없이 직접 구현)
+        apply H to ~; apply X to ~;
+        apply CZ to (q0, q1, q2, q3, q4);
+        apply X to ~; apply H to ~;
+    }
+    
+    println("회로 생성 중...");
+    test_circuit = SimpleTest();
+    
+    println("측정 중...");
+    result = measure(test_circuit, [0, 1, 2, 3, 4]);
+    
+    decimal = result[0] + result[1]*2 + result[2]*4 + result[3]*8 + result[4]*16;
+    println("결과: {} (십진수: {})", result, decimal);
+    
+    if (decimal == 21) {
+        println("✅ |10101⟩ 성공!");
+    } else {
+        println("❌ 다른 상태: {}", decimal);
+    }
+}

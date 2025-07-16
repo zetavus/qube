@@ -1,0 +1,59 @@
+// pipe_test.qyt - 파이프 연산자 테스트
+
+// 테스트용 함수들
+fn double(x) {
+    return x * 2;
+}
+
+fn add_ten(x) {
+    return x + 10;
+}
+
+fn square(x) {
+    return x * x;
+}
+
+fn to_string(x) {
+    return "Result: " + x;
+}
+
+fn main() {
+    println("🚀 QyTum 파이프 연산자 테스트!");
+    println("=====================================");
+    
+    // 1. 기본 파이프 테스트
+    println("\n1. 기본 파이프 테스트:");
+    scalar result1 = 5 |> double;
+    println("5 |> double =", result1);
+    
+    // 2. 파이프 체인 테스트
+    println("\n2. 파이프 체인 테스트:");
+    scalar result2 = 5 |> double |> add_ten;
+    println("5 |> double |> add_ten =", result2);
+    
+    // 3. 더 긴 파이프 체인
+    println("\n3. 긴 파이프 체인:");
+    scalar result3 = 3 |> double |> add_ten |> square;
+    println("3 |> double |> add_ten |> square =", result3);
+    
+    // 4. 표현식과 파이프
+    println("\n4. 표현식과 파이프:");
+    scalar result4 = (3 + 2) |> double |> add_ten;
+    println("(3 + 2) |> double |> add_ten =", result4);
+    
+    // 5. 변수와 파이프
+    println("\n5. 변수와 파이프:");
+    scalar x = 7;
+    scalar result5 = x |> double |> add_ten;
+    println("x |> double |> add_ten =", result5);
+    
+    // 6. 연산자 우선순위 테스트
+    println("\n6. 연산자 우선순위 테스트:");
+    scalar result6 = 2 * 3 |> add_ten;  // (2 * 3) |> add_ten = 16
+    println("2 * 3 |> add_ten =", result6);
+    
+    scalar result7 = 5 + 5 |> double;   // (5 + 5) |> double = 20
+    println("5 + 5 |> double =", result7);
+    
+    println("\n✅ 파이프 연산자 테스트 완료!");
+}

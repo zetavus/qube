@@ -1,0 +1,21 @@
+// debug_test.qyt - 파싱 디버깅
+
+class Test {
+    fn hello(self) {
+        println("Hello from method!");
+    }
+}
+
+fn main() {
+    println("=== 디버깅 테스트 ===");
+    
+    // 1. 객체 생성
+    scalar obj = Test { };
+    println("객체 생성:", obj);
+    
+    // 2. 메서드 호출 테스트 (간단한 형태)
+    println("메서드 호출 시도...");
+    obj.hello();
+    
+    println("완료!");
+}

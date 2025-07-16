@@ -1,0 +1,34 @@
+fn main() {
+    println("=== 화살표 함수 실행 테스트 ===");
+    
+    // 1단계: 기본 화살표 함수 호출
+    println("1단계: 기본 화살표 함수 호출");
+    scalar doubler = x => x * 2;
+    
+    // 화살표 함수 호출 시도 - 직접 호출 불가능할 수 있음
+    // 대신 map 함수로 테스트
+    scalar numbers = [1, 2, 3, 4, 5];
+    scalar doubled = map(doubler, numbers);
+    println("Original: [1, 2, 3, 4, 5]");
+    println("Doubled: {}", doubled);
+    
+    // 2단계: 다중 매개변수 화살표 함수
+    println("2단계: 다중 매개변수 화살표 함수");
+    scalar adder = (a, b) => a + b;
+    scalar result = reduce(adder, numbers);
+    println("Sum of [1, 2, 3, 4, 5]: {}", result);
+    
+    // 3단계: 복잡한 표현식
+    println("3단계: 복잡한 표현식");
+    scalar complex_func = x => x * x + 2 * x + 1;
+    scalar squared = map(complex_func, [1, 2, 3]);
+    println("f(x) = x² + 2x + 1 for [1, 2, 3]: {}", squared);
+    
+    // 4단계: 필터링
+    println("4단계: 필터링");
+    scalar is_even = x => x % 2 == 0;
+    scalar evens = filter(is_even, [1, 2, 3, 4, 5, 6, 7, 8]);
+    println("Even numbers from [1..8]: {}", evens);
+    
+    println("=== 화살표 함수 실행 테스트 완료 ===");
+}

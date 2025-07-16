@@ -1,0 +1,173 @@
+// algorithms/search/grover_structured.qb
+// 구조화된 Grover 알고리즘 (함수 기반)
+
+// Oracle 함수: 특정 상태를 마킹
+fn apply_oracle_10101() {
+    println("    🎯 Oracle: |10101⟩ 마킹");
+    
+    // |10101⟩ = q4=1, q3=0, q2=1, q1=0, q0=1
+    // 0인 큐빗들(q1, q3)을 1로 변환하여 |11111⟩ 만들기
+    apply X to q1;  // q1: 0→1
+    apply X to q3;  // q3: 0→1
+    
+    // 모든 큐빗이 |1⟩일 때만 위상 -1
+    apply CZ to (q0, q1, q2, q3, q4);
+    
+    // 원상복구
+    apply X to q1;  // q1: 1→0  
+    apply X to q3;  // q3: 1→0
+}
+
+// Diffusion 연산자: 진폭 증폭
+fn apply_diffusion() {
+    println("    🔄 Diffusion: 진폭 증폭");
+    
+    // |+⟩ → |0⟩ 변환
+    apply H to ~;
+    
+    // |00000⟩을 제외한 모든 상태에 -1 위상
+    apply X to ~;   // |00000⟩ → |11111⟩
+    apply CZ to (q0, q1, q2, q3, q4);  // |11111⟩에 -1 위상
+    apply X to ~;   // 원상복구
+    
+    // |0⟩ → |+⟩ 변환
+    apply H to ~;
+}
+
+// Grover 반복 함수
+fn grover_iteration(iteration_num) {
+    println("  --- Grover 반복 {}/4 ---", iteration_num);
+    apply_oracle_10101();
+    apply_diffusion();
+}
+
+// 초기화 함수  
+fn initialize_superposition() {
+    println("🚀 초기화: 균등 중첩 상태 생성");
+    apply H to ~;  // |00000⟩ → (1/√32) Σ|x⟩
+}
+
+// 메인 Grover 알고리즘
+fn create_grover_algorithm(iterations) {
+    circuit GroverAlgorithm(5) {
+        println("=== 5큐빗 Grover 알고리즘 시작 ===");
+        
+        // 1단계: 초기화
+        initialize_superposition();
+        
+        // 2단계: Grover 반복
+        println("🔄 Grover 반복 시작 (총 {}회)", iterations);
+        
+        // 반복 실행 (현재는 수동, 나중에 for loop으로 개선)
+        if (iterations >= 1) {
+            grover_iteration(1);
+        }
+        if (iterations >= 2) {
+            grover_iteration(2);
+        }
+        if (iterations >= 3) {
+            grover_iteration(3);
+        }
+        if (iterations >= 4) {
+            grover_iteration(4);
+        }
+        if (iterations >= 5) {
+            grover_iteration(5);
+        }
+        if (iterations >= 6) {
+            grover_iteration(6);
+        }
+        
+        println("✅ Grover 알고리즘 완료");
+    }
+    
+    return GroverAlgorithm();
+}
+
+// 결과 검증 함수
+fn verify_result(result, target_decimal) {
+    decimal = result[0] + result[1]*2 + result[2]*4 + result[3]*8 + result[4]*16;
+    binary_str = "|{}{}{}{}{}⟩";
+    
+    if (decimal == target_decimal) {
+        println("✅ 성공! {} 발견 (십진수: {})", binary_str, decimal);
+        return true;
+    } else {
+        println("❌ 실패: {} (십진수: {})", binary_str, decimal);
+        return false;
+    }
+}
+
+// 성능 테스트 함수
+fn run_performance_test(iterations, trials) {
+    println("🎯 Grover 성능 테스트");
+    println("====================");
+    println("반복 횟수: {}회", iterations);
+    println("시도 횟수: {}회", trials);
+    println("목표 상태: |10101⟩ (십진수: 21)");
+    println("");
+    
+    success_count = 0;
+    
+    trial = 1;
+    while (trial <= trials) {
+        println("시도 {}/{}:", trial, trials);
+        
+        grover_circuit = create_grover_algorithm(iterations);
+        result = measure(grover_circuit, [0, 1, 2, 3, 4]);
+        
+        if (verify_result(result, 21)) {
+            success_count = success_count + 1;
+        }
+        
+        trial = trial + 1;
+        println("");
+    }
+    
+    success_rate = (success_count * 100) / trials;
+    
+    println("🏆 최종 결과:");
+    println("============");
+    println("성공: {} / {} 시도", success_count, trials);
+    println("성공률: {}%", success_rate);
+    
+    return success_rate;
+}
+
+// 메인 함수
+fn main() {
+    println("🌟 구조화된 Grover 알고리즘 테스트");
+    println("=================================");
+    println("");
+    
+    // 다양한 반복 횟수 테스트
+    println("📊 반복 횟수별 성능 분석:");
+    println("========================");
+    
+    // 1회 반복 테스트
+    println("🔬 1회 반복 테스트:");
+    rate_1 = run_performance_test(1, 5);
+    
+    println("");
+    println("🔬 4회 반복 테스트 (이론적 최적):");
+    rate_4 = run_performance_test(4, 5);
+    
+    println("");
+    println("📈 분석 결과:");
+    println("=============");
+    println("• 1회 반복 성공률: {}%", rate_1);
+    println("• 4회 반복 성공률: {}%", rate_4);
+    
+    if (rate_4 > rate_1) {
+        improvement = rate_4 - rate_1;
+        println("• 성능 향상: {}%p", improvement);
+    }
+    
+    println("");
+    println("🎯 구조화의 장점:");
+    println("================");
+    println("✅ Oracle과 Diffusion 명확히 분리");
+    println("✅ 반복 횟수 유연하게 조정 가능");
+    println("✅ 코드 재사용성 극대화");
+    println("✅ 디버깅 및 최적화 용이");
+}

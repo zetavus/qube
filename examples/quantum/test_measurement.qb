@@ -1,0 +1,52 @@
+// test_measurement.qyt - 측정 시스템 테스트
+
+// 📊 테스트 1: 기본 회로 측정
+circuit BasicTest(2) {
+    apply H to q0;
+    apply CNOT to (q0, q1);
+    measure q0;
+    measure q1;
+}
+
+println("=== 기본 회로 측정 테스트 ===");
+basic_circuit = BasicTest();
+println("BasicTest 회로 실행 완료\n");
+
+// 📊 테스트 2: 단일 큐빗 측정
+circuit SingleQubit(1) {
+    apply H to q0;
+    measure q0;
+}
+
+println("=== 단일 큐빗 측정 테스트 ===");
+single = SingleQubit();
+println("SingleQubit 회로 실행 완료\n");
+
+// 📊 테스트 3: 여러 게이트 + 측정
+circuit MultiGate(3) {
+    apply H to q0;
+    apply X to q1;
+    apply CNOT to (q0, q2);
+    apply H to q1;
+    
+    measure q0;
+    measure q1;
+    measure q2;
+}
+
+println("=== 다중 게이트 측정 테스트 ===");
+multi = MultiGate();
+println("MultiGate 회로 실행 완료\n");
+
+// 📊 테스트 4: 회전 게이트 + 측정
+circuit RotationTest(1) {
+    apply RX(PI/4) to q0;
+    apply RY(PI/3) to q0;
+    measure q0;
+}
+
+println("=== 회전 게이트 측정 테스트 ===");
+rotation = RotationTest();
+println("RotationTest 회로 실행 완료\n");
+
+println("🎉 모든 측정 테스트 완료!");

@@ -1,0 +1,13 @@
+// simple_hello.qyt - 가장 간단한 QyTum 프로그램
+
+fn main() {
+    println("Hello, QyTum World!");
+    println("This is a quantum programming language.");
+    
+    scalar x = 42;
+    scalar y = 3.14;
+    
+    println("x =", x);
+    println("y =", y);
+    println("x + y =", x + y);
+}

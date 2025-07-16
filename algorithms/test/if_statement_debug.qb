@@ -1,0 +1,25 @@
+// if문 실행 상세 진단
+fn main() {
+    println("if문 실행 진단");
+    println("==============");
+    
+    test_if_execution();
+}
+
+fn test_if_execution() {
+    scalar count = 1;
+    println("초기 count: {}", count);
+    
+    if (count == 1) {
+        println("라인 1: 조건문 진입");
+        println("라인 2: 두 번째 출력");
+        println("라인 3: 세 번째 출력");
+        
+        count = 99;
+        
+        println("라인 4: 할당 후 출력");
+        println("라인 5: count = {}", count);
+    }
+    
+    println("조건문 밖: count = {}", count);
+}

@@ -1,0 +1,24 @@
+fn main() {
+    println("=== 화살표 함수 Lexer 테스트 ===");
+    
+    // 기본 테스트
+    scalar test = "=>";
+    println("FAT_ARROW 토큰: {}", test);
+    
+    // 비교 테스트
+    scalar arrow = "->";
+    scalar equals = "==";
+    scalar assign = "=";
+    
+    println("ARROW: {}", arrow);
+    println("EQ: {}", equals);
+    println("ASSIGN: {}", assign);
+    
+    // 양자 상태와 비트 OR 구분 테스트
+    scalar quantum = |0⟩;
+    // scalar bitwise = 5 | 3;  // 나중에 테스트
+    
+    println("양자 상태: {}", quantum);
+    
+    println("=== Lexer 테스트 완료 ===");
+}

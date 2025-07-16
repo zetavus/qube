@@ -1,0 +1,142 @@
+// Step 1 테스트: 측정 결과 변수 할당 (동작하는 버전)
+fn main() {
+    println("🧪 Step 1 테스트: 측정 결과 변수 할당");
+    println("===================================");
+    println("");
+    
+    test_basic_measurement();
+    test_hadamard_measurement();
+    test_conditional_logic();
+    
+    println("🎉 Step 1 테스트 완료!");
+}
+
+fn test_basic_measurement() {
+    println("1️⃣ 기본 측정 테스트:");
+    
+    // |0⟩ 상태 측정 (항상 0이어야 함)
+    qubit q0 = |0⟩;
+    scalar result0 = measure(q0);
+    println("   |0⟩ 측정 결과: {}", result0);
+    
+    // |1⟩ 상태 측정 (항상 1이어야 함)
+    qubit q1 = |1⟩;
+    scalar result1 = measure(q1);
+    println("   |1⟩ 측정 결과: {}", result1);
+    
+    // 결과 검증
+    if (result0 == 0) {
+        println("   ✅ |0⟩ 측정 성공!");
+    } else {
+        println("   ❌ |0⟩ 측정 실패! (결과: {})", result0);
+    }
+    
+    if (result1 == 1) {
+        println("   ✅ |1⟩ 측정 성공!");
+    } else {
+        println("   ❌ |1⟩ 측정 실패! (결과: {})", result1);
+    }
+    
+    println("");
+}
+
+fn test_hadamard_measurement() {
+    println("2️⃣ 하다마드 중첩 상태 측정:");
+    println("   (확률적 결과 - 10번 시도)");
+    
+    scalar zeros = 0;
+    scalar ones = 0;
+    scalar trials = 10;
+    
+    for i in 0..trials {
+        qubit h_qubit = H(|0⟩);
+        scalar result = measure(h_qubit);
+        
+        if (result == 0) {
+            zeros += 1;
+        } else {
+            ones += 1;
+        }
+        
+        println("   시도 {}: {}", i + 1, result);
+    }
+    
+    println("   ──────────────────");
+    println("   총 {}회 시도", trials);
+    println("   0 결과: {}번", zeros);
+    println("   1 결과: {}번", ones);
+    
+    scalar ratio = ones / trials;
+    println("   1의 비율: {:.2f}", ratio);
+    println("   이론값: 0.50 (50%)");
+    
+    if (ratio > 0.2 && ratio < 0.8) {
+        println("   ✅ 합리적인 확률 분포!");
+    } else {
+        println("   ⚠️  예상과 다른 분포 (확률적 변동일 수 있음)");
+    }
+    
+    println("");
+}
+
+fn test_conditional_logic() {
+    println("3️⃣ 조건부 로직 테스트:");
+    println("   (측정 결과로 분기 실행)");
+    
+    scalar test_count = 5;
+    scalar success_predictions = 0;
+    
+    for i in 0..test_count {
+        // |0⟩ 상태로 예측 가능한 결과
+        qubit predictable = |0⟩;
+        scalar result = measure(predictable);
+        
+        println("   테스트 {}: 측정 결과 = {}", i + 1, result);
+        
+        // 조건부 실행
+        if (result == 0) {
+            println("     → 예상대로 0 측정됨");
+            success_predictions += 1;
+        } else {
+            println("     → 예상과 다름 (1 측정됨)");
+        }
+    }
+    
+    println("   ──────────────────");
+    println("   성공적 예측: {}/{}", success_predictions, test_count);
+    
+    if (success_predictions == test_count) {
+        println("   ✅ 조건부 로직 완벽 동작!");
+    } else {
+        println("   ❌ 조건부 로직에 문제 있음");
+    }
+    
+    println("");
+}
+
+fn test_two_qubit_grover_prep() {
+    println("4️⃣ 2큐빗 Grover 준비 테스트:");
+    
+    // 2개의 큐빗 준비
+    qubit q0 = |0⟩;
+    qubit q1 = |0⟩;
+    
+    println("   초기 상태 준비 완료");
+    
+    // 개별 측정
+    scalar r0 = measure(q0);
+    scalar r1 = measure(q1);
+    
+    println("   큐빗 0 측정: {}", r0);
+    println("   큐빗 1 측정: {}", r1);
+    
+    // 2비트 값 계산 (Grover에서 사용할 방식)
+    scalar combined = r0 * 2 + r1;
+    println("   조합된 상태: |{}{}⟩ = 십진수 {}", r0, r1, combined);
+    
+    if (combined == 0) {  // |00⟩
+        println("   ✅ 예상 상태 |00⟩ 달성!");
+    }
+    
+    println("   🎯 이제 Grover 알고리즘에 적용할 준비 완료!");
+}

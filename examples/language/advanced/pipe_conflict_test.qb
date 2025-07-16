@@ -1,0 +1,25 @@
+fn main() {
+    println("=== 파이프 토큰 충돌 확인 ===");
+    
+    // 1. 양자 상태 표기법 (이미 작동 확인됨)
+    scalar q0 = |0⟩;
+    scalar q1 = |1⟩;
+    println("양자 상태: {} {}", q0, q1);
+    
+    // 2. 비트 OR 연산 테스트
+    scalar a = 5;   // 101 in binary
+    scalar b = 3;   // 011 in binary
+    // scalar bitwise_or = a | b;  // 111 = 7 (만약 지원된다면)
+    println("비트 OR 테스트는 주석처리 (지원 여부 확인 필요)");
+    
+    // 3. 절대값 함수 테스트
+    scalar negative = -42;
+    scalar absolute = abs(negative);
+    println("절대값: abs({}) = {}", negative, absolute);
+    
+    // 4. 현재 사용 가능한 연산자들
+    scalar logical_or = true || false;
+    println("논리 OR: {}", logical_or);
+    
+    println("=== 충돌 확인 완료 ===");
+}

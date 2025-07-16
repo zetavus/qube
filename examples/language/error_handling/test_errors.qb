@@ -1,0 +1,63 @@
+// test_errors.qyt - 에러 처리 테스트
+
+println("=== 에러 처리 테스트 시작 ===");
+
+// 📊 테스트 1: 정상 작동 확인
+println("✅ 정상 회로 테스트:");
+circuit NormalCircuit(2) {
+    apply H to q0;
+    apply CNOT to (q0, q1);
+    measure q0;
+}
+
+normal = NormalCircuit();
+println("정상 회로 완료\n");
+
+// 📊 테스트 2: 큐빗 범위 초과 (에러 발생 예상)
+println("❌ 큐빗 범위 초과 테스트 (에러 예상):");
+circuit ErrorCircuit1(2) {
+    apply H to q0;
+    // q2는 존재하지 않음 (범위: 0, 1)
+    // apply H to q2;  // 주석 처리 - 실제 테스트시 주석 해제
+    measure q0;
+}
+
+error1 = ErrorCircuit1();
+println("큐빗 범위 테스트 완료\n");
+
+// 📊 테스트 3: 회전 게이트 매개변수 테스트
+println("✅ 회전 게이트 매개변수 테스트:");
+circuit RotationParams(1) {
+    apply RX(PI/2) to q0;
+    apply RY(PI/3) to q0;
+    apply RZ(PI/6) to q0;
+    measure q0;
+}
+
+rotation = RotationParams();
+println("회전 매개변수 테스트 완료\n");
+
+// 📊 테스트 4: 상태 정규화 확인
+println("✅ 상태 정규화 테스트:");
+circuit NormalizationTest(1) {
+    apply H to q0;
+    apply RX(PI/4) to q0;
+    apply RY(PI/6) to q0;
+    measure q0;
+}
+
+norm_test = NormalizationTest();
+println("정규화 테스트 완료\n");
+
+// 📊 테스트 5: 빈 회로
+println("✅ 빈 회로 테스트:");
+circuit EmptyCircuit(1) {
+    // 게이트 없이 바로 측정
+    measure q0;
+}
+
+empty = EmptyCircuit();
+println("빈 회로 테스트 완료\n");
+
+println("🎯 에러 처리 테스트 완료!");
+println("주석 처리된 에러 라인들을 활성화하여 실제 에러 처리를 테스트해보세요.");

@@ -1,0 +1,27 @@
+// 성공한 파일에 요소 추가
+fn main() {
+    println("추가 요소 테스트");
+    
+    test_base();
+    test_with_hadamard();
+}
+
+fn test_base() {
+    println("기본 (성공 확인):");
+    
+    for i in 0..2 {
+        if (i == 1) {
+            println("조건 만족");
+        }
+    }
+}
+
+fn test_with_hadamard() {
+    println("Hadamard 추가:");
+    
+    for i in 0..2 {
+        qubit q = H(|0⟩);  // ← Hadamard 추가
+        scalar r = measure(q);
+        println("H 결과: {}", r);
+    }
+}

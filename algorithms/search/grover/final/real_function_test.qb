@@ -1,0 +1,43 @@
+// algorithms/search/real_function_test.qb
+// 실제 함수 호출 테스트
+
+fn apply_oracle() {
+    println("Oracle 함수 실행");
+    apply X to q1;
+    apply X to q3;
+    apply CZ to (q0, q1, q2, q3, q4);
+    apply X to q1;
+    apply X to q3;
+}
+
+fn apply_diffusion() {
+    println("Diffusion 함수 실행");
+    apply H to ~;
+    apply X to ~;
+    apply CZ to (q0, q1, q2, q3, q4);
+    apply X to ~;
+    apply H to ~;
+}
+
+circuit GroverTest(5) {
+    println("회로 시작");
+    apply H to ~;
+    
+    println("Oracle 호출");
+    apply_oracle();
+    
+    println("Diffusion 호출");
+    apply_diffusion();
+    
+    println("회로 완료");
+}
+
+fn main() {
+    println("실제 함수 호출 테스트");
+    
+    grover = GroverTest();
+    result = measure(grover, [0, 1, 2, 3, 4]);
+    
+    decimal = result[0] + result[1]*2 + result[2]*4 + result[3]*8 + result[4]*16;
+    println("결과: {} (십진수: {})", result, decimal);
+}

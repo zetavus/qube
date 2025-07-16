@@ -1,0 +1,20 @@
+// test_class_import.qyt - 클래스 import 테스트
+import { Calculator } from "module/calculator";
+
+fn main() {
+    println("=== 클래스 Import 테스트 ===");
+    
+    calc = Calculator.new();  // let 제거!
+    
+    calc.add(10.0);
+    println("After adding 10: {}", calc.get_value());
+    
+    calc.multiply(3.0);
+    println("After multiplying by 3: {}", calc.get_value());
+    
+    calc.add(5.0);
+    println("After adding 5: {}", calc.get_value());
+    
+    calc.reset();
+    println("After reset: {}", calc.get_value());
+}

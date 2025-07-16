@@ -1,0 +1,67 @@
+// Qube 표준 라이브러리 고급 테스트
+// 실행: qube algorithms/test/stdlib_advanced_test.qb
+
+println("=== Qube stdlib 고급 테스트 ===");
+
+// 1. 삼각함수 테스트
+println("1. 삼각함수 테스트");
+println("sin(0) = " + toString(sin(0)));
+println("cos(0) = " + toString(cos(0)));
+println("tan(0) = " + toString(tan(0)));
+pi_val = 3.14159;
+println("sin(π/2) ≈ " + toString(sin(pi_val/2)));
+println("cos(π) ≈ " + toString(cos(pi_val)));
+println("");
+
+// 2. 로그 함수 테스트
+println("2. 로그 함수 테스트");
+println("log(2.718) ≈ " + toString(log(2.718)));
+println("log(100, 10) = " + toString(log(100, 10)));
+println("");
+
+// 3. 랜덤 함수 테스트
+println("3. 랜덤 함수 테스트");
+println("random() = " + toString(random()));
+println("random() = " + toString(random()));
+println("randomInt(1, 6) = " + toString(randomInt(1, 6)));
+println("randomInt(1, 6) = " + toString(randomInt(1, 6)));
+println("randomInt(1, 6) = " + toString(randomInt(1, 6)));
+println("");
+
+// 4. 문자열 길이 테스트
+println("4. 문자열 길이 테스트");
+text = "Hello Qube Language";
+println("text = " + text);
+println("len(text) = " + toString(len(text)));
+println("");
+
+// 5. 범위 함수 고급 테스트
+println("5. 범위 함수 고급 테스트");
+println("range(2, 8) = " + toString(range(2, 8)));
+println("range(0, 10, 2) = " + toString(range(0, 10, 2)));
+println("");
+
+// 6. 복합 계산 테스트
+println("6. 복합 계산 테스트");
+data = [10, 20, 30, 40, 50];
+total = sum(data);
+count = len(data);
+average = total / count;
+println("data = " + toString(data));
+println("총합 = " + toString(total));
+println("개수 = " + toString(count));
+println("평균 = " + toString(average));
+println("최댓값 = " + toString(max(data)));
+println("최솟값 = " + toString(min(data)));
+println("표준편차용 제곱근 = " + toString(sqrt(100)));
+println("");
+
+// 7. 중첩 함수 호출 테스트
+println("7. 중첩 함수 호출 테스트");
+result = sqrt(abs(-16));
+println("sqrt(abs(-16)) = " + toString(result));
+result2 = max(abs(-10), sqrt(25), pow(2, 3));
+println("max(abs(-10), sqrt(25), pow(2, 3)) = " + toString(result2));
+println("");
+
+println("=== 고급 테스트 완료! ===");

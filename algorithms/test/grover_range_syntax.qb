@@ -1,0 +1,64 @@
+// algorithms/search/grover_range_syntax.qb
+// 범위 문법으로 개선된 5큐빗 Grover 알고리즘 (단독 ~ 버전)
+
+fn create_grover_with_range() {
+    circuit GroverRange5Qubit(5) {
+        println("🚀 범위 문법으로 개선된 Grover");
+        println("==============================");
+        
+        // 초기화: 모든 큐빗에 H
+        apply H to ~;
+        println("1️⃣ 초기화: 모든 큐빗에 H 적용");
+        
+        // Grover 반복 4회
+        i = 0;
+        while (i < 4) {
+            println("{}회차 Grover 반복:", i+1);
+            
+            // Oracle: |10101⟩ 타겟
+            apply X to (q1, q3);          # 특정 큐빗들 flip
+            apply CZ to (q0, q1, q2, q3, q4);  # 5큐빗 CZ (명시적)
+            apply X to (q1, q3);          # 복원
+            println("  - Oracle 완료");
+            
+            // Diffusion
+            apply H to ~;                 # 🚀 모든 큐빗에 H
+            apply X to ~;                 # 🚀 모든 큐빗에 X
+            apply CZ to (q0, q1, q2, q3, q4);  # 5큐빗 CZ
+            apply X to ~;                 # 🚀 복원
+            apply H to ~;                 # 🚀 복원
+            println("  - Diffusion 완료");
+            
+            i = i + 1;
+        }
+        
+        println("2️⃣ 4회 Grover 반복 완료");
+        println("예상: |10101⟩이 85% 확률");
+    }
+    return GroverRange5Qubit(5);
+}
+
+fn main() {
+    println("🎯 범위 문법 개선 Grover 테스트");
+    println("===============================");
+    
+    // 단일 실행
+    grover_circuit = create_grover_with_range();
+    result = measure(grover_circuit, [0, 1, 2, 3, 4]);
+    decimal_value = result[0] + result[1]*2 + result[2]*4 + result[3]*8 + result[4]*16;
+    
+    println("");
+    println("📊 단일 실행 결과:");
+    if (decimal_value == 21) {  // |10101⟩
+        println("✅ 성공! |10101⟩ 상태 발견");
+    } else {
+        println("🔄 다른 상태 측정됨: {}", decimal_value);
+    }
+    
+    println("");
+    println("🚀 범위 문법의 장점:");
+    println("===================");
+    println("• 간결함: apply H to ~ vs apply H to q0; apply H to q1; ...");
+    println("• 가독성: 알고리즘 의도가 더 명확히 드러남");
+    println("• 유지보수: 큐빗 수 변경시 코드 수정 최소화");
+}

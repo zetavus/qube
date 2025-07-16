@@ -1,0 +1,161 @@
+// grover_debug.qb
+// 5큐빗 Grover 알고리즘 상세 디버깅
+// 각 단계별 상태 벡터 분석
+
+fn create_debug_grover() {
+    circuit DebugGrover5Qubit(5) {
+        println("🔍 단계별 Grover 디버깅:");
+        println("=========================");
+        
+        // 1. 초기화: 균등 중첩
+        println("1️⃣ 초기화 (H⊗5):");
+        apply H to q0;
+        apply H to q1; 
+        apply H to q2;
+        apply H to q3;
+        apply H to q4;
+        // 예상: 모든 32개 상태가 1/32 = 3.125%
+        
+        println("");
+        println("2️⃣ 첫 번째 Grover 반복:");
+        println("------------------------");
+        
+        // Oracle: |10101⟩ 표시 (q4=1, q3=0, q2=1, q1=0, q0=1)
+        println("2-1) Oracle 적용 전 상태 확인");
+        println("Oracle 대상: |10101⟩ = q4=1, q3=0, q2=1, q1=0, q0=1");
+        
+        apply X to q3;  // q3: 0→1 변환
+        apply X to q1;  // q1: 0→1 변환
+        println("2-2) X 게이트 적용 후 (q3, q1 뒤집기)");
+        
+        apply CZ to (q4, q3, q2, q1, q0);  // 모든 큐빗이 1일 때 phase flip
+        println("2-3) CZ 게이트 적용 후 (Phase Flip)");
+        
+        apply X to q1;  // q1 복원
+        apply X to q3;  // q3 복원
+        println("2-4) Oracle 완료 (X 게이트 복원)");
+        
+        // Diffusion 연산자
+        println("2-5) Diffusion 연산자 시작");
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        println("2-6) H 게이트 적용 후");
+        
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        println("2-7) X 게이트 적용 후");
+        
+        apply CZ to (q4, q3, q2, q1, q0);  // |11111⟩에 phase flip
+        println("2-8) CZ 게이트 적용 후");
+        
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        println("2-9) 첫 번째 Grover 반복 완료");
+        println("");
+        
+        // 두 번째 반복
+        println("3️⃣ 두 번째 Grover 반복:");
+        apply X to q3; apply X to q1;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q1; apply X to q3;
+        
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        println("3-1) 두 번째 Grover 반복 완료");
+        println("");
+        
+        // 세 번째 반복
+        println("4️⃣ 세 번째 Grover 반복:");
+        apply X to q3; apply X to q1;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q1; apply X to q3;
+        
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        println("4-1) 세 번째 Grover 반복 완료");
+        println("");
+        
+        // 네 번째 반복
+        println("5️⃣ 네 번째 Grover 반복:");
+        apply X to q3; apply X to q1;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q1; apply X to q3;
+        
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply CZ to (q4, q3, q2, q1, q0);
+        apply X to q0; apply X to q1; apply X to q2; apply X to q3; apply X to q4;
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        println("5-1) 네 번째 Grover 반복 완료");
+        println("");
+        
+        println("6️⃣ 최종 상태 분석:");
+        println("목표: |10101⟩ 확률이 85%에 가까워야 함");
+        println("현재: 8개 상태가 각각 12.5%씩 (문제!)");
+    }
+    return DebugGrover5Qubit(5);
+}
+
+fn analyze_oracle() {
+    println("");
+    println("🔬 Oracle 분석:");
+    println("================");
+    
+    circuit OracleTest(5) {
+        // 초기화
+        apply H to q0; apply H to q1; apply H to q2; apply H to q3; apply H to q4;
+        
+        println("Oracle 테스트: |10101⟩ 상태만 phase flip해야 함");
+        
+        // Oracle for |10101⟩
+        apply X to q3;  // q3=0을 1로 변환
+        apply X to q1;  // q1=0을 1로 변환
+        apply CZ to (q4, q3, q2, q1, q0);  
+        apply X to q1;  // 복원
+        apply X to q3;  // 복원
+        
+        println("Oracle 적용 완료");
+    }
+    
+    oracle_circuit = OracleTest(5);
+    println("Oracle 단독 테스트 완료");
+}
+
+fn main() {
+    println("🚀 5큐빗 Grover 상세 디버깅");
+    println("============================");
+    
+    // Oracle 단독 테스트
+    analyze_oracle();
+    
+    println("");
+    println("🔍 전체 Grover 디버깅:");
+    
+    // 디버그 모드로 실행
+    debug_circuit = create_debug_grover();
+    result = measure(debug_circuit, [0, 1, 2, 3, 4]);
+    
+    decimal_value = result[0] + result[1]*2 + result[2]*4 + result[3]*8 + result[4]*16;
+    
+    println("");
+    println("📊 측정 결과:");
+    println("=============");
+    if (decimal_value == 21) {  // |10101⟩
+        println("✅ 성공! |10101⟩ 상태 발견 (21)");
+    } else {
+        println("❌ 실패: 다른 상태 측정됨 ({})", decimal_value);
+    }
+    
+    println("");
+    println("🎯 예상 문제점:");
+    println("===============");
+    println("1. Oracle이 정확히 |10101⟩만 phase flip하는가?");
+    println("2. Diffusion이 올바르게 평균값 기반 증폭하는가?");
+    println("3. 4회 반복이 5큐빗에 최적인가?");
+    println("");
+    println("다음: Oracle 정확성 검증 필요");
+}

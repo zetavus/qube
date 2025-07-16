@@ -1,0 +1,25 @@
+class TestClass {
+    public name: str;
+    
+    public fn public_method(self) {
+        println("Public method called!");
+    }
+    
+    private fn private_method(self) {
+        println("Private method called!");
+    }
+}
+
+fn main() {
+    println("=== 메서드 접근 제어 테스트 ===");
+    
+    obj = TestClass { name: "Test" };
+    
+    println("Calling public method...");
+    obj.public_method();
+    
+    println("Calling private method...");
+    obj.private_method();
+    
+    println("Test complete");
+}

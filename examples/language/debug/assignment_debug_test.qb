@@ -1,0 +1,30 @@
+class BankAccount {
+    private balance: f64;
+    public name: str;
+    
+    public fn test_simple_assignment(self) {
+        println("Before simple assignment");
+        temp = 100.0;
+        println("After simple assignment, temp = {}", temp);
+    }
+    
+    public fn test_member_assignment(self) {
+        println("Before member assignment");
+        self.balance = 200.0;
+        println("After member assignment");
+    }
+}
+
+fn main() {
+    println("=== Assignment 파싱 테스트 ===");
+    
+    account = BankAccount { name: "Test" };
+    
+    println("1. Testing simple assignment...");
+    account.test_simple_assignment();
+    
+    println("2. Testing member assignment...");
+    account.test_member_assignment();
+    
+    println("3. All tests completed");
+}

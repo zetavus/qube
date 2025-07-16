@@ -1,0 +1,29 @@
+# QyTum 양자 프로그래밍 언어 의존성
+
+# 핵심 의존성
+numpy>=1.21.0              # 양자 상태 벡터 계산
+scipy>=1.7.0               # 고급 수학 함수
+matplotlib>=3.5.0          # 그래프 및 시각화 (선택사항)
+
+# 개발 및 테스트
+pytest>=6.0.0             # 단위 테스트
+pytest-cov>=2.12.0        # 테스트 커버리지
+black>=22.0.0              # 코드 포매팅
+flake8>=4.0.0              # 코드 린팅
+
+# 문서화 (선택사항)
+sphinx>=4.0.0             # 문서 생성
+sphinx-rtd-theme>=1.0.0   # 문서 테마
+
+# 성능 최적화 (선택사항)
+numba>=0.56.0             # JIT 컴파일러
+cython>=0.29.0            # C 확장
+
+# 양자 컴퓨팅 라이브러리 (고급 기능용, 선택사항)
+qiskit>=0.39.0            # IBM Qiskit
+cirq>=1.0.0               # Google Cirq
+pennylane>=0.28.0         # Xanadu PennyLane
+
+# 주피터 노트북 지원 (선택사항)
+jupyter>=1.0.0
+ipykernel>=6.0.0

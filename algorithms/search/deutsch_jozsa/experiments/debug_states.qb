@@ -1,0 +1,97 @@
+// Deutsch-Jozsa 단계별 상태 디버깅
+
+fn debug_step_by_step() {
+    println("🔍 Deutsch-Jozsa 단계별 디버깅");
+    println("===============================");
+    
+    println("=== 1단계: 기본 초기화 테스트 ===");
+    circuit Step1(2) {
+        apply X to q1;
+    }
+    step1 = Step1(2);
+    result1 = measure(step1, [0, 1]);
+    println("초기화 후: {}", result1);
+    println("예상: [0, 1] - |01⟩ 상태");
+    println("");
+    
+    println("=== 2단계: 하다마드 적용 테스트 ===");
+    circuit Step2(2) {
+        apply X to q1;
+        apply H to ~;
+    }
+    step2 = Step2(2);
+    result2 = measure(step2, [0, 1]);
+    println("하다마드 후: {}", result2);
+    println("예상: 50/50 확률 분포");
+    println("");
+    
+    println("=== 3단계: CNOT 없이 최종 H ===");
+    circuit Step3(2) {
+        apply X to q1;
+        apply H to ~;
+        apply H to q0;
+    }
+    step3 = Step3(2);
+    result3 = measure(step3, [0]);
+    println("CNOT 없이 최종: {}", result3);
+    println("예상: [0] - 상수함수와 같음");
+    println("");
+    
+    println("=== 4단계: CNOT 포함 완전 회로 ===");
+    circuit Step4(2) {
+        apply X to q1;
+        apply H to ~;
+        apply CNOT to (q0, q1);
+        apply H to q0;
+    }
+    step4 = Step4(2);
+    result4 = measure(step4, [0]);
+    println("CNOT 포함 최종: {}", result4);
+    println("예상: [1] - 균형함수");
+    println("");
+}
+
+fn test_direct_implementation() {
+    println("🧪 직접 구현 테스트");
+    println("===================");
+    
+    println("테스트 A: 상수함수 직접 구현");
+    circuit DirectConstant(2) {
+        apply X to q1;
+        apply H to q0;
+        apply H to q1;
+        apply H to q0;
+    }
+    
+    direct1 = DirectConstant(2);
+    result_a = measure(direct1, [0]);
+    println("직접 상수함수: {}", result_a);
+    println("");
+    
+    println("테스트 B: 균형함수 직접 구현");
+    circuit DirectBalanced(2) {
+        apply X to q1;
+        apply H to q0;
+        apply H to q1;
+        apply CNOT to (q0, q1);
+        apply H to q0;
+    }
+    
+    direct2 = DirectBalanced(2);
+    result_b = measure(direct2, [0]);
+    println("직접 균형함수: {}", result_b);
+    println("");
+}
+
+fn main() {
+    println("🔍 Deutsch-Jozsa 디버깅 세션");
+    println("============================");
+    
+    debug_step_by_step();
+    test_direct_implementation();
+    
+    println("🔧 분석 포인트:");
+    println("- 단계별 상태 변화 확인");
+    println("- CNOT 게이트 효과 확인");
+    println("- 함수 호출 vs 직접 구현 비교");
+}
